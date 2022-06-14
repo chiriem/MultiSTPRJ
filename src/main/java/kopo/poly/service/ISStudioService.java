@@ -1,10 +1,12 @@
 package kopo.poly.service;
 
 import kopo.poly.dto.SStudioDTO;
+import kopo.poly.dto.YouTubeDTO;
 
 import java.util.List;
 
 public interface ISStudioService {
+   // SStudioDTO get();
 
     /**
      * 유튜브 주소 등록하기

@@ -18,9 +18,9 @@ public class YouTubeController {
         this.IYouTubeService = IYouTubeService;
     }
 
-    @GetMapping("youtube")
-    public YouTubeDTO Index() {
-        return IYouTubeService.get();
-    }
+//    @GetMapping("youtube")
+//    public YouTubeDTO Index() {
+//        return IYouTubeService.get();
+//    }
 
 }

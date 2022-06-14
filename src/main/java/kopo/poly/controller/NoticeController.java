@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +20,7 @@ import java.util.logging.Logger;
 /**
  * Notice는 공지사항을 관리하며, 관리가 가능한 페이지입니다.
  */
-@Controller
+@RestController
 public class NoticeController {
     private Logger log = Logger.getLogger(String.valueOf(this.getClass()));
 

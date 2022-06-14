@@ -25,6 +25,8 @@ public class SStudioDTO {
     String yt_seq; // 유튜브주소 번호
     String user_id; // 아이디
     String yt_address; // 유튜브 주소
+    String thumbnailPath; //동영상 썸네일 경로
+    String title; // 동영상 제목
 
     // 정보 입력 시, 중복가입을 방지를 위해 사용할 변수
     // DB를 조회해서 회원이 존재하면 Y값을 반환함.

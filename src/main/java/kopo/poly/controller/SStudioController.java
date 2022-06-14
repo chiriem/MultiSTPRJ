@@ -1,9 +1,12 @@
 package kopo.poly.controller;
 
 import kopo.poly.dto.SStudioDTO;
+import kopo.poly.dto.YouTubeDTO;
 import kopo.poly.service.ISStudioService;
+import kopo.poly.service.IYouTubeService;
 import kopo.poly.util.CmmUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +31,19 @@ public class SStudioController {
      */
     @Resource(name = "SStudioService")
     private ISStudioService sStudioService;
+
+    @Autowired
+    public SStudioController(
+            final ISStudioService sStudioService
+    ) {
+        this.sStudioService = sStudioService;
+    }
+
+/*    @GetMapping("youtube")
+    public SStudioDTO Index() {
+        return sStudioService.get();
+    }*/
+
 
     // MongoDB 컬렉션 이름
     private String colNm = "SStudioCollection";
@@ -79,17 +95,8 @@ public class SStudioController {
 
         log.info(this.getClass().getName() + ".getYtaddress!! end!");
 
-//        return "redirect:/index";
         return "index";
     }
-
-//    @GetMapping(value = "SingleST/SStud")
-//    public String SingleStudioview(HttpSession session) {
-//
-//        log.info(this.getClass().getName() + ".SingleStudioview ok!");
-//
-//        return "SingleST/SStud";
-//    }
 
     @GetMapping(value="/SingleST/SStud")
     public String SingleStudioview(HttpSession session, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
@@ -243,7 +250,7 @@ public class SStudioController {
              * */
             int res = sStudioService.insertYtaddress(pDTO, colNm);
 
-            log.info("입력 결과(res) : " + res);
+            log.info("입력 결과(res) : " + res);  //res가 1이면 저장 성공
 
             if (res == 1) {
                 msg = "입력되었습니다.";

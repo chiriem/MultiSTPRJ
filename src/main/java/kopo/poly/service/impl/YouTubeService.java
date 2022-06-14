@@ -10,16 +10,34 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.Thumbnail;
 import com.google.api.services.youtube.model.Video;
+import kopo.poly.dto.UserInfoDTO;
+import kopo.poly.persistance.mongodb.impl.SequenceMapper;
+import kopo.poly.persistance.mongodb.impl.YouTubeMapper;
 import kopo.poly.service.IYouTubeService;
 import kopo.poly.dto.YouTubeDTO;
+import kopo.poly.util.CmmUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
+@Slf4j
 @Service
 public class YouTubeService implements IYouTubeService {
+
+    // MongoDB에 저장할 Mapper
+    @Resource(name = "YouTubeMapper")
+    private YouTubeMapper youTubeMapper;
+
+    // MongoDB에 시퀸스 검색 Mapper
+    @Resource(name = "SequenceMapper")
+    private SequenceMapper sequenceMapper;
 
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
@@ -43,7 +61,7 @@ public class YouTubeService implements IYouTubeService {
             if (singleVideo.getKind().equals("youtube#video")) {
                 Thumbnail thumbnail = (Thumbnail) singleVideo.getSnippet().getThumbnails().get("default");
 
-                System.out.println(" Video Id" + singleVideo.getId());
+                System.out.println(" Video Id : " + singleVideo.getId());
                 System.out.println(" Title: " + singleVideo.getSnippet().getTitle());
                 System.out
                         .println(" contentDetails Duration: " + singleVideo.getContentDetails().getDuration());
@@ -90,4 +108,6 @@ public class YouTubeService implements IYouTubeService {
 
         return youTubeDto;
     }
+
+
 }

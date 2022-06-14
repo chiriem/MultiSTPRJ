@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Indexes;
-import kopo.poly.dto.SStudioDTO;
+import kopo.poly.dto.YouTubeDTO;
 import kopo.poly.persistance.mongodb.AbstractMongoDBComon;
-import kopo.poly.persistance.mongodb.ISStudioMapper;
+import kopo.poly.persistance.mongodb.IYouTubeMapper;
 import kopo.poly.util.CmmUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
@@ -17,19 +17,15 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@Component("SStudioMapper")
-public class SStudioMapper extends AbstractMongoDBComon implements ISStudioMapper {
+@Component("YouTubeMapper")
+public class YouTubeMapper extends AbstractMongoDBComon implements IYouTubeMapper {
 
     // 유튜브 주소 입력하기
     @Override
-    public int insertYtAddress(SStudioDTO pDTO, String colNm) throws Exception {
+    public int insertYtAddress(YouTubeDTO pDTO, String colNm) throws Exception {
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
         log.info(this.getClass().getName() + ".insertYtAddress Start!");
-        log.info("썸네일 url"+pDTO.getThumbnailPath());
-        log.info("제목 "+pDTO.getTitle());
-        log.info("user_id "+ pDTO.getUser_id());
-        log.info("yt_addreeeees"+pDTO.getYt_address());
 
         int res = 0;
 
@@ -60,20 +56,20 @@ public class SStudioMapper extends AbstractMongoDBComon implements ISStudioMappe
     }
 
     @Override
-    public SStudioDTO getYtExists(SStudioDTO pDTO, String colNm) throws Exception {
+    public YouTubeDTO getYtExists(YouTubeDTO pDTO, String colNm) throws Exception {
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
         log.info(this.getClass().getName() + ".getYtExists Start!");
 
         // 조회 결과를 전달하기 위한 객체 생성하기
-        SStudioDTO rDTO = new SStudioDTO();
+        YouTubeDTO rDTO = new YouTubeDTO();
 
         // MongoDB 컬렉션 지정하기
         MongoCollection<Document> col = mongodb.getCollection(colNm);
 
         // 조회 결과 중 출력할 컬럼들(SQL의 SELECT절과 FROM절 가운데 컬럼들과 유사함)
         Document projection = new Document();
-        projection.append("yt_address", CmmUtil.nvl(pDTO.getYt_address()));
+        projection.append("videoId", CmmUtil.nvl(pDTO.getVideoId()));
 
         // 결과 값을 카운트한다.
         long ll = col.countDocuments(projection);
@@ -88,12 +84,12 @@ public class SStudioMapper extends AbstractMongoDBComon implements ISStudioMappe
     }
 
     @Override
-    public List<SStudioDTO> getYtaddress(SStudioDTO pDTO, String colNm) throws Exception {
+    public List<YouTubeDTO> getYtaddress(YouTubeDTO pDTO, String colNm) throws Exception {
 
         log.info(this.getClass().getName() + ".getYtaddress Start!");
 
         // 조회 결과를 전달하기 위한 객체 생성하기
-        List<SStudioDTO> rList = new LinkedList<>();
+        List<YouTubeDTO> rList = new LinkedList<>();
 
         // 컬렉션이 없다면 생성하기
         if (!mongodb.collectionExists(colNm)) {
@@ -116,7 +112,9 @@ public class SStudioMapper extends AbstractMongoDBComon implements ISStudioMappe
         Document projection = new Document();
         projection.append("yt_seq", "$yt_seq");
         projection.append("user_id", "$user_id");
-        projection.append("yt_address", "$yt_address");
+        projection.append("videoId", "$videoId");
+        projection.append("title", "$title");
+        projection.append("thumbnailPath", "$thumbnailPath");
 
 //        // MongoDB는 무조건 ObjectID가 자동생성되며, ObjectID는 사용하지 않을 때, 조회할 필요가 없음.
 //        projection.append("_id", 0);
@@ -136,22 +134,22 @@ public class SStudioMapper extends AbstractMongoDBComon implements ISStudioMappe
             // 조회 테스트
             String yt_seq = CmmUtil.nvl(doc.getString("yt_seq"));
             String user_id = CmmUtil.nvl(doc.getString("user_id"));
-            String yt_address = CmmUtil.nvl(doc.getString("yt_address"));
-            String thumbnailPath = CmmUtil.nvl(doc.getString("thumbnailPath"));
+            String videoId = CmmUtil.nvl(doc.getString("videoId"));
             String title = CmmUtil.nvl(doc.getString("title"));
+            String thumbnailPath = CmmUtil.nvl(doc.getString("thumbnailPath"));
             log.info("yt_seq : " + yt_seq);
             log.info("user_id : " + user_id);
-            log.info("yt_address : " + yt_address);
-            log.info("thumbnailPath : " + thumbnailPath);
+            log.info("videoId : " + videoId);
             log.info("title : " + title);
+            log.info("thumbnailPath : " + thumbnailPath);
 
-            SStudioDTO rDTO = new SStudioDTO();
+            YouTubeDTO rDTO = new YouTubeDTO();
 
             rDTO.setYt_seq(yt_seq);
             rDTO.setUser_id(user_id);
-            rDTO.setYt_address(yt_address);
-            rDTO.setThumbnailPath(thumbnailPath);
+            rDTO.setVideoId(videoId);
             rDTO.setTitle(title);
+            rDTO.setThumbnailPath(thumbnailPath);
 
             // 레코드 결과를 List에 저장하기
             rList.add(rDTO);
@@ -164,12 +162,12 @@ public class SStudioMapper extends AbstractMongoDBComon implements ISStudioMappe
     }
 
     @Override
-    public SStudioDTO getYoutubeInfo(SStudioDTO pDTO, String colNm) throws Exception {
+    public YouTubeDTO getYoutubeInfo(YouTubeDTO pDTO, String colNm) throws Exception {
 
         log.info(this.getClass().getName() + ".getYoutubeInfo Start!");
 
         // 조회 결과를 전달하기 위한 객체 생성하기
-        SStudioDTO rDTO = new SStudioDTO();
+        YouTubeDTO rDTO = new YouTubeDTO();
 
         // MongoDB 컬렉션 지정하기
         MongoCollection<Document> col = mongodb.getCollection(colNm);
@@ -177,7 +175,7 @@ public class SStudioMapper extends AbstractMongoDBComon implements ISStudioMappe
         // 조회 결과 중 출력할 컬럼들(SQL의 SELECT절과 FROM절 가운데 컬럼들과 유사함)
         Document projection = new Document();
         projection.append("yt_seq", "$yt_seq");
-        projection.append("yt_address", "$yt_address");
+        projection.append("videoId", "$videoId");
 
         // MongoDB는 무조건 ObjectID가 자동생성되며, ObjectID는 사용하지 않을 때, 조회할 필요가 없음.
         projection.append("_id", 0);
@@ -191,14 +189,14 @@ public class SStudioMapper extends AbstractMongoDBComon implements ISStudioMappe
 
         // 조회 테스트
         String yt_seq = CmmUtil.nvl(doc.getString("yt_seq"));
-        String yt_address = CmmUtil.nvl(doc.getString("yt_address"));
+        String videoId = CmmUtil.nvl(doc.getString("videoId"));
 
         log.info("yt_seq : " + yt_seq);
-        log.info("yt_address : " + yt_address);
+        log.info("videoId : " + videoId);
 
         // rDTO에 값 집어넣기
         rDTO.setYt_seq(yt_seq);
-        rDTO.setYt_address(yt_address);
+        rDTO.setVideoId(videoId);
 
         log.info(this.getClass().getName() + ".getYoutubueInfo End!");
 
