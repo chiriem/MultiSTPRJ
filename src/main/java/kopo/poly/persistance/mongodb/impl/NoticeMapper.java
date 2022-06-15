@@ -263,7 +263,8 @@ public class NoticeMapper extends AbstractMongoDBComon implements INoticeMapper 
         Document updateDoc = new Document();
         updateDoc.append("title", CmmUtil.nvl(pDTO.getTitle())); // 기존 필드 수정
         updateDoc.append("contents", CmmUtil.nvl(pDTO.getContents())); // 기존 필드 수정
-        updateDoc.append("chg_id", CmmUtil.nvl(pDTO.getChg_id())); // 기존 필드 수정
+        updateDoc.append("user_id", CmmUtil.nvl(pDTO.getUser_id())); // 기존 필드 수정
+        updateDoc.append("chg_id", CmmUtil.nvl(pDTO.getUser_id())); // 기존 필드 수정
         updateDoc.append("chg_dt", CmmUtil.nvl(pDTO.getChg_dt())); // 기존 필드 수정
 
         rs.forEach(doc -> col.updateOne(doc, new Document("$set", updateDoc)));

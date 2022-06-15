@@ -29,7 +29,8 @@ public class SStudioMapper extends AbstractMongoDBComon implements ISStudioMappe
         log.info("썸네일 url"+pDTO.getThumbnailPath());
         log.info("제목 "+pDTO.getTitle());
         log.info("user_id "+ pDTO.getUser_id());
-        log.info("yt_addreeeees"+pDTO.getYt_address());
+        log.info("yt_address"+pDTO.getYt_address());
+        log.info("yt_seq"+pDTO.getYt_seq());
 
         int res = 0;
 
@@ -117,6 +118,8 @@ public class SStudioMapper extends AbstractMongoDBComon implements ISStudioMappe
         projection.append("yt_seq", "$yt_seq");
         projection.append("user_id", "$user_id");
         projection.append("yt_address", "$yt_address");
+        projection.append("thumbnailPath", "$thumbnailPath");
+        projection.append("title", "$title");
 
 //        // MongoDB는 무조건 ObjectID가 자동생성되며, ObjectID는 사용하지 않을 때, 조회할 필요가 없음.
 //        projection.append("_id", 0);

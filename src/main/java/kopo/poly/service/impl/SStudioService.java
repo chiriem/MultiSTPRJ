@@ -71,10 +71,16 @@ public class SStudioService implements ISStudioService {
                 System.out.println(" Thumbnail: " + thumbnail.getUrl());
                 System.out.println("\n-------------------------------------------------------------\n");
 
+                // 시퀀스 증가 및 시퀀스 넣기
+                pDTO.setYt_seq(sequenceMapper.getSequence(colNm).getCol_seq());
+
+                sequenceMapper.updateSequence(colNm);
+
                 rDTO.setThumbnailPath(thumbnail.getUrl());  //썸네일 url
                 rDTO.setTitle(singleVideo.getSnippet().getTitle()); //제목
                 rDTO.setYt_address(pDTO.getYt_address()); //video_id
                 rDTO.setUser_id(pDTO.getUser_id()); //사용자 아이디
+                rDTO.setYt_seq(pDTO.getYt_seq());
 
             }
         }
@@ -109,6 +115,8 @@ public class SStudioService implements ISStudioService {
 
             if (videoList != null) {
                 res = prettyPrint(videoList.iterator(), pDTO, colNm);
+
+
             }
 
         } catch (GoogleJsonResponseException e) {
@@ -120,82 +128,12 @@ public class SStudioService implements ISStudioService {
             t.printStackTrace();
         }
 
+        log.info("res : " + res);
+
         return res;
     }
 
-    /* @Override
-      public SStudioDTO get()  {
-         SStudioDTO sStudioDTO = new SStudioDTO();
 
-         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
-         log.info(this.getClass().getName() + ".insertYtaddress start!");
-
-
-             youtube = new YouTube.Builder(HTTP_TRANSPORT, JSON_FACTORY, new HttpRequestInitializer() {
-                 public void initialize(HttpRequest request) throws IOException {
-                 }
-             }).setApplicationName("youtube-video-duration-get").build();
-
-             //내가 원하는 정보 지정할 수 있어요. 공식 API문서를 참고해주세요.
-             YouTube.Videos.List videos = youtube.videos().list("id,snippet,contentDetails");
-             videos.setKey("AIzaSyAfJQyw0LqcMkaJi0hCw35NUPyjV7Br-4g");
-             videos.setId(pDTO.getYt_address());
-             videos.setMaxResults(NUMBER_OF_VIDEOS_RETURNED); //조회 최대 갯수.
-             List<Video> videoList = videos.execute().getItems();
-
-             if (videoList != null) {
-                 prettyPrint(videoList.iterator(), sStudioDTO);
-             }
-
-
-
-         // 입력 성공 : 1, 기타 에러 발생 : 0
-         int res = 0;
-
-
-         // controller에서 값이 정상적으로 못 넘어오는 경우를 대비하기 위해 사용함
-         if (pDTO == null) {
-             pDTO = new SStudioDTO();
-         }
-
-         // 주소 중복 방지를 위해 DB에서 데이터 조회
-     //    SStudioDTO rDTO = sStudioMapper.getYtExists(pDTO, colNm);
-
-         // mapper에서 값이 정상적으로 못 넘어오는 경우를 대비하기 위해 사용함
-         if (rDTO == null) {
-             rDTO = new SStudioDTO();
-         }
-
-         if (CmmUtil.nvl(rDTO.getExists_yn()).equals("Y")) {
-             res = 2;
-
-             // 중복이 아니므로, 정보 기입 진행함
-         } else {
-
-             // 문제 없으면 시퀸스 증가와 함께 넣기
-             // 시퀸스 값 넣기
-             pDTO.setYt_seq(sequenceMapper.getSequence(colNm).getCol_seq());
-             pDTO.setThumbnailPath(videoList.getSnippet().getThumbnails().get("default"));
- //            pDTO.setTitle();
-
-             // 정보입력
-             int success = sStudioMapper.insertYtAddress(pDTO, colNm);
-
-             // db에 데이터가 등록되었다면(
-             if (success > 0) {
-                 res = 1;
-
-                 sequenceMapper.updateSequence(colNm);
-
-             } else {
-                 res = 0;
-
-             }
-
-         }
-         return res;
-     }
- */
     @Override
     public List<SStudioDTO> getYtaddress(SStudioDTO pDTO, String colNm) throws Exception {
 

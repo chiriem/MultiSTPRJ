@@ -298,7 +298,7 @@ public class UserInfoController {
 
         }
 
-        return "redirect:/index";
+        return "/index";
     }
 
     @RequestMapping("/logout")

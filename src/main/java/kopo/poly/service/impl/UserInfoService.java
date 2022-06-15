@@ -141,6 +141,8 @@ public class UserInfoService implements IUserInfoService {
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
         log.info(this.getClass().getName() + ".getUserLoginCheck End!");
 
+        log.info("res : " + res);
+
         return res;
     }
 

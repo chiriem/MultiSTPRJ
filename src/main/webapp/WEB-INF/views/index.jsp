@@ -11,6 +11,7 @@
 
     List<SStudioDTO> rList = (List<SStudioDTO>) request.getAttribute("rList");
 
+
 //게시판 조회 결과 보여주기
     if (rList == null) {
         rList = new ArrayList<SStudioDTO>();
@@ -99,7 +100,7 @@
     <div class="content">
         <!-- Navbar Start -->
         <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
-            <a href="index" class="navbar-brand d-flex d-lg-none me-4">
+            <a href="/index" class="navbar-brand d-flex d-lg-none me-4">
                 <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
             </a>
             <a href="#" class="sidebar-toggler flex-shrink-0">
@@ -123,9 +124,9 @@
                         <a href="/logout" class="dropdown-item">Log out<a>
                             <a href="/user/UseradjustForm" class="dropdown-item">Adjust up</a>
                                 <%} else {%>
-                            <a href="/user/loginForm" class="dropdown-item">Sign in<a>
-                                <a href="/user/UserRegForm" class="dropdown-item">Sign up</a>
-                                    <%} %>
+                            <a href="/user/loginForm" class="dropdown-item">Sign in</a>
+                            <a href="/user/UserRegForm" class="dropdown-item">Sign up</a>
+                                <%} %>
                     </div>
                 </div>
             </div>
@@ -149,7 +150,7 @@
                                         <div class="divTableRow">
                                             <div class="divTableHead" style="width: 200px">thumbnail</div>
                                             <div class="divTableHead">Title</div>
-                                            <div class="divTableHead" style="width: 100px">Link</div>
+                                            <div class="divTableHead" style="width: 100px">Delete</div>
                                         </div>
                                     </div>
 
@@ -165,30 +166,34 @@
                                         %>
                                         <div class="divTableRow">
                                             <div class="divTableCell"><img class="tnail"
-                                                                           src="http://img.youtube.com/vi/<%=CmmUtil.nvl(rDTO.getYt_address()) %>/mqdefault.jpg"
+                                            <%--                                                                           src="http://img.youtube.com/vi/<%=CmmUtil.nvl(rDTO.getYt_address()) %>/mqdefault.jpg"--%>
+                                                                           src="<%=CmmUtil.nvl(rDTO.getThumbnailPath())%>"
                                                                            width="180" height="120">
                                             </div>
                                             <div class="divTableCell" id="<%=CmmUtil.nvl(rDTO.getYt_seq())%>">
                                                 <script>
-                                                    $.get(
-                                                        "https://www.googleapis.com/youtube/v3/videos", {
-                                                            part: 'snippet',
-                                                            maxResults: 5,
-                                                            id: "<%=CmmUtil.nvl(rDTO.getYt_address())%>",
-                                                            key: 'AIzaSyAfJQyw0LqcMkaJi0hCw35NUPyjV7Br-4g'
-                                                        },
+                                                    <%--$.get(--%>
+                                                    <%--    "https://www.googleapis.com/youtube/v3/videos", {--%>
+                                                    <%--        part: 'snippet',--%>
+                                                    <%--        maxResults: 5,--%>
+                                                    <%--        id: "<%=CmmUtil.nvl(rDTO.getYt_address())%>",--%>
+                                                    <%--        key: 'AIzaSyAfJQyw0LqcMkaJi0hCw35NUPyjV7Br-4g'--%>
+                                                    <%--    },--%>
 
-                                                        function (data) {
-                                                            var output;
-                                                            $.each(data.items, function (i, item) {
-                                                                console.log(item);
-                                                                vTitle = item.snippet.title;
+                                                    <%--    function (data) {--%>
+                                                    <%--        var output;--%>
+                                                    <%--        $.each(data.items, function (i, item) {--%>
+                                                    <%--            console.log(item);--%>
+                                                    <%--            vTitle = item.snippet.title;--%>
 
-                                                                $("#<%=CmmUtil.nvl(rDTO.getYt_seq())%>").append(vTitle);
-                                                            })
-                                                        }
-                                                    )
+                                                    <%--            $("#<%=CmmUtil.nvl(rDTO.getYt_seq())%>").append(vTitle);--%>
+                                                    <%--        })--%>
+                                                    <%--    }--%>
+                                                    <%--)--%>
                                                 </script>
+                                                <a href="javascript:doDetail('<%=CmmUtil.nvl(rDTO.getYt_seq())%>');">
+                                                    <%=CmmUtil.nvl(rDTO.getTitle())%>
+                                                </a>
                                             </div>
                                             <div class="divTableCell" style="width: 100px">
                                                 <a href="javascript:doDetail('<%=CmmUtil.nvl(rDTO.getYt_seq())%>');">
@@ -251,7 +256,7 @@
 </div>
 
 <!-- JavaScript Libraries -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="/js/jquery-3.6.0.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/lib/chart/chart.min.js"></script>
 <script src="/lib/easing/easing.min.js"></script>

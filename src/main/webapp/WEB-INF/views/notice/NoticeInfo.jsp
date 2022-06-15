@@ -46,9 +46,9 @@
 
         }
 
-        String ss_user_id = CmmUtil.nvl((String) session.getAttribute("SESSION_USER_ID"));
+        String ss_user_id = CmmUtil.nvl((String) session.getAttribute("SS_USER_ID"));
 
-        //본인이 작성한 글만 수정 가능하도록 하기(1:작성자 아님 / 2: 본인이 작성한 글 / 3: 로그인안함)
+        //id가 "admin" 인 사람만 수정 가능하도록 하기(1: admin 아님 / 2: admin 확인 (수정 가능) / 3: 로그인 안함)
         int edit = 1;
 
         //로그인 안했다면....
@@ -56,12 +56,12 @@
             edit = 3;
 
             //본인이 작성한 글이면 2가 되도록 변경
-        } else if (ss_user_id.equals(CmmUtil.nvl(rDTO.getUser_id()))) {
+        } else if (ss_user_id.equals("admin")) {
             edit = 2;
 
         }
 
-        System.out.println("user_id : " + CmmUtil.nvl(rDTO.getUser_id()));
+
         System.out.println("ss_user_id : " + ss_user_id);
 
     %>
@@ -77,7 +77,7 @@
                 alert("로그인 하시길 바랍니다.");
 
             } else {
-                alert("본인이 작성한 글만 수정 가능합니다.");
+                alert("관리자만 수정 가능합니다.");
 
             }
         }
@@ -102,7 +102,7 @@
                 alert("로그인 하시길 바랍니다.");
 
             } else {
-                alert("본인이 작성한 글만 삭제 가능합니다.");
+                alert("관리자만 삭제 가능합니다.");
 
             }
         }
@@ -124,15 +124,15 @@
     <!-- Sidebar Start -->
     <div class="sidebar pe-4 pb-3">
         <nav class="navbar bg-light navbar-light">
-            <a href="index" class="navbar-brand mx-4 mb-3">
+            <a href="/index" class="navbar-brand mx-4 mb-3">
                 <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>MultiStudio</h3>
             </a>
             <div class="navbar-nav w-100">
-                <a href="../index" class="nav-item nav-link"><i class="fa fa-youtube-play" aria-hidden="false"></i>Main</a>
-                <a href="../MultiStudio/MultiStudio" class="nav-item nav-link"><i class="fa fa-youtube-play"
+                <a href="/index" class="nav-item nav-link"><i class="fa fa-youtube-play" aria-hidden="false"></i>Main</a>
+                <a href="/MultiStudio/MultiStudio" class="nav-item nav-link"><i class="fa fa-youtube-play"
                                                                                 aria-hidden="false"></i>MultiStudio</a>
-                <a href="/NoticeList" class="nav-item nav-link active"><i class="fa fa-book" aria-hidden="false"></i>Notice</a>
-                <a href="../Search2" class="nav-item nav-link"><i class="fa fa-search" aria-hidden="false"></i>Search</a>
+                <a href="/notice/NoticeList" class="nav-item nav-link active"><i class="fa fa-book" aria-hidden="false"></i>Notice</a>
+                <a href="/Search2" class="nav-item nav-link"><i class="fa fa-search" aria-hidden="false"></i>Search</a>
             </div>
         </nav>
     </div>
@@ -143,7 +143,7 @@
     <div class="content">
         <!-- Navbar Start -->
         <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
-            <a href="index" class="navbar-brand d-flex d-lg-none me-4">
+            <a href="/index" class="navbar-brand d-flex d-lg-none me-4">
                 <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
             </a>
             <a href="#" class="sidebar-toggler flex-shrink-0">
@@ -205,9 +205,9 @@
                     <textarea class="form-control" name="contents"
                               style="width: 600px; height: 400px"><%=CmmUtil.nvl(rDTO.getContents()).replaceAll("\r\n", "<br/>") %></textarea>
                 </div>
+                <button type="button" class="btn btn-primary m-2" onclick="doList()">목록</button>
                 <button type="button" class="btn btn-primary m-2" onclick="doEdit()">수정</button>
                 <button type="button" class="btn btn-primary m-2" onclick="doDelete()">삭제</button>
-                <button type="button" class="btn btn-primary m-2" onclick="doList()">목록</button>
                 <!-- 프로세스 처리용 iframe / form 태그에서 target을 iframe으로 한다. -->
                 <iframe name="ifrPrc" style="display:none"></iframe>
 
@@ -221,7 +221,7 @@
             <div class="bg-light rounded-top p-4">
                 <div class="row">
                     <div class="col-12 col-sm-6 text-center text-sm-start">
-                        &copy; <a href="#">Your Site Name</a>, All Right Reserved.
+                        &copy; <a href="/index">MultiST</a>, All Right Reserved.
                     </div>
                     <div class="col-12 col-sm-6 text-center text-sm-end">
                         <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
@@ -240,18 +240,18 @@
 </div>
 
 <!-- JavaScript Libraries -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="/js/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="lib/chart/chart.min.js"></script>
-<script src="lib/easing/easing.min.js"></script>
-<script src="lib/waypoints/waypoints.min.js"></script>
-<script src="lib/owlcarousel/owl.carousel.min.js"></script>
-<script src="lib/tempusdominus/js/moment.min.js"></script>
-<script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-<script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+<script src="/lib/chart/chart.min.js"></script>
+<script src="/lib/easing/easing.min.js"></script>
+<script src="/lib/waypoints/waypoints.min.js"></script>
+<script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="/lib/tempusdominus/js/moment.min.js"></script>
+<script src="/lib/tempusdominus/js/moment-timezone.min.js"></script>
+<script src="/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
 <!-- Template Javascript -->
-<script src="js/main.js"></script>
+<script src="/js/main.js"></script>
 </body>
 
 </html>

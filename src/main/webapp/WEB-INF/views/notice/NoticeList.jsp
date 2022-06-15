@@ -6,6 +6,27 @@
 <%@ page import="kopo.poly.util.CmmUtil" %>
 <%
     String SS_USER_ID = (String) session.getAttribute("SS_USER_ID");
+
+    if (SS_USER_ID == null) {
+        SS_USER_ID = "null";
+    }
+
+    //id가 "admin" 인 사람만 수정 가능하도록 하기(1: admin 아님 / 2: admin 확인 (수정 가능) / 3: 로그인 안함)
+    int edit = 1;
+
+    //로그인 안했다면....
+    if (SS_USER_ID.equals("")) {
+        edit = 3;
+
+        //본인이 작성한 글이면 2가 되도록 변경
+    } else if (SS_USER_ID.equals("admin")) {
+        edit = 2;
+
+    }
+
+
+
+    System.out.println("SS_USER_ID : " + SS_USER_ID);
 %>
 
 <%
@@ -54,7 +75,21 @@
 
         //상세보기 이동
         function doDetail(seq) {
+
             location.href = "/notice/NoticeInfo?nSeq=" + seq;
+        }
+
+        function dowrite() {
+            if ("<%=edit%>" == 2) {
+                location.href = "/notice/NoticeReg";
+
+            } else if ("<%=edit%>" == 3) {
+                alert("로그인 하시길 바랍니다.");
+
+            } else {
+                alert("관리자만 수정 가능합니다.");
+
+            }
         }
 
     </script>
@@ -75,15 +110,15 @@
     <!-- Sidebar Start -->
     <div class="sidebar pe-4 pb-3">
         <nav class="navbar bg-light navbar-light">
-            <a href="../index" class="navbar-brand mx-4 mb-3">
+            <a href="/index" class="navbar-brand mx-4 mb-3">
                 <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>MultiStudio</h3>
             </a>
             <div class="navbar-nav w-100">
-                <a href="../index" class="nav-item nav-link"><i class="fa fa-youtube-play" aria-hidden="false"></i>Main</a>
-                <a href="../MultiStudio/MultiStudio" class="nav-item nav-link"><i class="fa fa-youtube-play"
+                <a href="/index" class="nav-item nav-link"><i class="fa fa-youtube-play" aria-hidden="false"></i>Main</a>
+                <a href="/MultiStudio/MultiStudio" class="nav-item nav-link"><i class="fa fa-youtube-play"
                                                                                   aria-hidden="false"></i>MultiStudio</a>
-                <a href="NoticeList" class="nav-item nav-link active"><i class="fa fa-book" aria-hidden="false"></i>Notice</a>
-                <a href="../Search2" class="nav-item nav-link"><i class="fa fa-search"
+                <a href="/notice/NoticeList" class="nav-item nav-link active"><i class="fa fa-book" aria-hidden="false"></i>Notice</a>
+                <a href="/Search2" class="nav-item nav-link"><i class="fa fa-search"
                                                                   aria-hidden="false"></i>Search</a>
             </div>
         </nav>
@@ -94,34 +129,34 @@
     <!-- Content Start -->
     <div class="content">
         <!-- Navbar Start -->
-        <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
-            <a href="index" class="navbar-brand d-flex d-lg-none me-4">
-                <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
-            </a>
-            <a href="#" class="sidebar-toggler flex-shrink-0">
-                <i class="fa fa-bars"></i>
-            </a>
-            <div class="navbar-nav align-items-center ms-auto">
-
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                        <i class="fa fa-cog fa-fw"></i>
-                        <span class="d-none d-lg-inline-flex">
-                                Setting
-                            </span>
+                <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+                    <a href="index" class="navbar-brand d-flex d-lg-none me-4">
+                        <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                        <a href="/Setting" class="dropdown-item">My Profile</a>
-                        <% if (SS_USER_ID != null) { %>
-                        <a href="/logout" class="dropdown-item">Log out<a>
+                    <a href="#" class="sidebar-toggler flex-shrink-0">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                    <div class="navbar-nav align-items-center ms-auto">
+
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                                <i class="fa fa-cog fa-fw"></i>
+                                <span class="d-none d-lg-inline-flex">
+                                        Setting
+                                    </span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                                <a href="/Setting" class="dropdown-item">My Profile</a>
+                                <% if (SS_USER_ID != null) { %>
+                                <a href="/logout" class="dropdown-item">Log out</a>
                                 <%} else {%>
-                            <a href="/user/loginForm" class="dropdown-item">Sign in<a>
+                                <a href="/user/loginForm" class="dropdown-item">Sign in</a>
                                 <a href="/user/UserRegForm" class="dropdown-item">Sign up</a>
-                                    <%} %>
+                                <%} %>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </nav>
+                </nav>
         <!-- Navbar End -->
 
 
@@ -129,16 +164,16 @@
         <div class="container-fluid pt-4 px-4">
             <div class="bg-light text-center rounded p-4">
                 <div class="d-flex align-items-center justify-content-between mb-4">
-                    <h6 class="mb-0">공지사항</h6>
-                    <a href="/notice/NoticeReg">[글쓰기]</a>
+                    <h6 class="mb-0">Notice</h6>
+                    <a href="javascript:dowrite();">[글쓰기]</a>
                 </div>
                 <div class="table-responsive">
                     <div class="divTable minimalistBlack">
                         <div class="divTableHeading">
                             <div class="divTableRow">
                                 <div class="divTableHead">Title</div>
-                                <div class="divTableHead" style="width: 150px">Views</div>
-                                <div class="divTableHead" style="width: 200px">Regist date</div>
+                                <div class="divTableHead" style="width: 100px">Views</div>
+                                <div class="divTableHead" style="width: 150px">Regist date</div>
                             </div>
                         </div>
 

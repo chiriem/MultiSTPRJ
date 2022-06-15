@@ -2,6 +2,7 @@ package kopo.poly.controller;
 
 import kopo.poly.dto.NoticeDTO;
 import kopo.poly.service.INoticeService;
+import kopo.poly.service.IUserInfoService;
 import kopo.poly.util.CmmUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,7 +21,7 @@ import java.util.logging.Logger;
 /**
  * Notice는 공지사항을 관리하며, 관리가 가능한 페이지입니다.
  */
-@RestController
+@Controller
 public class NoticeController {
     private Logger log = Logger.getLogger(String.valueOf(this.getClass()));
 
@@ -44,7 +45,7 @@ public class NoticeController {
      * 게시판 리스트 보여주기
      * */
     @GetMapping(value="notice/NoticeList")
-    public String NoticeList(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+    public String NoticeList(HttpSession session, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 
         //로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
         log.info(this.getClass().getName() + ".NoticeList start!");
@@ -57,8 +58,18 @@ public class NoticeController {
 
         }
 
+        NoticeDTO pDTO = null;
+
+        pDTO = new NoticeDTO();
+
         //조회된 리스트 결과값 넣어주기
         model.addAttribute("rList", rList);
+
+        String user_id = (String) session.getAttribute("SS_USER_ID");
+
+        log.info("user_id : " + user_id);
+
+        pDTO.setUser_id(user_id);
 
         //변수 초기화(메모리 효율화 시키기 위해 사용함)
         rList = null;
@@ -104,9 +115,8 @@ public class NoticeController {
             /*
              * 게시판 글 등록되기 위해 사용되는 form객체의 하위 input 객체 등을 받아오기 위해 사용함
              * */
-            String user_id = CmmUtil.nvl((String)session.getAttribute("SESSION_USER_ID")); //아이디
+            String user_id = CmmUtil.nvl((String)session.getAttribute("SS_USER_ID")); //아이디
             String title = CmmUtil.nvl(request.getParameter("title")); //제목
-            String noticeYn = CmmUtil.nvl(request.getParameter("noticeYn")); //공지글 여부
             String contents = CmmUtil.nvl(request.getParameter("contents")); //내용
 
             /*
@@ -117,14 +127,12 @@ public class NoticeController {
              * */
             log.info("user_id : "+ user_id);
             log.info("title : "+ title);
-            log.info("noticeYn : "+ noticeYn);
             log.info("contents : "+ contents);
 
             NoticeDTO pDTO = new NoticeDTO();
 
             pDTO.setUser_id(user_id);
             pDTO.setTitle(title);
-//            pDTO.setNotice_yn(noticeYn);;
             pDTO.setContents(contents);
 
 
@@ -223,20 +231,23 @@ public class NoticeController {
      * 게시판 수정 보기
      * */
     @GetMapping(value="notice/NoticeEditInfo")
-    public String NoticeEditInfo(HttpServletRequest request, HttpServletResponse response,
+    public String NoticeEditInfo(HttpSession session, HttpServletRequest request, HttpServletResponse response,
                                  ModelMap model) throws Exception {
 
         log.info(this.getClass().getName() + ".NoticeEditInfo start!");
 
 
         String nSeq = CmmUtil.nvl(request.getParameter("nSeq")); //공지글번호(PK)
+        String user_id = (String) session.getAttribute("SS_USER_ID");
 
         log.info("nSeq : "+ nSeq);
+        log.info("user_id : "+ user_id);
 
 
         NoticeDTO pDTO = new NoticeDTO();
 
-        pDTO.setNotice_seq(nSeq);;
+        pDTO.setNotice_seq(nSeq);
+        pDTO.setUser_id(user_id);
 
         /*
          * #######################################################
@@ -277,7 +288,7 @@ public class NoticeController {
 
         try{
 
-            String user_id = CmmUtil.nvl((String)session.getAttribute("SESSION_USER_ID")); //아이디
+            String user_id = CmmUtil.nvl((String)session.getAttribute("SS_USER_ID")); //아이디
             String nSeq = CmmUtil.nvl(request.getParameter("nSeq")); //글번호(PK)
             String title = CmmUtil.nvl(request.getParameter("title")); //제목
 //            String noticeYn = CmmUtil.nvl(request.getParameter("noticeYn")); //공지글 여부
@@ -286,7 +297,6 @@ public class NoticeController {
             log.info("user_id : "+ user_id);
             log.info("nSeq : "+ nSeq);
             log.info("title : "+ title);
-//            log.info("noticeYn : "+ noticeYn);
             log.info("contents : "+ contents);
 
             NoticeDTO pDTO = new NoticeDTO();
@@ -294,7 +304,6 @@ public class NoticeController {
             pDTO.setUser_id(user_id);
             pDTO.setNotice_seq(nSeq);;
             pDTO.setTitle(title);
-//            pDTO.setNotice_yn(noticeYn);
             pDTO.setContents(contents);
 
             //게시글 수정하기 DB

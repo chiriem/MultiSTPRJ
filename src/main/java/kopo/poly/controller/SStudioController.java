@@ -105,7 +105,7 @@ public class SStudioController {
 
 
         /*
-         * 게시판 글 등록되기 위해 사용되는 form객체의 하위 input 객체 등을 받아오기 위해 사용함
+         * 주소 등록되기 위해 사용되는 form객체의 하위 input 객체 등을 받아오기 위해 사용함
          * */
         String nSeq = CmmUtil.nvl(request.getParameter("nSeq")); //
 
@@ -130,9 +130,13 @@ public class SStudioController {
         }
 
         String yt_seq = rDTO.getYt_seq();
+        String thumbnailPath = rDTO.getThumbnailPath();
+        String title = rDTO.getTitle();
         String yt_address = rDTO.getYt_address();
 
         log.info("yt_seq : " + yt_seq);
+        log.info("thumbnailPath : " + thumbnailPath);
+        log.info("title : " + title);
         log.info("yt_addrress : " + yt_address);
 
         log.info("getYoutubeInfo success!!!");

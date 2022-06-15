@@ -2,7 +2,7 @@
 <%@ page import="kopo.poly.dto.NoticeDTO" %>
 <%@ page import="kopo.poly.dto.SStudioDTO" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
+         pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
 <%
@@ -129,7 +129,8 @@
             </a>
             <div class="navbar-nav w-100">
                 <a href="/index" class="nav-item nav-link active"><i class="fa fa-youtube-play" aria-hidden="false"></i>Main</a>
-                <a href="/MultiStudio/MultiStudio" class="nav-item nav-link"><i class="fa fa-youtube-play" aria-hidden="false"></i>MultiStudio</a>
+                <a href="/MultiStudio/MultiStudio" class="nav-item nav-link"><i class="fa fa-youtube-play"
+                                                                                aria-hidden="false"></i>MultiStudio</a>
                 <a href="/notice/NoticeList" class="nav-item nav-link"><i class="fa fa-book" aria-hidden="false"></i>Notice</a>
                 <a href="/Search2" class="nav-item nav-link"><i class="fa fa-search" aria-hidden="false"></i>Search</a>
             </div>
@@ -142,7 +143,7 @@
     <div class="content">
         <!-- Navbar Start -->
         <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
-            <a href="index" class="navbar-brand d-flex d-lg-none me-4">
+            <a href="/index" class="navbar-brand d-flex d-lg-none me-4">
                 <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
             </a>
             <a href="#" class="sidebar-toggler flex-shrink-0">
@@ -159,12 +160,12 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                         <a href="/Setting" class="dropdown-item">My Profile</a>
-                        <% if(SS_USER_ID != null){ %>
+                        <% if (SS_USER_ID != null) { %>
                         <a href="/logout" class="dropdown-item">Log out<a>
                                 <%} else {%>
-                            <a href ="/user/loginForm" class="dropdown-item">Sign in<a>
-                                <a href="/user/UserRegForm" class="dropdown-item">Sign up</a>
-                                    <%} %>
+                            <a href="/user/loginForm" class="dropdown-item">Sign in</a>
+                            <a href="/user/UserRegForm" class="dropdown-item">Sign up</a>
+                                <%} %>
                     </div>
                 </div>
             </div>
@@ -175,7 +176,10 @@
         <!-- Blank Start -->
         <div class="container-fluid pt-4 px-4">
             <div class="row bg-light rounded mx-0">
-                <iframe width="100%" height="480" src="https://www.youtube.com/embed/<%=yt_address%>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe width="100%" height="480" src="https://www.youtube.com/embed/<%=yt_address%>"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
             </div>
         </div>
         <div class="container-fluid pt-4 px-4">
