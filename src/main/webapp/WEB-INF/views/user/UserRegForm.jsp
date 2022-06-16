@@ -96,23 +96,23 @@
                         </div>
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" name="user_nm" placeholder="User Name">
-                            <label for="floatingText">Username</label>
+                            <label>Username</label>
                         </div>
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" name="user_id" placeholder="user_id">
-                            <label for="floatingInput">User id</label>
+                            <label>User id</label>
                         </div>
                         <div class="form-floating mb-4">
                             <input type="password" class="form-control" name="user_pw" placeholder="Password">
-                            <label for="floatingPassword">Password</label>
+                            <label>Password</label>
                         </div>
                         <div class="form-floating mb-4">
                             <input type="password" class="form-control" name="user_pw2" placeholder="Password Check">
-                            <label for="floatingPassword">Password Check</label>
+                            <label>Password Check</label>
                         </div>
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" name="age" placeholder="2000">
-                            <label for="floatingText">Birth year</label>
+                            <label>Birth year</label>
                         </div>
                         <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Sign Up</button>
                         <p class="text-center mb-0">Already have an Account? <a href="/user/loginForm">Sign In</a></p>

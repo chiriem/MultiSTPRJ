@@ -1,7 +1,27 @@
+<%@ page import="kopo.poly.util.CmmUtil" %>
+<%@ page import="kopo.poly.dto.SStudioDTO" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%
     String SS_USER_ID = (String) session.getAttribute("SS_USER_ID");
+    String SS_USER_NM = (String) session.getAttribute("SS_USER_NM");
+    String SS_AGE = (String) session.getAttribute("SS_AGE");
+
+    List<SStudioDTO> rList = (List<SStudioDTO>) request.getAttribute("rList");
+
+    // 동영상 조회 결과 보여주기
+    if (rList == null) {
+        rList = new ArrayList<SStudioDTO>();
+
+    }
+%>
+<%
+    String id_msg = "";
+    if (SS_USER_ID != null) {
+        id_msg = SS_USER_ID + "님 환영합니다!";
+    }
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -31,6 +51,7 @@
 
     <!-- Template Stylesheet -->
     <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/table_with_div.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
     <script type="text/javascript">
         function getVideoId() {
@@ -66,6 +87,18 @@
             document.execCommand("copy");
             add_toast('Success Info', 'Copied to clipboard.<br>Paste it where you need it with (Ctrl+v).');
             //add_toast('Warning Info', data.error);
+        }
+
+        //상세보기 이동
+        function doDetail(seq) {
+            location.href = "/SingleST/SStud?nSeq=" + seq;
+        }
+
+        //삭제로 이동
+        function doDelete(seq) {
+
+            console.log("doDelete")
+            location.href = "/deleteYt?nSeq=" + seq;
         }
     </script>
     <link href="/youtube_tool/css/multi_view.css" rel="stylesheet">
@@ -140,10 +173,107 @@
         <!-- Form Start -->
         <div class="container-fluid pt-4 px-4">
             <div class="row g-4">
+                <% if (SS_USER_ID != null) { %>
+                <div class="col-sm-12">
+                    <div class="bg-light rounded h-100 p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <h6 class="mb-0">User Info</h6>
+                            <%--                        <a href="">Show All</a>--%>
+                        </div>
+                        <br>
+                        <label class="form-label">User Id</label>
+                        <div class="d-flex align-items-center border-bottom py-3">
+                            <div class="w-100 ms-3">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-0"><%=SS_USER_ID %>
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+                        <label class="form-label">User Name</label>
+                        <div class="d-flex align-items-center border-bottom py-3">
+                            <div class="w-100 ms-3">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-0"><%=SS_USER_NM %>
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+                        <label class="form-label">User age</label>
+                        <div class="d-flex align-items-center border-bottom py-3">
+                            <div class="w-100 ms-3">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-0"><%=SS_AGE %>
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <a href="/user/UseradjustForm">Adjust up</a>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="bg-light rounded h-100 p-4">
+                        <form name="f" method="post" action="/user/getSettingYtaddress">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h6 class="mb-0">동영상</h6>
+                                <button type="submit" class="btn btn-primary m-2">load!</button>
+                            </div>
+
+                            <div class="table-responsive">
+                                <div class="divTable minimalistBlack">
+                                    <div class="divTableHeading">
+                                        <div class="divTableRow">
+                                            <div class="divTableHead" style="width: 200px">thumbnail</div>
+                                            <div class="divTableHead">Title</div>
+                                            <div class="divTableHead" style="width: 100px">Delete</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="divTableBody">
+                                        <%
+                                            for (int i = 0; i < rList.size(); i++) {
+                                                SStudioDTO rDTO = rList.get(i);
+
+                                                if (rDTO == null) {
+                                                    rDTO = new SStudioDTO();
+                                                }
+
+                                        %>
+                                        <div class="divTableRow">
+                                            <div class="divTableCell"><img class="tnail"
+                                            <%--                                                                           src="http://img.youtube.com/vi/<%=CmmUtil.nvl(rDTO.getYt_address()) %>/mqdefault.jpg"--%>
+                                                                           src="<%=CmmUtil.nvl(rDTO.getThumbnailPath())%>"
+                                                                           width="180" height="120">
+                                            </div>
+                                            <div class="divTableCell" id="<%=CmmUtil.nvl(rDTO.getYt_seq())%>">
+                                                <%=CmmUtil.nvl(rDTO.getTitle())%>
+                                            </div>
+                                            <div class="divTableCell" style="width: 100px">
+                                                <a href="javascript:doDelete('<%=CmmUtil.nvl(rDTO.getYt_seq())%>');">
+                                                    <%--                                                    <button class="btn btn-square btn-primary m-2"><i--%>
+                                                    <%--                                                            class="fa-solid fa-file-circle-minus"></i></button>--%>
+                                                    Delete!
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <%
+                                            }
+                                        %>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <% if (SS_USER_ID != null) { %>
+                            <a href="/SingleST/SStudioadd">add</a>
+                            <%} %>
+                        </form>
+                    </div>
+                </div>
+                <% } %>
                 <div class="col-sm-12 col-xl-6">
                     <div class="bg-light rounded h-100 p-4">
-                        <h6 class="mb-4">Getting Key</h6>
-                        <h6 class="mb-4">Getting YouTube Channel Key</h6>
+                        <h6 class="mb-4">Getting YouTube Channel Key and more</h6>
                         <form>
                             <div class="mb-3">
                                 <label class="form-label">Youtube address</label>

@@ -22,7 +22,7 @@ public interface IUserInfoService {
      * @return 로그인 성공 여부
      * @throws Exception
      */
-    int getUserLoginCheck(UserInfoDTO pDTO, String colNm) throws Exception;
+    UserInfoDTO getUserLoginCheck(UserInfoDTO pDTO, String colNm) throws Exception;
 
     int updateUserInfo(UserInfoDTO pDTO, String colNm) throws Exception;
 

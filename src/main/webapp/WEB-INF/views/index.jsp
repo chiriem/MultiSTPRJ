@@ -11,7 +11,7 @@
 
     List<SStudioDTO> rList = (List<SStudioDTO>) request.getAttribute("rList");
 
-//게시판 조회 결과 보여주기
+    // 동영상 조회 결과 보여주기
     if (rList == null) {
         rList = new ArrayList<SStudioDTO>();
 

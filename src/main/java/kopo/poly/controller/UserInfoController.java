@@ -250,9 +250,19 @@ public class UserInfoController {
              */
 
             // 로그인을 위해 아이디와 비밀번호가 일치하는지 확인하기 위한 userInfoService 호출하기
-            res = userInfoService.getUserLoginCheck(pDTO, colNm);
+            UserInfoDTO rDTO = userInfoService.getUserLoginCheck(pDTO, colNm);
+
+            if (rDTO != null) {
+                res = 1;
+            }
 
             log.info("res : " + res);
+
+            String user_nm = (String) rDTO.getUser_nm();
+            String age = (String) rDTO.getAge();
+
+            log.info("rDTO_user_name : " + user_nm);
+            log.info("rDTO_age : " + age);
             /*
              * 로그인을 성공했다면, 회원아이디 정보를 session에 저장함
              *
@@ -276,6 +286,8 @@ public class UserInfoController {
                  * Session 단어에서 SS를 가져온 것이다.
                  */
                 session.setAttribute("SS_USER_ID", user_id);
+                session.setAttribute("SS_USER_NM", user_nm);
+                session.setAttribute("SS_AGE", age);
             }
 
         } catch (Exception e) {
@@ -316,7 +328,7 @@ public class UserInfoController {
      * 회원수정 로직 처리
      * */
     @GetMapping(value="user/updateUserInfo")
-    public String updateUserInfo(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+    public String updateUserInfo(HttpSession session, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 
         log.info(this.getClass().getName() + ".updateUserInfo start!");
 
@@ -424,6 +436,7 @@ public class UserInfoController {
             pDTO = null;
 
         }
+        session.invalidate();
 
         return "redirect:/index";
     }

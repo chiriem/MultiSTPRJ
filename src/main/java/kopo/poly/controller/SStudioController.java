@@ -1,12 +1,8 @@
 package kopo.poly.controller;
 
 import kopo.poly.dto.SStudioDTO;
-import kopo.poly.dto.UserInfoDTO;
-import kopo.poly.dto.YouTubeDTO;
 import kopo.poly.service.ISStudioService;
-import kopo.poly.service.IYouTubeService;
 import kopo.poly.util.CmmUtil;
-import kopo.poly.util.EncryptUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -61,6 +57,86 @@ public class SStudioController {
 
 
         return "/index";
+    }
+
+    @GetMapping(value = "Setting")
+    public String Setting() {
+        return "Setting";
+
+    }
+
+    @RequestMapping(value = "user/getMultiviewYtaddress")
+    public String getMultiviewYtaddress(HttpSession session, HttpServletRequest request, HttpServletResponse response,
+                                      ModelMap model) throws Exception {
+        log.info(this.getClass().getName() + ".getYtaddress!! start!");
+
+        //정보를 저장할 변수
+        SStudioDTO pDTO = null;
+
+        pDTO = new SStudioDTO();
+
+        String user_id = (String) session.getAttribute("SS_USER_ID");
+
+        log.info("user_id : " + user_id);
+
+        pDTO.setUser_id(user_id);
+
+
+        //유튜브 리스트 가져오기
+        List<SStudioDTO> rList = sStudioService.getYtaddress(pDTO, colNm);
+
+
+        if (rList==null){
+            rList = new ArrayList<SStudioDTO>();
+
+        }
+
+        //조회된 리스트 결과값 넣어주기
+        model.addAttribute("rList", rList);
+
+        //변수 초기화(메모리 효율화 시키기 위해 사용함)
+        rList = null;
+
+        log.info(this.getClass().getName() + ".getYtaddress!! end!");
+
+        return "/MultiStudio/MultiStudio";
+    }
+
+    @RequestMapping(value = "user/getSettingYtaddress")
+    public String getSettingYtaddress(HttpSession session, HttpServletRequest request, HttpServletResponse response,
+                               ModelMap model) throws Exception {
+        log.info(this.getClass().getName() + ".getYtaddress!! start!");
+
+        //정보를 저장할 변수
+        SStudioDTO pDTO = null;
+
+        pDTO = new SStudioDTO();
+
+        String user_id = (String) session.getAttribute("SS_USER_ID");
+
+        log.info("user_id : " + user_id);
+
+        pDTO.setUser_id(user_id);
+
+
+        //유튜브 리스트 가져오기
+        List<SStudioDTO> rList = sStudioService.getYtaddress(pDTO, colNm);
+
+
+        if (rList==null){
+            rList = new ArrayList<SStudioDTO>();
+
+        }
+
+        //조회된 리스트 결과값 넣어주기
+        model.addAttribute("rList", rList);
+
+        //변수 초기화(메모리 효율화 시키기 위해 사용함)
+        rList = null;
+
+        log.info(this.getClass().getName() + ".getYtaddress!! end!");
+
+        return "/Setting";
     }
 
     @RequestMapping(value = "user/getYtaddress")

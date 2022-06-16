@@ -99,7 +99,7 @@ public class UserInfoService implements IUserInfoService {
      * @return UserInfoDTO 로그인된 회원아이디 정보
      */
     @Override
-    public int getUserLoginCheck(UserInfoDTO pDTO, String colNm) throws Exception {
+    public UserInfoDTO getUserLoginCheck(UserInfoDTO pDTO, String colNm) throws Exception {
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
         log.info(this.getClass().getName() + ".getUserLoginCheck start!");
@@ -143,7 +143,7 @@ public class UserInfoService implements IUserInfoService {
 
         log.info("res : " + res);
 
-        return res;
+        return rDTO;
     }
 
     @Override

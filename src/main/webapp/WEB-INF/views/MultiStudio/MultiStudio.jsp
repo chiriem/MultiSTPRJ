@@ -1,7 +1,19 @@
+<%@ page import="kopo.poly.util.CmmUtil" %>
+<%@ page import="kopo.poly.dto.SStudioDTO" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%
     String SS_USER_ID = (String) session.getAttribute("SS_USER_ID");
+
+    List<SStudioDTO> rList = (List<SStudioDTO>) request.getAttribute("rList");
+
+    // 동영상 조회 결과 보여주기
+    if (rList == null) {
+        rList = new ArrayList<SStudioDTO>();
+
+    }
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -31,12 +43,49 @@
 
     <!-- Template Stylesheet -->
     <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/table_with_div.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
     <script src="https://www.youtube.com/iframe_api"></script>
     <script src="/jsglue.js" type="text/javascript"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
     <script src="/youtube_tool/js/multi_view.js"></script>
     <link href="/youtube_tool/css/multi_view.css" rel="stylesheet">
+    <script type="text/javascript">
+        function doCopy(link){
+
+            var ytlink = "youtube.com/watch?v=" + link;
+
+            var result = $('#yt_result_link');
+            result.val(ytlink);
+        }
+
+        function copytoclip() {
+            $('#yt_result_link').select();
+            document.execCommand("copy");
+            add_toast('Success Info', 'Copied to clipboard.<br>Paste it where you need it with (Ctrl+v).');
+            //add_toast('Warning Info', data.error);
+        }
+
+        function getSTLink(){
+            var linkUrl = hostdomain + 'watch/';
+            var vs = new Array();
+
+            for(var v in videos){
+                videos[v].player.pauseVideo();
+                vs.push({'v':videos[v].videoId,'t':videos[v].ReferenceTime});
+            }
+            //console.log(linkUrl + JSON.stringify(vs));
+            var result = $('#result_link');
+            result.val(linkUrl + JSON.stringify(vs));
+        }
+
+        function yt_copytoclip(){
+            $('#yt_result_link').select();
+            document.execCommand("copy");
+            add_toast('Success Info', 'Copied to clipboard.<br>Paste it where you need it with (Ctrl+v).');
+            //add_toast('Warning Info', data.error);
+        }
+    </script>
 </head>
 
 <body>
@@ -54,16 +103,16 @@
     <!-- Sidebar Start -->
     <div class="sidebar pe-4 pb-3">
         <nav class="navbar bg-light navbar-light">
-            <a href="../index" class="navbar-brand mx-4 mb-3">
+            <a href="/index" class="navbar-brand mx-4 mb-3">
                 <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>MultiStudio</h3>
             </a>
             <div class="navbar-nav w-100">
-                <a href="../index" class="nav-item nav-link"><i class="fa fa-youtube-play" aria-hidden="false"></i>Main</a>
-                <a href="MultiStudio" class="nav-item nav-link active"><i class="fa fa-youtube-play"
-                                                                          aria-hidden="false"></i>MultiStudio</a>
-                <a href="../notice/NoticeList" class="nav-item nav-link"><i class="fa fa-book" aria-hidden="false"></i>Notice</a>
-                <a href="../Search2" class="nav-item nav-link"><i class="fa fa-search"
-                                                                  aria-hidden="false"></i>Search</a>
+                <a href="/index" class="nav-item nav-link"><i class="fa fa-youtube-play" aria-hidden="false"></i>Main</a>
+                <a href="/MultiStudio/MultiStudio" class="nav-item nav-link active"><i class="fa fa-youtube-play"
+                                                                                       aria-hidden="false"></i>MultiStudio</a>
+                <a href="/notice/NoticeList" class="nav-item nav-link"><i class="fa fa-book" aria-hidden="false"></i>Notice</a>
+                <a href="/Search2" class="nav-item nav-link"><i class="fa fa-search"
+                                                                aria-hidden="false"></i>Search</a>
             </div>
         </nav>
     </div>
@@ -159,6 +208,73 @@
                         </div>
                     </div>
                 </div>
+                <% if (SS_USER_ID != null) { %>
+                <div class="col-sm-12 col-xl-12">
+                    <div class="bg-light rounded h-100 p-4">
+                        <form name="f" method="post" action="/user/getMultiviewYtaddress">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h6 class="mb-0">동영상</h6>
+                                <button type="submit" class="btn btn-primary m-2">load!</button>
+                            </div>
+
+                            <div class="table-responsive">
+                                <div class="divTable minimalistBlack">
+                                    <div class="divTableHeading">
+                                        <div class="divTableRow">
+                                            <div class="divTableHead" style="width: 200px">thumbnail</div>
+                                            <div class="divTableHead">Title</div>
+                                            <div class="divTableHead" style="width: 100px">Copy</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="divTableBody">
+                                        <%
+                                            for (int i = 0; i < rList.size(); i++) {
+                                                SStudioDTO rDTO = rList.get(i);
+
+                                                if (rDTO == null) {
+                                                    rDTO = new SStudioDTO();
+                                                }
+
+                                        %>
+                                        <div class="divTableRow">
+                                            <div class="divTableCell"><img class="tnail"
+                                            <%--                                                                           src="http://img.youtube.com/vi/<%=CmmUtil.nvl(rDTO.getYt_address()) %>/mqdefault.jpg"--%>
+                                                                           src="<%=CmmUtil.nvl(rDTO.getThumbnailPath())%>"
+                                                                           width="180" height="120">
+                                            </div>
+                                            <div class="divTableCell" id="<%=CmmUtil.nvl(rDTO.getYt_seq())%>">
+                                                <%=CmmUtil.nvl(rDTO.getTitle())%>
+                                            </div>
+                                            <div class="divTableCell" style="width: 100px">
+                                                <button class="btn btn-primary notranslate" type="button" onclick="doCopy('<%=CmmUtil.nvl(rDTO.getYt_address())%>')">
+                                                    GetLink!
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                        <%
+                                            }
+                                        %>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="result_multiview_link">
+                                <div class="input-group mb-3">
+                                    <input type="text" id="yt_result_link" class="form-control" onclick="this.select();"
+                                           readonly>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary notranslate" type="button" id="ytcopy"
+                                                data-toggle="tooltip" data-placement="top" title="Copy to clipboard"
+                                                onclick="copytoclip()"><i class="fas fa-copy"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <% } %>
             </div>
         </div>
         <!-- MultiST End -->

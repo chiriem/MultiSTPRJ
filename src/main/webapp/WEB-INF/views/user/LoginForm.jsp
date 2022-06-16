@@ -55,11 +55,11 @@
                         </div>
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" name="user_id" placeholder="User Id">
-                            <label for="floatingInput">User id</label>
+                            <label>User id</label>
                         </div>
                         <div class="form-floating mb-4">
                             <input type="password" class="form-control" name="password" placeholder="Password">
-                            <label for="floatingPassword">Password</label>
+                            <label>Password</label>
                         </div>
                         <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Sign In</button>
                         <p class="text-center mb-0">Don't have an Account? <a href="/user/UserRegForm">Sign Up</a></p>
