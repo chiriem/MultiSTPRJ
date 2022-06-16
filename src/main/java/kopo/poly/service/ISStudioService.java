@@ -25,4 +25,5 @@ public interface ISStudioService {
      */
     SStudioDTO getYoutubeInfo(SStudioDTO pDTO, String colNm) throws Exception;
 
+    int deleteYt(SStudioDTO pDTO, String colNm) throws Exception;
 }

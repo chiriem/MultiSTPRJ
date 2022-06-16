@@ -128,10 +128,12 @@
                 <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>MultiStudio</h3>
             </a>
             <div class="navbar-nav w-100">
-                <a href="/index" class="nav-item nav-link"><i class="fa fa-youtube-play" aria-hidden="false"></i>Main</a>
+                <a href="/index" class="nav-item nav-link"><i class="fa fa-youtube-play"
+                                                              aria-hidden="false"></i>Main</a>
                 <a href="/MultiStudio/MultiStudio" class="nav-item nav-link"><i class="fa fa-youtube-play"
                                                                                 aria-hidden="false"></i>MultiStudio</a>
-                <a href="/notice/NoticeList" class="nav-item nav-link active"><i class="fa fa-book" aria-hidden="false"></i>Notice</a>
+                <a href="/notice/NoticeList" class="nav-item nav-link active"><i class="fa fa-book"
+                                                                                 aria-hidden="false"></i>Notice</a>
                 <a href="/Search2" class="nav-item nav-link"><i class="fa fa-search" aria-hidden="false"></i>Search</a>
             </div>
         </nav>
@@ -159,13 +161,14 @@
                             </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                        <a href="/Setting" class="dropdown-item">My Profile</a>
+                        <a href="/Setting" class="dropdown-item">Setting</a>
                         <% if (SS_USER_ID != null) { %>
-                        <a href="/logout" class="dropdown-item">Log out<a>
-                                <%} else {%>
-                            <a href="/user/loginForm" class="dropdown-item">Sign in<a>
-                                <a href="/user/UserRegForm" class="dropdown-item">Sign up</a>
-                                    <%} %>
+                        <a href="/logout" class="dropdown-item">Log out</a>
+                        <a href="/user/UseradjustForm" class="dropdown-item">Adjust up</a>
+                        <%} else {%>
+                        <a href="/user/loginForm" class="dropdown-item">Sign in</a>
+                        <a href="/user/UserRegForm" class="dropdown-item">Sign up</a>
+                        <%} %>
                     </div>
                 </div>
             </div>

@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Indexes;
+import kopo.poly.dto.NoticeDTO;
 import kopo.poly.dto.SStudioDTO;
+import kopo.poly.dto.UserInfoDTO;
 import kopo.poly.persistance.mongodb.AbstractMongoDBComon;
 import kopo.poly.persistance.mongodb.ISStudioMapper;
 import kopo.poly.util.CmmUtil;
@@ -207,6 +209,38 @@ public class SStudioMapper extends AbstractMongoDBComon implements ISStudioMappe
 
         return rDTO;
 
+    }
+
+    public int deleteYt(SStudioDTO pDTO, String colNm) throws Exception {
+
+        // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
+        log.info(this.getClass().getName() + ".deleteYt End!");
+
+        int res = 0;
+
+        // 조회 결과를 전달하기 위한 객체 생성하기
+        SStudioDTO rDTO = new SStudioDTO();
+
+        // MongoDB 컬렉션 지정하기
+        MongoCollection<Document> col = mongodb.getCollection(colNm);
+
+        // 조회할 조건
+        Document query = new Document();
+        query.append("yt_seq", CmmUtil.nvl(pDTO.getYt_seq()));
+
+        // MongoDB 데이터 삭제는 반드시 컬렉션으 조회하고, 조회된 ObjectID를 기반으로 데이터를 삭제함
+        // MongoDB 환경은 분산환경(Sharding)으로 구성될 수 있기 때문에 정확한 PX에 매핑하기 위해서임
+        FindIterable<Document> rs = col.find(query);
+
+        // 전체 컬랙션에 있는 데이터를 삭제하기
+        rs.forEach(doc -> col.deleteOne(doc));
+
+        res = 1;
+
+        // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
+        log.info(this.getClass().getName() + ".deleteYt End!");
+
+        return res;
     }
 
 }

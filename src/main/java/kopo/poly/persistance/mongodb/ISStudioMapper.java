@@ -22,4 +22,6 @@ public interface ISStudioMapper {
 
     SStudioDTO getYtExists(SStudioDTO pDTO, String colNm) throws Exception;
 
+    int deleteYt(SStudioDTO pDTO, String colNm) throws Exception;
+
 }

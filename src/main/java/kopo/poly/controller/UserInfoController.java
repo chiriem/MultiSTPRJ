@@ -393,7 +393,7 @@ public class UserInfoController {
              * */
             int res = userInfoService.updateUserInfo(pDTO, colNm);
 
-            log.info("회원가입 결과(res) : "+ res);
+            log.info("회원가입 결과(res) : " + res);
 
             if (res==1) {
                 msg = "회원수정 되었습니다.";

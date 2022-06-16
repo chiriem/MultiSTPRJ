@@ -11,6 +11,7 @@ import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.Thumbnail;
 import com.google.api.services.youtube.model.Video;
 import kopo.poly.dto.SStudioDTO;
+import kopo.poly.dto.UserInfoDTO;
 import kopo.poly.dto.YouTubeDTO;
 import kopo.poly.persistance.mongodb.impl.SStudioMapper;
 import kopo.poly.persistance.mongodb.impl.SequenceMapper;
@@ -21,6 +22,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -175,4 +178,39 @@ public class SStudioService implements ISStudioService {
 
     }
 
+    @Override
+    public int deleteYt(SStudioDTO pDTO, String colNm) throws Exception {
+
+        // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
+        log.info(this.getClass().getName() + ".deleteYt Start!");
+
+        int res = 0;
+
+
+        // controller에서 값이 정상적으로 못 넘어오는 경우를 대비하기 위해 사용함
+        if (pDTO == null) {
+            pDTO = new SStudioDTO();
+        }
+
+        // 삭제 성공 여부
+        int success = sStudioMapper.deleteYt(pDTO, colNm);
+
+        // 삭제 성공했다면....
+        if (success > 0) {
+
+            res = 1;
+
+        } else {
+
+            res = 0;
+
+        }
+
+//        }
+        // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
+        log.info(this.getClass().getName() + ".deleteYt End!");
+
+        return res;
+
+    }
 }

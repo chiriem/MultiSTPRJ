@@ -1,10 +1,12 @@
 package kopo.poly.controller;
 
 import kopo.poly.dto.SStudioDTO;
+import kopo.poly.dto.UserInfoDTO;
 import kopo.poly.dto.YouTubeDTO;
 import kopo.poly.service.ISStudioService;
 import kopo.poly.service.IYouTubeService;
 import kopo.poly.util.CmmUtil;
+import kopo.poly.util.EncryptUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -279,6 +281,114 @@ public class SStudioController {
             model.addAttribute("msg", msg);
 
             //회원가입 여부 결과 메시지 전달하기
+            model.addAttribute("pDTO", pDTO);
+
+            //변수 초기화(메모리 효율화 시키기 위해 사용함)
+            pDTO = null;
+
+        }
+
+        return "redirect:/index";
+    }
+
+    /**
+     * 유튜브 주소 삭제 로직 처리
+     * */
+    @GetMapping(value="deleteYt")
+    public String deleteYt(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+
+        log.info(this.getClass().getName() + ".deleteYt start!");
+
+        String nSeq = CmmUtil.nvl(request.getParameter("nSeq"));
+
+        log.info("nSeq : "+ nSeq);
+
+        //삭제 결과에 대한 메시지를 전달할 변수
+        String msg = "";
+
+        //웹에서 받는 정보를 저장할 변수
+        SStudioDTO pDTO = null;
+
+        try{
+
+            /*
+             * #######################################################
+             *        웹(회원정보 입력화면)에서 받는 정보를 String 변수에 저장 시작!!
+             *
+             *    무조건 웹으로 받은 정보는 DTO에 저장하기 위해 임시로 String 변수에 저장함
+             * #######################################################
+             */
+
+            String yt_seq = nSeq; //yt_seq
+            /*
+             * #######################################################
+             *        웹(회원정보 입력화면)에서 받는 정보를 String 변수에 저장 끝!!
+             *
+             *    무조건 웹으로 받은 정보는 DTO에 저장하기 위해 임시로 String 변수에 저장함
+             * #######################################################
+             */
+
+            /*
+             * #######################################################
+             *     반드시, 값을 받았으면, 꼭 로그를 찍어서 값이 제대로 들어오는지 파악해야함
+             *                   반드시 작성할 것
+             * #######################################################
+             * */
+            log.info("yt_seq" + yt_seq);
+
+
+            /*
+             * #######################################################
+             *        웹(회원정보 입력화면)에서 받는 정보를 DTO에 저장하기 시작!!
+             *
+             *        무조건 웹으로 받은 정보는 DTO에 저장해야 한다고 이해하길 권함
+             * #######################################################
+             */
+
+
+            //웹에서 받는 정보를 저장할 변수를 메모리에 올리기
+            pDTO = new SStudioDTO();
+
+            pDTO.setYt_seq(yt_seq);
+
+            /*
+             * #######################################################
+             *        웹(회원정보 입력화면)에서 받는 정보를 DTO에 저장하기 끝!!
+             *
+             *        무조건 웹으로 받은 정보는 DTO에 저장해야 한다고 이해하길 권함
+             * #######################################################
+             */
+
+            /*
+             * 삭제
+             * */
+            int res = sStudioService.deleteYt(pDTO, colNm);
+
+            log.info("삭제 결과(res) : "+ res);
+
+            if (res==1) {
+                msg = "삭제 되었습니다.";
+
+                //추후 회원가입 입력화면에서 ajax를 활용해서 아이디 중복, 이메일 중복을 체크하길 바람
+            }else {
+                msg = "오류로 인해 삭제가 실패하였습니다.";
+
+            }
+
+        }catch(Exception e){
+            //저장이 실패되면 사용자에게 보여줄 메시지
+            msg = "실패하였습니다. : "+ e.toString();
+            log.info(e.toString());
+            e.printStackTrace();
+
+        }finally{
+            log.info(this.getClass().getName() + ".deleteYt end!");
+
+
+            //삭제 결과 메시지 전달하기
+            model.addAttribute("msg", msg);
+
+            //삭제 결과 메시지 전달하기
             model.addAttribute("pDTO", pDTO);
 
             //변수 초기화(메모리 효율화 시키기 위해 사용함)

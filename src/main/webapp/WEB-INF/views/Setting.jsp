@@ -60,7 +60,8 @@
 
             // $("#result_code").append('<input type="text" id="result_link" class="form-control" onclick="this.select();" readonly>');
         }
-        function copytoclip(){
+
+        function copytoclip() {
             $('#result_link').select();
             document.execCommand("copy");
             add_toast('Success Info', 'Copied to clipboard.<br>Paste it where you need it with (Ctrl+v).');
@@ -121,13 +122,14 @@
                             </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                        <a href="/Setting" class="dropdown-item">My Profile</a>
-                        <% if(SS_USER_ID != null){ %>
-                        <a href="/logout" class="dropdown-item">Log out<a>
-                                <%} else {%>
-                            <a href ="/user/loginForm" class="dropdown-item">Sign in<a>
-                                <a href="/user/UserRegForm" class="dropdown-item">Sign up</a>
-                                    <%} %>
+                        <a href="/Setting" class="dropdown-item">Setting</a>
+                        <% if (SS_USER_ID != null) { %>
+                        <a href="/logout" class="dropdown-item">Log out</a>
+                        <a href="/user/UseradjustForm" class="dropdown-item">Adjust up</a>
+                        <%} else {%>
+                        <a href="/user/loginForm" class="dropdown-item">Sign in</a>
+                        <a href="/user/UserRegForm" class="dropdown-item">Sign up</a>
+                        <%} %>
                     </div>
                 </div>
             </div>
@@ -147,7 +149,7 @@
                                 <label class="form-label">Youtube address</label>
                                 <input id="youtube_url" type="text" class="form-control"
                                        placeholder="예: https://www.youtube.com/watch?v=WMweEpGlu_U" aria-label=""
-                                       aria-describedby="button-addon2" >
+                                       aria-describedby="button-addon2">
                                 <button class="btn btn-primary notranslate" type="button" onclick="getVideoId()">
                                     GetKey!
                                 </button>
@@ -156,7 +158,8 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <input type="text" id="result_link" class="form-control" onclick="this.select();" readonly>
+                                <input type="text" id="result_link" class="form-control" onclick="this.select();"
+                                       readonly>
                                 <div class="input-group-append">
                                     <button class="btn btn-primary notranslate" type="button" id="copy"
                                             data-toggle="tooltip" data-placement="top" title="Copy to clipboard"

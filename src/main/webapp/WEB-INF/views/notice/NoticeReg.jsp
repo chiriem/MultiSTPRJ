@@ -9,7 +9,7 @@
 %>
 
 <%
-//    session.setAttribute("SESSION_USER_ID", "USER01"); //세션 강제 적용, 로그인된 상태로 보여주기 위함
+    //    session.setAttribute("SESSION_USER_ID", "USER01"); //세션 강제 적용, 로그인된 상태로 보여주기 위함
 
     List<NoticeDTO> rList = (List<NoticeDTO>) request.getAttribute("rList");
 
@@ -178,13 +178,14 @@
                             </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                        <a href="/Setting" class="dropdown-item">My Profile</a>
+                        <a href="/Setting" class="dropdown-item">Setting</a>
                         <% if (SS_USER_ID != null) { %>
-                        <a href="/logout" class="dropdown-item">Log out<a>
-                                <%} else {%>
-                            <a href="/user/loginForm" class="dropdown-item">Sign in<a>
-                                <a href="/user/UserRegForm" class="dropdown-item">Sign up</a>
-                                    <%} %>
+                        <a href="/logout" class="dropdown-item">Log out</a>
+                        <a href="/user/UseradjustForm" class="dropdown-item">Adjust up</a>
+                        <%} else {%>
+                        <a href="/user/loginForm" class="dropdown-item">Sign in</a>
+                        <a href="/user/UserRegForm" class="dropdown-item">Sign up</a>
+                        <%} %>
                     </div>
                 </div>
             </div>

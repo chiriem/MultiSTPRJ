@@ -11,7 +11,6 @@
 
     List<SStudioDTO> rList = (List<SStudioDTO>) request.getAttribute("rList");
 
-
 //게시판 조회 결과 보여주기
     if (rList == null) {
         rList = new ArrayList<SStudioDTO>();
@@ -62,6 +61,14 @@
         function doDetail(seq) {
             location.href = "/SingleST/SStud?nSeq=" + seq;
         }
+
+        //삭제로 이동
+        function doDelete(seq) {
+
+            console.log("doDelete")
+            location.href = "/deleteYt?nSeq=" + seq;
+        }
+
     </script>
 </head>
 
@@ -119,14 +126,14 @@
                             </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                        <a href="/Setting" class="dropdown-item">My Profile</a>
+                        <a href="/Setting" class="dropdown-item">Setting</a>
                         <% if (SS_USER_ID != null) { %>
-                        <a href="/logout" class="dropdown-item">Log out<a>
-                            <a href="/user/UseradjustForm" class="dropdown-item">Adjust up</a>
-                                <%} else {%>
-                            <a href="/user/loginForm" class="dropdown-item">Sign in</a>
-                            <a href="/user/UserRegForm" class="dropdown-item">Sign up</a>
-                                <%} %>
+                        <a href="/logout" class="dropdown-item">Log out</a>
+                        <a href="/user/UseradjustForm" class="dropdown-item">Adjust up</a>
+                        <%} else {%>
+                        <a href="/user/loginForm" class="dropdown-item">Sign in</a>
+                        <a href="/user/UserRegForm" class="dropdown-item">Sign up</a>
+                        <%} %>
                     </div>
                 </div>
             </div>
@@ -171,33 +178,15 @@
                                                                            width="180" height="120">
                                             </div>
                                             <div class="divTableCell" id="<%=CmmUtil.nvl(rDTO.getYt_seq())%>">
-                                                <script>
-                                                    <%--$.get(--%>
-                                                    <%--    "https://www.googleapis.com/youtube/v3/videos", {--%>
-                                                    <%--        part: 'snippet',--%>
-                                                    <%--        maxResults: 5,--%>
-                                                    <%--        id: "<%=CmmUtil.nvl(rDTO.getYt_address())%>",--%>
-                                                    <%--        key: 'AIzaSyAfJQyw0LqcMkaJi0hCw35NUPyjV7Br-4g'--%>
-                                                    <%--    },--%>
-
-                                                    <%--    function (data) {--%>
-                                                    <%--        var output;--%>
-                                                    <%--        $.each(data.items, function (i, item) {--%>
-                                                    <%--            console.log(item);--%>
-                                                    <%--            vTitle = item.snippet.title;--%>
-
-                                                    <%--            $("#<%=CmmUtil.nvl(rDTO.getYt_seq())%>").append(vTitle);--%>
-                                                    <%--        })--%>
-                                                    <%--    }--%>
-                                                    <%--)--%>
-                                                </script>
                                                 <a href="javascript:doDetail('<%=CmmUtil.nvl(rDTO.getYt_seq())%>');">
                                                     <%=CmmUtil.nvl(rDTO.getTitle())%>
                                                 </a>
                                             </div>
                                             <div class="divTableCell" style="width: 100px">
-                                                <a href="javascript:doDetail('<%=CmmUtil.nvl(rDTO.getYt_seq())%>');">
-                                                    Go!
+                                                <a href="javascript:doDelete('<%=CmmUtil.nvl(rDTO.getYt_seq())%>');">
+<%--                                                    <button class="btn btn-square btn-primary m-2"><i--%>
+<%--                                                            class="fa-solid fa-file-circle-minus"></i></button>--%>
+                                                    Delete!
                                                 </a>
                                             </div>
                                         </div>
