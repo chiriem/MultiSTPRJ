@@ -216,7 +216,7 @@
         <!-- Form Start -->
         <div class="container-fluid pt-4 px-4">
             <div class="row_Search bg-light rounded align-items-center justify-content-center mx-0">
-                <div class="col-md-9">
+                <div class="col-md-11">
                     <form name="form1" method="post" onsubmit="return false;">
                         <form class="form-control border-0" id="search_box_t"></form>
                     </form>
