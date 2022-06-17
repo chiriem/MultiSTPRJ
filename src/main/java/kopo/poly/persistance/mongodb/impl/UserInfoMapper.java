@@ -29,7 +29,7 @@ public class UserInfoMapper extends AbstractMongoDBComon implements IUserInfoMap
         int res = 0;
 
         // 컬렉션이 없다면 생성하기
-        if(!mongodb.collectionExists(colNm)) {
+        if (!mongodb.collectionExists(colNm)) {
 
             // 컬렉션 생성
             super.createCollection(colNm);
@@ -111,19 +111,22 @@ public class UserInfoMapper extends AbstractMongoDBComon implements IUserInfoMap
         // 결과값은 하나니까 첫번째 값만 가져옴.
         Document doc = rs.first();
 
-        // 조회 테스트
-        String user_id = CmmUtil.nvl(doc.getString("user_id"));
-        String user_nm = CmmUtil.nvl(doc.getString("user_nm"));
-        String age = CmmUtil.nvl(doc.getString("age"));
+        if (doc != null) {
+            // 조회 테스트
+            String user_id = CmmUtil.nvl(doc.getString("user_id"));
+            String user_nm = CmmUtil.nvl(doc.getString("user_nm"));
+            String age = CmmUtil.nvl(doc.getString("age"));
 
-        log.info("user_id : " + user_id);
-        log.info("user_nm : " + user_nm);
-        log.info("age : " + age);
+            log.info("user_id : " + user_id);
+            log.info("user_nm : " + user_nm);
+            log.info("age : " + age);
 
-        // rDTO에 값 집어넣기
-        rDTO.setUser_id(user_id);
-        rDTO.setUser_nm(user_nm);
-        rDTO.setAge(age);
+            // rDTO에 값 집어넣기
+            rDTO.setUser_id(user_id);
+            rDTO.setUser_nm(user_nm);
+            rDTO.setAge(age);
+        }
+
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
         log.info(this.getClass().getName() + ".getUserLoginCheck End!");
@@ -173,7 +176,7 @@ public class UserInfoMapper extends AbstractMongoDBComon implements IUserInfoMap
     public int deleteUserInfo(UserInfoDTO pDTO, String colNm) throws Exception {
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".updateUserInfo End!");
+        log.info(this.getClass().getName() + ".deleteUserInfo End!");
 
         int res = 0;
 
@@ -185,7 +188,8 @@ public class UserInfoMapper extends AbstractMongoDBComon implements IUserInfoMap
 
         // 조회할 조건
         Document query = new Document();
-        query.append("user_seq", CmmUtil.nvl(pDTO.getUser_seq()));
+        query.append("user_id", CmmUtil.nvl(pDTO.getUser_id()));
+        query.append("user_pw", CmmUtil.nvl(pDTO.getUser_pw()));
 
         // MongoDB 데이터 삭제는 반드시 컬렉션으 조회하고, 조회된 ObjectID를 기반으로 데이터를 삭제함
         // MongoDB 환경은 분산환경(Sharding)으로 구성될 수 있기 때문에 정확한 PX에 매핑하기 위해서임
@@ -197,7 +201,7 @@ public class UserInfoMapper extends AbstractMongoDBComon implements IUserInfoMap
         res = 1;
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".updateUserInfo End!");
+        log.info(this.getClass().getName() + ".deleteUserInfo End!");
         return res;
     }
 

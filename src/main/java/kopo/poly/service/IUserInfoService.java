@@ -1,5 +1,6 @@
 package kopo.poly.service;
 
+import kopo.poly.dto.SStudioDTO;
 import kopo.poly.dto.UserInfoDTO;
 
 public interface IUserInfoService {
@@ -26,4 +27,5 @@ public interface IUserInfoService {
 
     int updateUserInfo(UserInfoDTO pDTO, String colNm) throws Exception;
 
+    int deleteUserInfo(UserInfoDTO pDTO, String colNm) throws Exception;
 }

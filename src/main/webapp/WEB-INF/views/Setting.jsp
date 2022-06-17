@@ -97,8 +97,13 @@
         //삭제로 이동
         function doDelete(seq) {
 
-            console.log("doDelete")
             location.href = "/deleteYt?nSeq=" + seq;
+        }
+
+        //회원삭제로 이동
+        function doUserDelete(seq) {
+
+            location.href = "/deleteUserInfo?nSeq=" + seq;
         }
     </script>
     <link href="/youtube_tool/css/multi_view.css" rel="stylesheet">
@@ -199,7 +204,7 @@
                                 </div>
                             </div>
                         </div>
-                        <label class="form-label">User age</label>
+                        <label class="form-label">User Birth Year</label>
                         <div class="d-flex align-items-center border-bottom py-3">
                             <div class="w-100 ms-3">
                                 <div class="d-flex w-100 justify-content-between">
@@ -210,13 +215,21 @@
                         </div>
                         <br>
                         <a href="/user/UseradjustForm">Adjust up</a>
+                        <br>
+                        <br>
+                        <a href="/user/UserdeleteForm">Delete UserInfo</a>
                     </div>
                 </div>
                 <div class="col-sm-12">
                     <div class="bg-light rounded h-100 p-4">
                         <form name="f" method="post" action="/user/getSettingYtaddress">
                             <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0">동영상</h6>
+                                <h6 class="mb-0">동영상
+                                    &nbsp&nbsp
+                                    <% if (SS_USER_ID != null) { %>
+                                    <a href="/SingleST/SStudioadd" ><i class="fa-solid fa-plus"></i></a>
+                                    <%} %>
+                                </h6>
                                 <button type="submit" class="btn btn-primary m-2">load!</button>
                             </div>
 
@@ -264,9 +277,6 @@
                                 </div>
 
                             </div>
-                            <% if (SS_USER_ID != null) { %>
-                            <a href="/SingleST/SStudioadd">add</a>
-                            <%} %>
                         </form>
                     </div>
                 </div>

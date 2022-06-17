@@ -1,5 +1,6 @@
 package kopo.poly.service.impl;
 
+import kopo.poly.dto.SStudioDTO;
 import kopo.poly.dto.UserInfoDTO;
 import kopo.poly.persistance.mongodb.impl.SequenceMapper;
 import kopo.poly.persistance.mongodb.impl.UserInfoMapper;
@@ -138,10 +139,10 @@ public class UserInfoService implements IUserInfoService {
          * #######################################################
          */
 
+        log.info("res : " + res);
+
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
         log.info(this.getClass().getName() + ".getUserLoginCheck End!");
-
-        log.info("res : " + res);
 
         return rDTO;
     }
@@ -188,6 +189,42 @@ public class UserInfoService implements IUserInfoService {
         log.info(this.getClass().getName() + ".updateUserInfo End!");
 
         return res;
+    }
+
+    @Override
+    public int deleteUserInfo(UserInfoDTO pDTO, String colNm) throws Exception {
+
+        // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
+        log.info(this.getClass().getName() + ".deleteUser Start!");
+
+        int res = 0;
+
+
+        // controller에서 값이 정상적으로 못 넘어오는 경우를 대비하기 위해 사용함
+        if (pDTO == null) {
+            pDTO = new UserInfoDTO();
+        }
+
+        // 삭제 성공 여부
+        int success = userInfoMapper.deleteUserInfo(pDTO, colNm);
+
+        // 삭제 성공했다면....
+        if (success > 0) {
+
+            res = 1;
+
+        } else {
+
+            res = 0;
+
+        }
+
+//        }
+        // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
+        log.info(this.getClass().getName() + ".deleteUser End!");
+
+        return res;
+
     }
 
 }

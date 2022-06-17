@@ -21,6 +21,8 @@
     String msg = "";
     if (SS_USER_ID != null) {
         msg = SS_USER_ID + "님 환영합니다!";
+    } else {
+       msg = "로그인에 실패하였습니다.";
     }
 %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -147,7 +149,12 @@
                     <div class="bg-light rounded p-4">
                         <form name="f" method="post" action="/user/getYtaddress">
                             <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0">동영상</h6>
+                                <h6 class="mb-0">동영상
+                                    &nbsp&nbsp
+                                    <% if (SS_USER_ID != null) { %>
+                                    <a href="/SingleST/SStudioadd" ><i class="fa-solid fa-plus"></i></a>
+                                    <%} %>
+                                </h6>
                                 <button type="submit" class="btn btn-primary m-2">load!</button>
                             </div>
 
@@ -184,8 +191,8 @@
                                             </div>
                                             <div class="divTableCell" style="width: 100px">
                                                 <a href="javascript:doDelete('<%=CmmUtil.nvl(rDTO.getYt_seq())%>');">
-<%--                                                    <button class="btn btn-square btn-primary m-2"><i--%>
-<%--                                                            class="fa-solid fa-file-circle-minus"></i></button>--%>
+                                                    <%--                                                    <button class="btn btn-square btn-primary m-2"><i--%>
+                                                    <%--                                                            class="fa-solid fa-file-circle-minus"></i></button>--%>
                                                     Delete!
                                                 </a>
                                             </div>
@@ -197,9 +204,6 @@
                                 </div>
 
                             </div>
-                            <% if (SS_USER_ID != null) { %>
-                            <a href="/SingleST/SStudioadd">add</a>
-                            <%} %>
                         </form>
                     </div>
                 </div>

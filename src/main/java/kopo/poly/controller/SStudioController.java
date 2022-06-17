@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -37,14 +38,12 @@ public class SStudioController {
         this.sStudioService = sStudioService;
     }
 
-/*    @GetMapping("youtube")
-    public SStudioDTO Index() {
-        return sStudioService.get();
-    }*/
 
-
-    // MongoDB 컬렉션 이름
+    // MongoDB 컬렉션 이름 (동영상)
     private String colNm = "SStudioCollection";
+
+    // MongoDB 컬렉션 이름 (생방)
+    private String LcolNm = "LiveSStudioCollection";
 
     /**
      * GetMapping은 GET방식을 통해 접속되는 URL 호출에 대해 실행되는 함수로 설정함을 의미함

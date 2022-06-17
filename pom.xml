@@ -11,6 +11,7 @@
     <groupId>kopo</groupId>
     <artifactId>poly</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
     <name>MultiSTPRJ</name>
     <description>MultiSTPRJ</description>
     <properties>
@@ -94,7 +95,21 @@
             <artifactId>google-api-client</artifactId>
             <version>1.30.9</version>
         </dependency>
+
+        <dependency>
+            <groupId>net.dv8tion</groupId>
+            <artifactId>JDA</artifactId>
+            <version>4.3.0_277</version>
+        </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>mavenCentral</id>
+            <name>m2-dv8tion</name>
+            <url>https://m2.dv8tion.net/releases</url>
+        </repository>
+    </repositories>
 
     <build>
         <plugins>
