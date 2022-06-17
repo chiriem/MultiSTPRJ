@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -100,9 +101,9 @@ public class SStudioService implements ISStudioService {
             }).setApplicationName("youtube-video-duration-get").build();
 
             //내가 원하는 정보 지정할 수 있어요. 공식 API문서를 참고해주세요.
-            YouTube.Videos.List videos = youtube.videos().list("id,snippet,contentDetails");
+            YouTube.Videos.List videos = youtube.videos().list(Collections.singletonList("id,snippet,contentDetails"));
             videos.setKey("AIzaSyAfJQyw0LqcMkaJi0hCw35NUPyjV7Br-4g");
-            videos.setId(pDTO.getYt_address());
+            videos.setId(Collections.singletonList(pDTO.getYt_address()));
             videos.setMaxResults(NUMBER_OF_VIDEOS_RETURNED); //조회 최대 갯수.
             List<Video> videoList = videos.execute().getItems();
 

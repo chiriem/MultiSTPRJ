@@ -1,8 +1,4 @@
-<%@ page import="kopo.poly.service.impl.UserInfoService" %>
-<%@ page import="kopo.poly.persistance.mongodb.impl.UserInfoMapper" %>
-<%@ page import="kopo.poly.controller.UserInfoController" %>
 <%@ page import="kopo.poly.util.CmmUtil" %>
-<%@ page import="kopo.poly.dto.NoticeDTO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="kopo.poly.dto.SStudioDTO" %>
@@ -21,8 +17,6 @@
     String msg = "";
     if (SS_USER_ID != null) {
         msg = SS_USER_ID + "님 환영합니다!";
-    } else {
-       msg = "로그인에 실패하였습니다.";
     }
 %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -133,7 +127,7 @@
             <a href="#" class="sidebar-toggler flex-shrink-0">
                 <i class="fa fa-bars"></i>
             </a>
-
+            &nbsp&nbsp
             <h6><%=msg %>
             </h6>
             <div class="navbar-nav align-items-center ms-auto">
