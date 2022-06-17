@@ -64,11 +64,23 @@
             location.href = "/SingleST/SStud?nSeq=" + seq;
         }
 
+        //생방 상세보기 이동
+        function doLiveDetail(seq) {
+            location.href = "/SingleST/LiveSStud?nSeq=" + seq;
+        }
+
         //삭제로 이동
         function doDelete(seq) {
 
             console.log("doDelete")
             location.href = "/deleteYt?nSeq=" + seq;
+        }
+
+        //생방 삭제로 이동
+        function doLiveDelete(seq) {
+
+            console.log("doLiveDelete")
+            location.href = "/deleteLiveYt?nSeq=" + seq;
         }
 
     </script>
@@ -94,11 +106,17 @@
                 <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>MultiStudio</h3>
             </a>
             <div class="navbar-nav w-100">
-                <a href="/index" class="nav-item nav-link active"><i class="fa fa-youtube-play" aria-hidden="false"></i>Main</a>
-                <a href="/MultiStudio/MultiStudio" class="nav-item nav-link"><i class="fa fa-youtube-play"
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-youtube-play me-2"></i>Main</a>
+                    <div class="dropdown-menu bg-transparent border-0">
+                        <a href="/index" class="dropdown-item">Youtube</a>
+                        <a href="/index2" class="dropdown-item">Youtube LiveStream</a>
+                    </div>
+                </div>
+                <a href="/MultiStudio/MultiStudio" class="nav-item nav-link"><i class="fa fa-youtube-play me-2"
                                                                                 aria-hidden="false"></i>MultiStudio</a>
-                <a href="/notice/NoticeList" class="nav-item nav-link"><i class="fa fa-book" aria-hidden="false"></i>Notice</a>
-                <a href="/Search2" class="nav-item nav-link"><i class="fa fa-search" aria-hidden="false"></i>Search</a>
+                <a href="/notice/NoticeList" class="nav-item nav-link"><i class="fa fa-book me-2" aria-hidden="false"></i>Notice</a>
+                <a href="/Search2" class="nav-item nav-link"><i class="fa fa-search me-2" aria-hidden="false"></i>Search</a>
             </div>
         </nav>
     </div>
@@ -213,17 +231,75 @@
         <!-- YtList End -->
 
 
-        <!-- YtList(seng) Start -->
-        <div class="container-fluid pt-4 px-4">
-            <div class="bg-light text-center rounded p-4">
-                <div class="d-flex align-items-center justify-content-between mb-4">
-                    <h6 class="mb-0">실시간 / 예정</h6>
-                    <!-- <a href="">Show All</a> -->
-                </div>
+<%--        <!-- YtList(seng) Start -->--%>
+<%--        <div class="container-fluid pt-4 px-4">--%>
+<%--            <div class="row g-4">--%>
+<%--                <div class="col-sm-12 col-xl-12">--%>
+<%--                    <div class="bg-light rounded p-4">--%>
+<%--                        <form name="f" method="post" action="/user/getLiveYtaddress">--%>
+<%--                            <div class="d-flex align-items-center justify-content-between mb-4">--%>
+<%--                                <h6 class="mb-0">라이브--%>
+<%--                                    &nbsp&nbsp--%>
+<%--                                    <% if (SS_USER_ID != null) { %>--%>
+<%--                                    <a href="/SingleST/LiveSStudioadd" ><i class="fa-solid fa-plus"></i></a>--%>
+<%--                                    <%} %>--%>
+<%--                                </h6>--%>
+<%--                                <button type="submit" class="btn btn-primary m-2">load!</button>--%>
+<%--                            </div>--%>
 
-            </div>
-        </div>
-        <!-- YtList(seng) End -->
+<%--                            <div class="table-responsive">--%>
+<%--                                <div class="divTable minimalistBlack">--%>
+<%--                                    <div class="divTableHeading">--%>
+<%--                                        <div class="divTableRow">--%>
+<%--                                            <div class="divTableHead" style="width: 200px">thumbnail</div>--%>
+<%--                                            <div class="divTableHead">Title</div>--%>
+<%--                                            <div class="divTableHead" style="width: 100px">Delete</div>--%>
+<%--                                        </div>--%>
+<%--                                    </div>--%>
+
+<%--                                    <div class="divTableBody">--%>
+<%--                                        <%--%>
+<%--                                            for (int i = 0; i < rList.size(); i++) {--%>
+<%--                                                SStudioDTO rDTO = rList.get(i);--%>
+
+<%--                                                if (rDTO == null) {--%>
+<%--                                                    rDTO = new SStudioDTO();--%>
+<%--                                                }--%>
+
+<%--                                        %>--%>
+<%--                                        <div class="divTableRow">--%>
+<%--                                            <div class="divTableCell"><img class="tnail"--%>
+<%--                                            &lt;%&ndash;                                                                           src="http://img.youtube.com/vi/<%=CmmUtil.nvl(rDTO.getYt_address()) %>/mqdefault.jpg"&ndash;%&gt;--%>
+<%--                                                                           src="<%=CmmUtil.nvl(rDTO.getThumbnailPath())%>"--%>
+<%--                                                                           width="180" height="120">--%>
+<%--                                            </div>--%>
+<%--                                            <div class="divTableCell" id="<%=CmmUtil.nvl(rDTO.getYt_seq())%>">--%>
+<%--                                                <a href="javascript:doLiveDetail('<%=CmmUtil.nvl(rDTO.getYt_seq())%>');">--%>
+<%--                                                    <%=CmmUtil.nvl(rDTO.getTitle())%>--%>
+<%--                                                </a>--%>
+<%--                                            </div>--%>
+<%--                                            <div class="divTableCell" style="width: 100px">--%>
+<%--                                                <a href="javascript:doLiveDelete('<%=CmmUtil.nvl(rDTO.getYt_seq())%>');">--%>
+<%--                                                    &lt;%&ndash;                                                    <button class="btn btn-square btn-primary m-2"><i&ndash;%&gt;--%>
+<%--                                                    &lt;%&ndash;                                                            class="fa-solid fa-file-circle-minus"></i></button>&ndash;%&gt;--%>
+<%--                                                    Delete!--%>
+<%--                                                </a>--%>
+<%--                                            </div>--%>
+<%--                                        </div>--%>
+<%--                                        <%--%>
+<%--                                            }--%>
+<%--                                        %>--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
+
+<%--                            </div>--%>
+<%--                        </form>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+
+<%--            </div>--%>
+<%--        </div>--%>
+<%--        <!-- YtList(seng) End -->--%>
 
         <!-- Footer Start -->
         <div class="container-fluid pt-4 px-4">

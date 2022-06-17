@@ -120,7 +120,6 @@
 <body>
 <div class="container-xxl position-relative bg-white d-flex p-0">
 
-
     <!-- Sidebar Start -->
     <div class="sidebar pe-4 pb-3">
         <nav class="navbar bg-light navbar-light">
@@ -128,13 +127,17 @@
                 <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>MultiStudio</h3>
             </a>
             <div class="navbar-nav w-100">
-                <a href="/index" class="nav-item nav-link"><i class="fa fa-youtube-play"
-                                                              aria-hidden="false"></i>Main</a>
-                <a href="/MultiStudio/MultiStudio" class="nav-item nav-link"><i class="fa fa-youtube-play"
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-youtube-play me-2"></i>Main</a>
+                    <div class="dropdown-menu bg-transparent border-0">
+                        <a href="/index" class="dropdown-item">Youtube</a>
+                        <a href="/index2" class="dropdown-item">Youtube LiveStream</a>
+                    </div>
+                </div>
+                <a href="/MultiStudio/MultiStudio" class="nav-item nav-link"><i class="fa fa-youtube-play me-2"
                                                                                 aria-hidden="false"></i>MultiStudio</a>
-                <a href="/notice/NoticeList" class="nav-item nav-link active"><i class="fa fa-book"
-                                                                                 aria-hidden="false"></i>Notice</a>
-                <a href="/Search2" class="nav-item nav-link"><i class="fa fa-search" aria-hidden="false"></i>Search</a>
+                <a href="/notice/NoticeList" class="nav-item nav-link"><i class="fa fa-book me-2" aria-hidden="false"></i>Notice</a>
+                <a href="/Search2" class="nav-item nav-link"><i class="fa fa-search me-2" aria-hidden="false"></i>Search</a>
             </div>
         </nav>
     </div>

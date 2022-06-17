@@ -1,16 +1,10 @@
-<%@ page import="kopo.poly.util.CmmUtil" %>
-<%@ page import="kopo.poly.dto.NoticeDTO" %>
-<%@ page import="kopo.poly.dto.SStudioDTO" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-<!DOCTYPE html>
-<html>
 <%
-
     String SS_USER_ID = (String) session.getAttribute("SS_USER_ID");
-    String yt_address = (String) session.getAttribute("yt_address");
-
 %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
 <head>
     <meta charset="utf-8">
     <title>MultiStudio - Multiple Streaming Studio</title>
@@ -38,87 +32,28 @@
     <!-- Template Stylesheet -->
     <link href="/css/style.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-    <script src="/js/jquery-3.6.0.js"></script>
-    <%--    <script>--%>
-
-    <%--        var playlist = 'CuklIb9d3fI';--%>
-    <%--        //https://www.youtube.com/watch?v=유튜브 영상 고유번호--%>
-    <%--        //playlist만 원하는 재생목록에 따라 가져오면 됨--%>
-
-    <%--        //maxResult는 50 이하--%>
-    <%--        $(document).ready(function () {--%>
-    <%--            $.get(--%>
-    <%--                "https://www.googleapis.com/youtube/v3/videos", {--%>
-    <%--                    part: 'snippet',--%>
-    <%--                    maxResults: 5,--%>
-    <%--                    id: playlist,--%>
-    <%--                    key: 'AIzaSyAfJQyw0LqcMkaJi0hCw35NUPyjV7Br-4g'--%>
-    <%--                },--%>
-
-    <%--                function (data) {--%>
-    <%--                    var output;--%>
-    <%--                    $.each(data.items, function (i, item) {--%>
-    <%--                        console.log(item);--%>
-    <%--                        vTitle = item.snippet.title;--%>
-    <%--                        vId = item.snippet.channelId;--%>
-    <%--                        vDe = item.snippet.description;--%>
-    <%--                        vTh = item.snippet.channelTitle;--%>
-    <%--                        vaaa = item.snippet.thumbnails.standard.url;--%>
-    <%--                        output = '<li>' + vTitle + '<br>--videodescription: ' + vDe + '<br>--videothumbnails: ' + vTh + '<br></li>';--%>
-    <%--                        /*output= '<li>'+vTitle+'<iframe src=\"//www.youtube.com/embed/'+vId+'\"></iframe></li>';*/--%>
-    <%--                        $("#results").append(output);--%>
-    <%--                    })--%>
-    <%--                }--%>
-    <%--            );--%>
-
-    <%--        });--%>
-
-    <%--    </script>--%>
     <script type="text/javascript">
-        <%
-
-        System.out.println("yt_address : " + yt_address);
-
-    %>
-
-        var playlist = "<%=yt_address%>";
-        // var playlist = 'CuklIb9d3fI';
-        //https://www.youtube.com/watch?v=유튜브 영상 고유번호
-        //playlist만 원하는 재생목록에 따라 가져오면 됨
-
-        //maxResult는 50 이하
-        $(document).ready(function () {
-            $.get(
-                "https://www.googleapis.com/youtube/v3/videos", {
-                    part: 'snippet',
-                    maxResults: 5,
-                    id: playlist,
-                    key: 'AIzaSyAfJQyw0LqcMkaJi0hCw35NUPyjV7Br-4g'
-                },
-
-                function (data) {
-                    var output;
-                    $.each(data.items, function (i, item) {
-                        console.log(item);
-                        vTitle = item.snippet.title;
-                        vId = item.snippet.channelId;
-                        vDe = item.snippet.description;
-                        vTh = item.snippet.channelTitle;
-
-                        $("#youtube_title").append(vTitle);
-                        $("#youtube_chname").append(vTh);
-                        $("#youtube_desc").append(vDe);
-                    })
-                }
-            );
-
-        });
+        function doYTCheck(f) {
+            if (f.yt_address.value == "") {
+                alert("주소를 입력하세요.");
+                f.yt_address.focus();
+                return false;
+            }
+        }
     </script>
-
+    <link href="/youtube_tool/css/multi_view.css" rel="stylesheet">
 </head>
 
 <body>
 <div class="container-xxl position-relative bg-white d-flex p-0">
+    <!-- Spinner Start -->
+    <div id="spinner"
+         class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
 
 
     <!-- Sidebar Start -->
@@ -180,53 +115,50 @@
         <!-- Navbar End -->
 
 
-        <!-- Blank Start -->
+        <!-- Form Start -->
         <div class="container-fluid pt-4 px-4">
-            <div class="row bg-light rounded mx-0">
-                <iframe width="100%" height="480" src="https://www.youtube.com/embed/<%=yt_address%>"
-                        title="YouTube video player" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen></iframe>
-            </div>
-        </div>
-        <div class="container-fluid pt-4 px-4">
-            <div class="row bg-light rounded mx-0">
-                <div>
-                    <form id="youtube_title"></form>
-                    <hr>
-                    <form id="youtube_chname"></form>
-                    <hr>
-                    <form id="youtube_desc"></form>
+            <div class="row g-4">
+                <div class="col-sm-12 col-xl-6 text-center">
+                    <div class="bg-light rounded h-100 p-4">
+                        <form name="f" method="post" action="/SingleStudio/insertLiveYtaddress"
+                              onsubmit="return doYTCheck(this);">
+                            <input type="text" name="user_id" value="<%=SS_USER_ID%>" readonly>
+                            <input type="text" name="yt_address" style="width:150px"/>
+                            <button type="submit" class="btn btn-primary py-3 w-100 mb-4">submit!</button>
+                        </form>
+                    </div>
+
                 </div>
             </div>
-        </div>
-        <!-- Blank End -->
+            <!-- Form End -->
 
 
-        <!-- Footer Start -->
-        <div class="container-fluid pt-4 px-4">
-            <div class="bg-light rounded-top p-4">
-                <div class="row">
-                    <div class="col-12 col-sm-6 text-center text-sm-start">
-                        &copy; <a href="#">Your Site Name</a>, All Right Reserved.
-                    </div>
-                    <div class="col-12 col-sm-6 text-center text-sm-end">
-                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                        Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+            <!-- Footer Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-light rounded-top p-4">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 text-center text-sm-start">
+                            &copy; <a href="#">MultiST</a>, All Right Reserved.
+                        </div>
+                        <div class="col-12 col-sm-6 text-center text-sm-end">
+                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                            Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                        </div>
                     </div>
                 </div>
             </div>
+            <!-- Footer End -->
         </div>
-        <!-- Footer End -->
+        <!-- Content End -->
+
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
-    <!-- Content End -->
-
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 </div>
 
 <!-- JavaScript Libraries -->
+<script src="/js/jquery-3.6.0.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/lib/chart/chart.min.js"></script>
 <script src="/lib/easing/easing.min.js"></script>
