@@ -18,10 +18,14 @@ public interface ISStudioMapper {
 
     List<SStudioDTO> getYtaddress(SStudioDTO pDTO, String colNm) throws Exception;
 
+    List<SStudioDTO> getAllYtaddress(SStudioDTO pDTO, String colNm, String LcolNm) throws Exception;
+
     SStudioDTO getYoutubeInfo(SStudioDTO pDTO, String colNm) throws Exception;
 
     SStudioDTO getYtExists(SStudioDTO pDTO, String colNm) throws Exception;
 
     int deleteYt(SStudioDTO pDTO, String colNm) throws Exception;
+
+    int deleteAllYt(SStudioDTO pDTO, String colNm, String LcolNm) throws Exception;
 
 }

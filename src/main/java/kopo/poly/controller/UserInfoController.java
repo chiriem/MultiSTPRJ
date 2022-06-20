@@ -1,6 +1,5 @@
 package kopo.poly.controller;
 
-import kopo.poly.dto.SStudioDTO;
 import kopo.poly.dto.UserInfoDTO;
 import kopo.poly.service.IUserInfoService;
 import kopo.poly.util.CmmUtil;
@@ -75,7 +74,7 @@ public class UserInfoController {
             String user_id = CmmUtil.nvl(request.getParameter("user_id")); //아이디
             String user_nm = CmmUtil.nvl(request.getParameter("user_nm")); //이름
             String user_pw = CmmUtil.nvl(request.getParameter("user_pw")); //비밀번호
-            String age = CmmUtil.nvl(request.getParameter("age")); //이메일
+            String age = CmmUtil.nvl(request.getParameter("age")); //생년
             /*
              * #######################################################
              *        웹(회원정보 입력화면)에서 받는 정보를 String 변수에 저장 끝!!
@@ -132,12 +131,15 @@ public class UserInfoController {
             log.info("회원가입 결과(res) : " + res);
 
             if (res == 1) {
-                msg = "회원가입되었습니다.";
+                model.addAttribute("msg", "회원정보 입력 성공! 로그인 페이지로 이동합니다");
+                model.addAttribute("url", "/user/LoginForm");
+
+//                msg = "회원가입되었습니다.";
 
                 //추후 회원가입 입력화면에서 ajax를 활용해서 아이디 중복, 이메일 중복을 체크하길 바람
             } else {
-                msg = "오류로 인해 회원가입이 실패하였습니다.";
-
+                model.addAttribute("msg", "오류로 인해 회원가입에 실패하였습니다.");
+                model.addAttribute("url", "/user/UserRegForm");
             }
 
         } catch (Exception e) {
@@ -149,28 +151,22 @@ public class UserInfoController {
         } finally {
             log.info(this.getClass().getName() + ".insertUserInfo end!");
 
-
-            //회원가입 여부 결과 메시지 전달하기
-            model.addAttribute("msg", msg);
-
-            //회원가입 여부 결과 메시지 전달하기
-            model.addAttribute("pDTO", pDTO);
-
             //변수 초기화(메모리 효율화 시키기 위해 사용함)
             pDTO = null;
 
         }
 
-        return "redirect:/user/loginForm";
+        return "user/SignUpMsg";
+//        return "redirect:/user/LoginForm";
     }
 
 
     /**
      * 로그인을 위한 입력 화면으로 이동
      */
-    @RequestMapping(value = "user/loginForm")
+    @RequestMapping(value = "user/LoginForm")
     public String loginForm() {
-        log.info(this.getClass().getName() + ".user/loginForm ok!");
+        log.info(this.getClass().getName() + ".user/LoginForm ok!");
 
         return "/user/LoginForm";
     }
@@ -295,10 +291,18 @@ public class UserInfoController {
                 session.setAttribute("SS_USER_ID", user_id);
                 session.setAttribute("SS_USER_NM", user_nm);
                 session.setAttribute("SS_AGE", age);
+
+                model.addAttribute("msg", "로그인 성공");
+                model.addAttribute("url", "/index");
+
+            } else if (res == 0){
+
+                model.addAttribute("msg", "로그인을 실패하였습니다");
+                model.addAttribute("url", "/user/LoginForm");
             }
 
         } catch (Exception e) {
-            //저장이 실패되면 사용자에게 보여줄 메시지
+
             res = 2;
             log.info(e.toString());
             e.printStackTrace();
@@ -312,12 +316,13 @@ public class UserInfoController {
              * */
             model.addAttribute("res", String.valueOf(res));
 
+
             //변수 초기화(메모리 효율화 시키기 위해 사용함)
             pDTO = null;
-
         }
 
-        return "/index";
+//        return "/index";
+        return "user/SignInMsg";
     }
 
     @RequestMapping("/logout")
@@ -408,19 +413,20 @@ public class UserInfoController {
              */
 
             /*
-             * 회원가입
+             * 회원가입 수정
              * */
             int res = userInfoService.updateUserInfo(pDTO, colNm);
 
             log.info("회원가입 결과(res) : " + res);
 
             if (res==1) {
-                msg = "회원수정 되었습니다.";
 
-                //추후 회원가입 입력화면에서 ajax를 활용해서 아이디 중복, 이메일 중복을 체크하길 바람
+                model.addAttribute("msg", "회원 정보 수정 성공! 다시 로그인 해주시길 바랍니다");
+                model.addAttribute("url", "/user/LoginForm");
+
             }else {
-                msg = "오류로 인해 회원수정이 실패하였습니다.";
-
+                model.addAttribute("msg", "수정에 실패하였습니다. 재시도 하거나 관리자에게 문의하시길 바랍니다");
+                model.addAttribute("url", "/index");
             }
 
         }catch(Exception e){
@@ -433,39 +439,15 @@ public class UserInfoController {
             log.info(this.getClass().getName() + ".updateUserInfo end!");
 
 
-            //회원수정 여부 결과 메시지 전달하기
-            model.addAttribute("msg", msg);
-
-            //회원수정 여부 결과 메시지 전달하기
-            model.addAttribute("pDTO", pDTO);
-
             //변수 초기화(메모리 효율화 시키기 위해 사용함)
             pDTO = null;
 
         }
         session.invalidate();
 
-        return "redirect:/index";
+        return "user/UseradjustMsg";
     }
 
-//    /**
-//     * 회원수정 로직 처리
-//     * */
-//    @GetMapping(value="user/deleteUserInfo")
-//    public String deleteUserInfo(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
-//
-//        log.info(this.getClass().getName() + ".deleteUserInfo start!");
-//
-//        //회원수정 결과에 대한 메시지를 전달할 변수
-//        String msg = "";
-//
-//        //웹(회원정보 입력화면)에서 받는 정보를 저장할 변수
-//        UserInfoDTO pDTO = null;
-//
-//        log.info(this.getClass().getName() + ".deleteUserInfo End!");
-//
-//        return "/user/Msg";
-//    }
 
     /**
      * 회원삭제 로직 처리
@@ -544,11 +526,12 @@ public class UserInfoController {
             log.info("회원삭제 결과(res) : " + res);
 
             if (res==1) {
-                msg = "회원삭제 되었습니다.";
+                model.addAttribute("msg", "탈퇴하였습니다. 다음에 또 만날 수 있기를..");
+                model.addAttribute("url", "/index");
 
             }else {
-                msg = "오류로 인해 회원삭제가 실패하였습니다.";
-
+                model.addAttribute("msg", "탈퇴에 실패하였습니다. 관리자에게 문의하시길 바랍니다");
+                model.addAttribute("url", "/Setting");
             }
 
         }catch(Exception e){
@@ -560,128 +543,14 @@ public class UserInfoController {
         }finally{
             log.info(this.getClass().getName() + ".deleteUserInfo end!");
 
-
-            //회원수정 여부 결과 메시지 전달하기
-            model.addAttribute("msg", msg);
-
-            //회원수정 여부 결과 메시지 전달하기
-            model.addAttribute("pDTO", pDTO);
-
             //변수 초기화(메모리 효율화 시키기 위해 사용함)
             pDTO = null;
 
         }
         session.invalidate();
 
-        return "redirect:/index";
+        return "user/UserDeleteMsg";
     }
 
-//    /**
-//     * 유튜브 주소 삭제 로직 처리
-//     * */
-//    @GetMapping(value="deleteUserInfo")
-//    public String deleteUserInfo(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
-//
-//        log.info(this.getClass().getName() + ".deleteUserInfo start!");
-//
-//        String nSeq = CmmUtil.nvl(request.getParameter("nSeq"));
-//
-//        log.info("nSeq : "+ nSeq);
-//
-//        //삭제 결과에 대한 메시지를 전달할 변수
-//        String msg = "";
-//
-//        //웹에서 받는 정보를 저장할 변수
-//        UserInfoDTO pDTO = null;
-//
-//        try{
-//
-//            /*
-//             * #######################################################
-//             *        웹(회원정보 입력화면)에서 받는 정보를 String 변수에 저장 시작!!
-//             *
-//             *    무조건 웹으로 받은 정보는 DTO에 저장하기 위해 임시로 String 변수에 저장함
-//             * #######################################################
-//             */
-//
-//            String user_seq = nSeq; //user_seq
-//            /*
-//             * #######################################################
-//             *        웹(회원정보 입력화면)에서 받는 정보를 String 변수에 저장 끝!!
-//             *
-//             *    무조건 웹으로 받은 정보는 DTO에 저장하기 위해 임시로 String 변수에 저장함
-//             * #######################################################
-//             */
-//
-//            /*
-//             * #######################################################
-//             *     반드시, 값을 받았으면, 꼭 로그를 찍어서 값이 제대로 들어오는지 파악해야함
-//             *                   반드시 작성할 것
-//             * #######################################################
-//             * */
-//            log.info("user_seq" + user_seq);
-//
-//
-//            /*
-//             * #######################################################
-//             *        웹(회원정보 입력화면)에서 받는 정보를 DTO에 저장하기 시작!!
-//             *
-//             *        무조건 웹으로 받은 정보는 DTO에 저장해야 한다고 이해하길 권함
-//             * #######################################################
-//             */
-//
-//
-//            //웹에서 받는 정보를 저장할 변수를 메모리에 올리기
-//            pDTO = new UserInfoDTO();
-//
-//            pDTO.setUser_seq(user_seq);
-//
-//            /*
-//             * #######################################################
-//             *        웹(회원정보 입력화면)에서 받는 정보를 DTO에 저장하기 끝!!
-//             *
-//             *        무조건 웹으로 받은 정보는 DTO에 저장해야 한다고 이해하길 권함
-//             * #######################################################
-//             */
-//
-//            /*
-//             * 삭제
-//             * */
-//            int res = userInfoService.deleteUserInfo(pDTO, colNm);
-//
-//            log.info("삭제 결과(res) : "+ res);
-//
-//            if (res==1) {
-//                msg = "삭제 되었습니다.";
-//
-//                //추후 회원가입 입력화면에서 ajax를 활용해서 아이디 중복, 이메일 중복을 체크하길 바람
-//            }else {
-//                msg = "오류로 인해 삭제가 실패하였습니다.";
-//
-//            }
-//
-//        }catch(Exception e){
-//            //저장이 실패되면 사용자에게 보여줄 메시지
-//            msg = "실패하였습니다. : "+ e.toString();
-//            log.info(e.toString());
-//            e.printStackTrace();
-//
-//        }finally{
-//            log.info(this.getClass().getName() + ".deleteUserInfo end!");
-//
-//
-//            //삭제 결과 메시지 전달하기
-//            model.addAttribute("msg", msg);
-//
-//            //삭제 결과 메시지 전달하기
-//            model.addAttribute("pDTO", pDTO);
-//
-//            //변수 초기화(메모리 효율화 시키기 위해 사용함)
-//            pDTO = null;
-//
-//        }
-//
-//        return "redirect:/index";
-//    }
 
 }

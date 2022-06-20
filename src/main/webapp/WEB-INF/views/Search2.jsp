@@ -203,7 +203,7 @@
                         <a href="/logout" class="dropdown-item">Log out</a>
                         <a href="/user/UseradjustForm" class="dropdown-item">Adjust up</a>
                         <%} else {%>
-                        <a href="/user/loginForm" class="dropdown-item">Sign in</a>
+                        <a href="/user/LoginForm" class="dropdown-item">Sign in</a>
                         <a href="/user/UserRegForm" class="dropdown-item">Sign up</a>
                         <%} %>
                     </div>

@@ -97,7 +97,7 @@
         //삭제로 이동
         function doDelete(seq) {
 
-            location.href = "/deleteYt?nSeq=" + seq;
+            location.href = "/deleteAllYt?yt_address=" + seq;
         }
 
         //회원삭제로 이동
@@ -170,7 +170,7 @@
                         <a href="/logout" class="dropdown-item">Log out</a>
                         <a href="/user/UseradjustForm" class="dropdown-item">Adjust up</a>
                         <%} else {%>
-                        <a href="/user/loginForm" class="dropdown-item">Sign in</a>
+                        <a href="/user/LoginForm" class="dropdown-item">Sign in</a>
                         <a href="/user/UserRegForm" class="dropdown-item">Sign up</a>
                         <%} %>
                     </div>
@@ -229,10 +229,14 @@
                     <div class="bg-light rounded h-100 p-4">
                         <form name="f" method="post" action="/user/getSettingYtaddress">
                             <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0">동영상
+                                <h6 class="mb-0">영상 목록
+                                    &nbsp&nbsp&nbsp&nbsp
+                                    <% if (SS_USER_ID != null) { %>
+                                    <a href="/SingleST/SStudioadd">동영상 추가&nbsp<i class="fa-solid fa-plus"></i></a>
+                                    <%} %>
                                     &nbsp&nbsp
                                     <% if (SS_USER_ID != null) { %>
-                                    <a href="/SingleST/SStudioadd" ><i class="fa-solid fa-plus"></i></a>
+                                    <a href="/SingleST/LiveSStudioadd">라이브 추가&nbsp<i class="fa-solid fa-plus"></i></a>
                                     <%} %>
                                 </h6>
                                 <button type="submit" class="btn btn-primary m-2">load!</button>
@@ -268,7 +272,7 @@
                                                 <%=CmmUtil.nvl(rDTO.getTitle())%>
                                             </div>
                                             <div class="divTableCell" style="width: 100px">
-                                                <a href="javascript:doDelete('<%=CmmUtil.nvl(rDTO.getYt_seq())%>');">
+                                                <a href="javascript:doDelete('<%=CmmUtil.nvl(rDTO.getYt_address())%>');">
                                                     <%--                                                    <button class="btn btn-square btn-primary m-2"><i--%>
                                                     <%--                                                            class="fa-solid fa-file-circle-minus"></i></button>--%>
                                                     Delete!

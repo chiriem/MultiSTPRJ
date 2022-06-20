@@ -5,6 +5,8 @@
 <%
     //Controller로부터 전달받은 데이터
     String msg = CmmUtil.nvl((String) request.getAttribute("msg"));
+    String url = CmmUtil.nvl((String) request.getAttribute("url"));
+
 //Controller로부터 전달받은 웹(회원정보 입력화면)으로부터 입력받은 데이터(회원아이디, 이름, 이메일, 주소 등)
     UserInfoDTO pDTO = (UserInfoDTO) request.getAttribute("pDTO");
     if (pDTO == null) {
@@ -16,12 +18,12 @@
 <html>
 <head>
     <meta charset="EUC-KR">
-    <title>회원가입을 축하드립니다.</title>
+    <title>Adjust UserInfo Result</title>
     <script type="text/javascript">
         alert("<%=msg%>");
+        window.location= '<%=url%>';
     </script>
 </head>
 <body>
-<%=CmmUtil.nvl(pDTO.getUser_nm()) %>님의 회원가입을 축하드립니다.
 </body>
 </html>

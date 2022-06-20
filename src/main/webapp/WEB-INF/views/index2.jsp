@@ -71,7 +71,7 @@
         function doLiveDelete(seq) {
 
             console.log("doLiveDelete")
-            location.href = "/deleteLiveYt?nSeq=" + seq;
+            location.href = "/deleteLiveYt?yt_address=" + seq;
         }
 
     </script>
@@ -125,7 +125,7 @@
                 <i class="fa fa-bars"></i>
             </a>
 
-            <h6><%=msg %>
+            <h6>
             </h6>
             <div class="navbar-nav align-items-center ms-auto">
 
@@ -142,7 +142,7 @@
                         <a href="/logout" class="dropdown-item">Log out</a>
                         <a href="/user/UseradjustForm" class="dropdown-item">Adjust up</a>
                         <%} else {%>
-                        <a href="/user/loginForm" class="dropdown-item">Sign in</a>
+                        <a href="/user/LoginForm" class="dropdown-item">Sign in</a>
                         <a href="/user/UserRegForm" class="dropdown-item">Sign up</a>
                         <%} %>
                     </div>
@@ -200,7 +200,7 @@
                                                 </a>
                                             </div>
                                             <div class="divTableCell" style="width: 100px">
-                                                <a href="javascript:doLiveDelete('<%=CmmUtil.nvl(rDTO.getYt_seq())%>');">
+                                                <a href="javascript:doLiveDelete('<%=CmmUtil.nvl(rDTO.getYt_address())%>');">
                                                     <%--                                                    <button class="btn btn-square btn-primary m-2"><i--%>
                                                     <%--                                                            class="fa-solid fa-file-circle-minus"></i></button>--%>
                                                     Delete!

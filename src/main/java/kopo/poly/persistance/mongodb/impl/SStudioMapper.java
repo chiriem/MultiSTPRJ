@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Indexes;
-import kopo.poly.dto.NoticeDTO;
 import kopo.poly.dto.SStudioDTO;
-import kopo.poly.dto.UserInfoDTO;
 import kopo.poly.persistance.mongodb.AbstractMongoDBComon;
 import kopo.poly.persistance.mongodb.ISStudioMapper;
 import kopo.poly.util.CmmUtil;
@@ -169,6 +167,119 @@ public class SStudioMapper extends AbstractMongoDBComon implements ISStudioMappe
     }
 
     @Override
+    public List<SStudioDTO> getAllYtaddress(SStudioDTO pDTO, String colNm, String LcolNm) throws Exception {
+
+        log.info(this.getClass().getName() + ".getAllYtaddress Start!");
+
+        // 조회 결과를 전달하기 위한 객체 생성하기
+        List<SStudioDTO> rList = new LinkedList<>();
+
+        // 컬렉션이 없다면 생성하기
+        if (!mongodb.collectionExists(colNm)) {
+
+            // 컬렉션 생성
+            super.createCollection(colNm);
+            // 인덱스 생성
+            mongodb.getCollection(colNm).createIndex(Indexes.ascending("yt_seq"));
+
+        }
+
+        // MongoDB 컬렉션 지정하기
+        MongoCollection<Document> col = mongodb.getCollection(colNm);
+        MongoCollection<Document> Lcol = mongodb.getCollection(LcolNm);
+
+        // 찾아야 할 쿼리값 생성
+        Document query = new Document();
+        query.append("user_id", CmmUtil.nvl(pDTO.getUser_id()));
+
+        // 조회 결과 중 출력할 컬럼들(SQL의 SELECT절과 FROM절 가운데 컬럼들과 유사함)
+        Document projection = new Document();
+        projection.append("yt_seq", "$yt_seq");
+        projection.append("user_id", "$user_id");
+        projection.append("yt_address", "$yt_address");
+        projection.append("thumbnailPath", "$thumbnailPath");
+        projection.append("title", "$title");
+
+//        // MongoDB는 무조건 ObjectID가 자동생성되며, ObjectID는 사용하지 않을 때, 조회할 필요가 없음.
+//        projection.append("_id", 0);
+
+        // MongoDB의 find 명령어를 통해 조회할 경우 사용함
+        // 조회하는 데이터의 양이 적은 경우, find를 사용하고, 데이터양이 많은 경우 무조건 Aggregate 사용한다.
+        FindIterable<Document> rs = col.find(query).projection(projection);
+        FindIterable<Document> Lrs = Lcol.find(query).projection(projection);
+
+        for (Document doc : rs) {
+
+            if (doc == null) {
+
+                doc = new Document();
+
+            }
+
+            // 조회 테스트
+            String yt_seq = CmmUtil.nvl(doc.getString("yt_seq"));
+            String user_id = CmmUtil.nvl(doc.getString("user_id"));
+            String yt_address = CmmUtil.nvl(doc.getString("yt_address"));
+            String thumbnailPath = CmmUtil.nvl(doc.getString("thumbnailPath"));
+            String title = CmmUtil.nvl(doc.getString("title"));
+            log.info("yt_seq : " + yt_seq);
+            log.info("user_id : " + user_id);
+            log.info("yt_address : " + yt_address);
+            log.info("thumbnailPath : " + thumbnailPath);
+            log.info("title : " + title);
+
+            SStudioDTO rDTO = new SStudioDTO();
+
+            rDTO.setYt_seq(yt_seq);
+            rDTO.setUser_id(user_id);
+            rDTO.setYt_address(yt_address);
+            rDTO.setThumbnailPath(thumbnailPath);
+            rDTO.setTitle(title);
+
+            // 레코드 결과를 List에 저장하기
+            rList.add(rDTO);
+
+        }
+
+        for (Document doc : Lrs) {
+
+            if (doc == null) {
+
+                doc = new Document();
+
+            }
+
+            // 조회 테스트
+            String yt_seq = CmmUtil.nvl(doc.getString("yt_seq"));
+            String user_id = CmmUtil.nvl(doc.getString("user_id"));
+            String yt_address = CmmUtil.nvl(doc.getString("yt_address"));
+            String thumbnailPath = CmmUtil.nvl(doc.getString("thumbnailPath"));
+            String title = CmmUtil.nvl(doc.getString("title"));
+            log.info("yt_seq : " + yt_seq);
+            log.info("user_id : " + user_id);
+            log.info("yt_address : " + yt_address);
+            log.info("thumbnailPath : " + thumbnailPath);
+            log.info("title : " + title);
+
+            SStudioDTO rDTO = new SStudioDTO();
+
+            rDTO.setYt_seq(yt_seq);
+            rDTO.setUser_id(user_id);
+            rDTO.setYt_address(yt_address);
+            rDTO.setThumbnailPath(thumbnailPath);
+            rDTO.setTitle(title);
+
+            // 레코드 결과를 List에 저장하기
+            rList.add(rDTO);
+
+        }
+
+        log.info(this.getClass().getName() + ".getAllYtaddress End!");
+
+        return rList;
+    }
+
+    @Override
     public SStudioDTO getYoutubeInfo(SStudioDTO pDTO, String colNm) throws Exception {
 
         log.info(this.getClass().getName() + ".getYoutubeInfo Start!");
@@ -226,7 +337,7 @@ public class SStudioMapper extends AbstractMongoDBComon implements ISStudioMappe
 
         // 조회할 조건
         Document query = new Document();
-        query.append("yt_seq", CmmUtil.nvl(pDTO.getYt_seq()));
+        query.append("yt_address", CmmUtil.nvl(pDTO.getYt_address()));
 
         // MongoDB 데이터 삭제는 반드시 컬렉션으 조회하고, 조회된 ObjectID를 기반으로 데이터를 삭제함
         // MongoDB 환경은 분산환경(Sharding)으로 구성될 수 있기 때문에 정확한 PX에 매핑하기 위해서임
@@ -239,6 +350,41 @@ public class SStudioMapper extends AbstractMongoDBComon implements ISStudioMappe
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
         log.info(this.getClass().getName() + ".deleteYt End!");
+
+        return res;
+    }
+
+    public int deleteAllYt(SStudioDTO pDTO, String colNm, String LcolNm) throws Exception {
+
+        // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
+        log.info(this.getClass().getName() + ".deleteAllYt End!");
+
+        int res = 0;
+
+        // 조회 결과를 전달하기 위한 객체 생성하기
+        SStudioDTO rDTO = new SStudioDTO();
+
+        // MongoDB 컬렉션 지정하기
+        MongoCollection<Document> col = mongodb.getCollection(colNm);
+        MongoCollection<Document> Lcol = mongodb.getCollection(LcolNm);
+
+        // 조회할 조건
+        Document query = new Document();
+        query.append("yt_address", CmmUtil.nvl(pDTO.getYt_address()));
+
+        // MongoDB 데이터 삭제는 반드시 컬렉션으 조회하고, 조회된 ObjectID를 기반으로 데이터를 삭제함
+        // MongoDB 환경은 분산환경(Sharding)으로 구성될 수 있기 때문에 정확한 PX에 매핑하기 위해서임
+        FindIterable<Document> rs = col.find(query);
+        FindIterable<Document> Lrs = Lcol.find(query);
+
+        // 전체 컬랙션에 있는 데이터를 삭제하기
+        rs.forEach(doc -> col.deleteOne(doc));
+        Lrs.forEach(doc -> Lcol.deleteOne(doc));
+
+        res = 1;
+
+        // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
+        log.info(this.getClass().getName() + ".deleteAllYt End!");
 
         return res;
     }

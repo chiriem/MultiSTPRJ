@@ -152,6 +152,24 @@ public class SStudioService implements ISStudioService {
     }
 
     @Override
+    public List<SStudioDTO> getAllYtaddress(SStudioDTO pDTO, String colNm, String LcolNm) throws Exception {
+
+        // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
+        log.info(this.getClass().getName() + ".getAllYtaddress start!");
+
+        // 조회 결과를 전달하기 위한 객체 생성하기
+        List<SStudioDTO> rList = new LinkedList<>();
+
+        // 조회 결과 담기
+        rList = sStudioMapper.getAllYtaddress(pDTO, colNm, LcolNm);
+
+        // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
+        log.info(this.getClass().getName() + ".getAllYtaddress End!");
+
+        return rList;
+    }
+
+    @Override
     public SStudioDTO getYoutubeInfo(SStudioDTO pDTO, String colNm) throws Exception {
 
         log.info(this.getClass().getName() + ".getYoutubeInfo Start!");
@@ -205,6 +223,42 @@ public class SStudioService implements ISStudioService {
 //        }
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
         log.info(this.getClass().getName() + ".deleteYt End!");
+
+        return res;
+
+    }
+
+    @Override
+    public int deleteAllYt(SStudioDTO pDTO, String colNm, String LcolNm) throws Exception {
+
+        // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
+        log.info(this.getClass().getName() + ".deleteAllYt Start!");
+
+        int res = 0;
+
+
+        // controller에서 값이 정상적으로 못 넘어오는 경우를 대비하기 위해 사용함
+        if (pDTO == null) {
+            pDTO = new SStudioDTO();
+        }
+
+        // 삭제 성공 여부
+        int success = sStudioMapper.deleteAllYt(pDTO, colNm, LcolNm);
+
+        // 삭제 성공했다면....
+        if (success > 0) {
+
+            res = 1;
+
+        } else {
+
+            res = 0;
+
+        }
+
+//        }
+        // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
+        log.info(this.getClass().getName() + ".deleteAllYt End!");
 
         return res;
 
