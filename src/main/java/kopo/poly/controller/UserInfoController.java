@@ -138,7 +138,7 @@ public class UserInfoController {
 
                 //추후 회원가입 입력화면에서 ajax를 활용해서 아이디 중복, 이메일 중복을 체크하길 바람
             } else {
-                model.addAttribute("msg", "오류로 인해 회원가입에 실패하였습니다.");
+                model.addAttribute("msg", "오류, 혹은 정보 중복으로 인해 회원가입에 실패하였습니다.");
                 model.addAttribute("url", "/user/UserRegForm");
             }
 
@@ -157,7 +157,6 @@ public class UserInfoController {
         }
 
         return "user/SignUpMsg";
-//        return "redirect:/user/LoginForm";
     }
 
 
