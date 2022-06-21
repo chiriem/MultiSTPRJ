@@ -50,25 +50,7 @@ public class SStudioController {
      * GetMapping(value = "index") =>  GET방식을 통해 접속되는 URL이 index인 경우 아래 함수를 실행함
      */
 
-    @GetMapping(value = "index")
-    public String Index(HttpSession session, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception{
 
-
-        return "/index";
-    }
-
-    @GetMapping(value = "index2")
-    public String Index2(HttpSession session, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception{
-
-
-        return "/index2";
-    }
-
-    @GetMapping(value = "Setting")
-    public String Setting() {
-        return "Setting";
-
-    }
 
     @RequestMapping(value = "user/getMultiviewYtaddress")
     public String getMultiviewYtaddress(HttpSession session, HttpServletRequest request, HttpServletResponse response,

@@ -14,7 +14,7 @@ import javax.security.auth.login.LoginException;
 public class STbot extends ListenerAdapter {
     public static void main(String[] args)
             throws LoginException {
-        JDA jda = JDABuilder.createDefault("OTc2MzUwOTAxNDQwNzQ5NTk5.GYdDjT.62TjTHqnsEVMhImyx5RM3Mqgr8u1C1Kb3GRdbo").build();
+        JDA jda = JDABuilder.createDefault("OTc2MzUwOTAxNDQwNzQ5NTk5.GDLudd.AP6AKjt42CYbB7GXbgneMl9hWhwg0bwQk9wdnA").build();
         //You can also add event listeners to the already built JDA instance
         // Note that some events may not be received if the listener is added after calling build()
         // This includes events such as the ReadyEvent

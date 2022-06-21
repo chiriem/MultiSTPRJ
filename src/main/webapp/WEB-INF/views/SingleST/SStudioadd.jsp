@@ -64,7 +64,8 @@
             </a>
             <div class="navbar-nav w-100">
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-youtube-play me-2"></i>Main</a>
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                            class="fa fa-youtube-play me-2"></i>Main</a>
                     <div class="dropdown-menu bg-transparent border-0">
                         <a href="/index" class="dropdown-item">Youtube</a>
                         <a href="/index2" class="dropdown-item">Youtube LiveStream</a>
@@ -72,7 +73,8 @@
                 </div>
                 <a href="/MultiStudio/MultiStudio" class="nav-item nav-link"><i class="fa fa-youtube-play me-2"
                                                                                 aria-hidden="false"></i>MultiStudio</a>
-                <a href="/notice/NoticeList" class="nav-item nav-link"><i class="fa fa-book me-2" aria-hidden="false"></i>Notice</a>
+                <a href="/notice/NoticeList" class="nav-item nav-link"><i class="fa fa-book me-2"
+                                                                          aria-hidden="false"></i>Notice</a>
                 <a href="/Search2" class="nav-item nav-link"><i class="fa fa-search me-2" aria-hidden="false"></i>Search</a>
             </div>
         </nav>
@@ -122,8 +124,14 @@
                     <div class="bg-light rounded h-100 p-4">
                         <form name="f" method="post" action="/SingleStudio/insertYtaddress"
                               onsubmit="return doYTCheck(this);">
-                            <input type="text" name="user_id" value="<%=SS_USER_ID%>" readonly>
-                            <input type="text" name="yt_address" style="width:150px"/>
+                            <div class="form-floating mb-4">
+                                <input type="text" class="form-control" name="user_id" placeholder="User Id" value="<%=SS_USER_ID%>" readonly>
+                                <label>User Id</label>
+                            </div>
+                            <div class="form-floating mb-4">
+                                <input type="text" class="form-control" name="yt_address" placeholder="Youtube Address"/>
+                                <label>Youtube Address</label>
+                            </div>
                             <button type="submit" class="btn btn-primary py-3 w-100 mb-4">submit!</button>
                         </form>
                     </div>
