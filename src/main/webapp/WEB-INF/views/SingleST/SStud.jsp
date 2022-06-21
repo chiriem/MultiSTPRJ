@@ -129,7 +129,8 @@
             </a>
             <div class="navbar-nav w-100">
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-youtube-play me-2"></i>Main</a>
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                            class="fa fa-youtube-play me-2"></i>Main</a>
                     <div class="dropdown-menu bg-transparent border-0">
                         <a href="/index" class="dropdown-item">Youtube</a>
                         <a href="/index2" class="dropdown-item">Youtube LiveStream</a>
@@ -137,7 +138,8 @@
                 </div>
                 <a href="/MultiStudio/MultiStudio" class="nav-item nav-link"><i class="fa fa-youtube-play me-2"
                                                                                 aria-hidden="false"></i>MultiStudio</a>
-                <a href="/notice/NoticeList" class="nav-item nav-link"><i class="fa fa-book me-2" aria-hidden="false"></i>Notice</a>
+                <a href="/notice/NoticeList" class="nav-item nav-link"><i class="fa fa-book me-2"
+                                                                          aria-hidden="false"></i>Notice</a>
                 <a href="/Search2" class="nav-item nav-link"><i class="fa fa-search me-2" aria-hidden="false"></i>Search</a>
             </div>
         </nav>
@@ -182,7 +184,7 @@
 
         <!-- Blank Start -->
         <div class="container-fluid pt-4 px-4">
-            <div class="row bg-light rounded mx-0">
+            <div class="row bg-light rounded p-4">
                 <iframe width="100%" height="480" src="https://www.youtube.com/embed/<%=yt_address%>"
                         title="YouTube video player" frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -190,13 +192,33 @@
             </div>
         </div>
         <div class="container-fluid pt-4 px-4">
-            <div class="row bg-light rounded mx-0">
-                <div>
-                    <form id="youtube_title"></form>
-                    <hr>
-                    <form id="youtube_chname"></form>
-                    <hr>
-                    <form id="youtube_desc"></form>
+            <div class="row g-4">
+                <div class="col-sm-12 col-xl-12">
+                    <div class="row bg-light rounded p-4">
+                        <div>
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <h6 class="mb-0">Youtube Title</h6>
+                                <%--                        <a href="">Show All</a>--%>
+                            </div>
+                            <form id="youtube_title"></form>
+                            <hr>
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <h6 class="mb-0">Channel Name</h6>
+                                <%--                        <a href="">Show All</a>--%>
+                            </div>
+                            <form id="youtube_chname"></form>
+                            <hr>
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <h6 class="mb-0">Youtube Description</h6>
+                                <%--                        <a href="">Show All</a>--%>
+                            </div>
+                            <details>
+                                <summary>Detail Description</summary>
+                                <p></p>
+                                <form id="youtube_desc"></form>
+                            </details>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

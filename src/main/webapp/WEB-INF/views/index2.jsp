@@ -67,6 +67,11 @@
             location.href = "/deleteYt?nSeq=" + seq;
         }
 
+        //생방 상세보기 이동
+        function doLiveDetail(seq) {
+            location.href = "/SingleST/LiveSStud?nSeq=" + seq;
+        }
+
         //생방 삭제로 이동
         function doLiveDelete(seq) {
 

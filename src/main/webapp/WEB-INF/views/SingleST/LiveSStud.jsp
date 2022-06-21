@@ -39,41 +39,7 @@
     <link href="/css/style.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
     <script src="/js/jquery-3.6.0.js"></script>
-    <%--    <script>--%>
 
-    <%--        var playlist = 'CuklIb9d3fI';--%>
-    <%--        //https://www.youtube.com/watch?v=유튜브 영상 고유번호--%>
-    <%--        //playlist만 원하는 재생목록에 따라 가져오면 됨--%>
-
-    <%--        //maxResult는 50 이하--%>
-    <%--        $(document).ready(function () {--%>
-    <%--            $.get(--%>
-    <%--                "https://www.googleapis.com/youtube/v3/videos", {--%>
-    <%--                    part: 'snippet',--%>
-    <%--                    maxResults: 5,--%>
-    <%--                    id: playlist,--%>
-    <%--                    key: 'AIzaSyAfJQyw0LqcMkaJi0hCw35NUPyjV7Br-4g'--%>
-    <%--                },--%>
-
-    <%--                function (data) {--%>
-    <%--                    var output;--%>
-    <%--                    $.each(data.items, function (i, item) {--%>
-    <%--                        console.log(item);--%>
-    <%--                        vTitle = item.snippet.title;--%>
-    <%--                        vId = item.snippet.channelId;--%>
-    <%--                        vDe = item.snippet.description;--%>
-    <%--                        vTh = item.snippet.channelTitle;--%>
-    <%--                        vaaa = item.snippet.thumbnails.standard.url;--%>
-    <%--                        output = '<li>' + vTitle + '<br>--videodescription: ' + vDe + '<br>--videothumbnails: ' + vTh + '<br></li>';--%>
-    <%--                        /*output= '<li>'+vTitle+'<iframe src=\"//www.youtube.com/embed/'+vId+'\"></iframe></li>';*/--%>
-    <%--                        $("#results").append(output);--%>
-    <%--                    })--%>
-    <%--                }--%>
-    <%--            );--%>
-
-    <%--        });--%>
-
-    <%--    </script>--%>
     <script type="text/javascript">
         <%
 
@@ -82,9 +48,6 @@
     %>
 
         var playlist = "<%=yt_address%>";
-        // var playlist = 'CuklIb9d3fI';
-        //https://www.youtube.com/watch?v=유튜브 영상 고유번호
-        //playlist만 원하는 재생목록에 따라 가져오면 됨
 
         //maxResult는 50 이하
         $(document).ready(function () {
@@ -182,7 +145,7 @@
 
         <!-- Blank Start -->
         <div class="container-fluid pt-4 px-4">
-            <div class="row bg-light rounded mx-0">
+            <div class="row bg-light rounded p-4">
                 <iframe width="100%" height="480" src="https://www.youtube.com/embed/<%=yt_address%>"
                         title="YouTube video player" frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -190,13 +153,33 @@
             </div>
         </div>
         <div class="container-fluid pt-4 px-4">
-            <div class="row bg-light rounded mx-0">
-                <div>
-                    <form id="youtube_title"></form>
-                    <hr>
-                    <form id="youtube_chname"></form>
-                    <hr>
-                    <form id="youtube_desc"></form>
+            <div class="row g-4">
+                <div class="col-sm-12 col-xl-12">
+                    <div class="row bg-light rounded p-4">
+                        <div>
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <h6 class="mb-0">Youtube Title</h6>
+                                <%--                        <a href="">Show All</a>--%>
+                            </div>
+                            <form id="youtube_title"></form>
+                            <hr>
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <h6 class="mb-0">Channel Name</h6>
+                                <%--                        <a href="">Show All</a>--%>
+                            </div>
+                            <form id="youtube_chname"></form>
+                            <hr>
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <h6 class="mb-0">Youtube Description</h6>
+                                <%--                        <a href="">Show All</a>--%>
+                            </div>
+                            <details>
+                                <summary>Detail Description</summary>
+                                <p></p>
+                                <form id="youtube_desc"></form>
+                            </details>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
