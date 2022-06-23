@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -47,6 +49,75 @@ public class UserInfoController {
 
         return "user/UserRegForm";
     }
+
+    // 아이디 중복 검사
+    @RequestMapping(value = "/user/memberIdChk", method = RequestMethod.POST)
+    @ResponseBody
+    public String memberIdChkPOST(HttpServletRequest request) throws Exception{
+
+        log.info("memberIdChk() 진입");
+
+        String user_id = CmmUtil.nvl(request.getParameter("user_id")); //아이디
+
+        log.info("user_id : " + user_id);
+
+        int res = 0;
+
+        //웹(회원정보 입력화면)에서 받는 정보를 저장할 변수
+        UserInfoDTO pDTO = null;
+
+
+
+        pDTO = new UserInfoDTO();
+
+        pDTO.setUser_id(user_id);
+
+        /*
+         * #######################################################
+         *        웹(회원정보 입력화면)에서 받는 정보를 DTO에 저장하기 끝!!
+         *
+         *        무조건 웹으로 받은 정보는 DTO에 저장해야 한다고 이해하길 권함
+         * #######################################################
+         */
+
+        // 로그인을 위해 아이디와 비밀번호가 일치하는지 확인하기 위한 userInfoService 호출하기
+        UserInfoDTO rDTO = userInfoService.getUserIdCheck(pDTO, colNm);
+
+        if (CmmUtil.nvl(rDTO.getUser_id()).length()>0) {
+            res = 1;
+        }
+
+        log.info("res : " + res);
+
+        String rDTO_user_id = (String) rDTO.getUser_nm();
+
+        log.info("rDTO_user_id : " + rDTO_user_id);
+        /*
+         * 로그인을 성공했다면, 회원아이디 정보를 session에 저장함
+         *
+         * 세션은 톰켓(was)의 메모리에 존재하며, 웹사이트에 접속한 사람(연결된 객체)마다 메모리에 값을 올린다.
+         *           *
+         * 예) 톰켓에 100명의 사용자가 로그인했다면, 사용자 각각 회원아이디를 메모리에 저장하며.
+         *    메모리에 저장된 객체의 수는 100개이다.
+         *    따라서 과도한 세션은 톰켓의 메모리 부하를 발생시켜 서버가 다운되는 현상이 있을 수 있기때문에,
+         *    최소한으로 사용하는 것을 권장한다.
+         *
+         * 스프링에서 세션을 사용하기 위해서는 함수명의 파라미터에 HttpSession session 존재해야 한다.
+         * 세션은 톰켓의 메모리에 저장되기 때문에 url마다 전달하는게 필요하지 않고,
+         * 그냥 메모리에서 부르면 되기 때문에 jsp, controller에서 쉽게 불러서 쓸수 있다.
+         * */
+
+        if(res == 1) {
+
+            return "fail";	// 중복 아이디가 존재
+
+        } else {
+
+            return "success";	// 중복 아이디 x
+
+        }
+
+    } // memberIdChkPOST() 종료
 
     /**
      * 회원가입 로직 처리

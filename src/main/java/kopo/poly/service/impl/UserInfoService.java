@@ -1,6 +1,5 @@
 package kopo.poly.service.impl;
 
-import kopo.poly.dto.SStudioDTO;
 import kopo.poly.dto.UserInfoDTO;
 import kopo.poly.persistance.mongodb.impl.SequenceMapper;
 import kopo.poly.persistance.mongodb.impl.UserInfoMapper;
@@ -143,6 +142,54 @@ public class UserInfoService implements IUserInfoService {
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
         log.info(this.getClass().getName() + ".getUserLoginCheck End!");
+
+        return rDTO;
+    }
+
+    @Override
+    public UserInfoDTO getUserIdCheck(UserInfoDTO pDTO, String colNm) throws Exception {
+
+        // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
+        log.info(this.getClass().getName() + ".getUserIdCheck start!");
+
+        // 로그인 성공 : 1, 실패 : 0
+        int res = 0;
+
+        // 로그인을 위해 아이디와 비밀번호가 일치하는지 확인하기 위한 mapper 호출하기
+        UserInfoDTO rDTO = userInfoMapper.getUserIdCheck(pDTO, colNm);
+
+        if (rDTO == null) {
+            rDTO = new UserInfoDTO();
+
+        }
+
+        /*
+         * #######################################################
+         *                    성공 여부 체크 시작!!
+         * #######################################################
+         */
+
+        /*
+         * userInfoMapper로 부터 SELECT 쿼리의 결과로 회원아이디를 받아왔다면, 로그인 성공!!
+         *
+         * DTO의 변수에 값이 있는지 확인하기 처리속도 측면에서 가장 좋은 방법은 변수의 길이를 가져오는 것이다.
+         * 따라서  .length() 함수를 통해 회원아이디의 글자수를 가져와 0보다 큰지 비교한다.
+         * 0보다 크다면, 글자가 존재하는 것이기 때문에 값이 존재한다.
+         */
+        if (CmmUtil.nvl(rDTO.getUser_id()).length()>0) {
+            res = 1;
+        }
+
+        /*
+         * #######################################################
+         *                    성공 여부 체크 끝!!
+         * #######################################################
+         */
+
+        log.info("res : " + res);
+
+        // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
+        log.info(this.getClass().getName() + ".getUserIdCheck End!");
 
         return rDTO;
     }

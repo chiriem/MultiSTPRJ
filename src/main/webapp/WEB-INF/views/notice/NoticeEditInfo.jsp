@@ -368,7 +368,7 @@
                     </div>
                     <h6>Content</h6>
                     <textarea class="form-control" name="contents"
-                              style="width: 600px; height: 400px"><%=CmmUtil.nvl(rDTO.getContents()).replaceAll("\r\n", "<br/>") %></textarea>
+                              style="width: 600px; height: 400px"><%=CmmUtil.nvl(rDTO.getContents())%></textarea>
 
                     <button type="submit" class="btn btn-primary">수정</button>
                     <button type="reset" class="btn btn-primary">다시 작성</button>

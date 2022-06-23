@@ -84,7 +84,7 @@
 
                 url: sTargetUrl,
 
-                dataType: "jsonp",
+                dataType: "json",
 
                 success: function (jdata) {
 

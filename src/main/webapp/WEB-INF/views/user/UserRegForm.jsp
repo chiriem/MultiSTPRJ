@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="EUC-KR" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,49 +26,54 @@
 
     <!-- Template Stylesheet -->
     <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/join.css" rel="stylesheet">
     <meta charset="EUC-KR">
     <title>Sign Up</title>
+    <script src="/js/jquery-3.6.0.js">
+
+    </script>
     <script type="text/javascript">
-        //ȸ������ ������ ��ȿ�� üũ�ϱ�
+        // 회원가입 정보의 유효성 체크하기
         function doRegUserCheck(f) {
 
             if (f.user_id.value == "") {
-                alert("���̵� �Է��ϼ���.");
+                alert("아이디를 입력하세요.");
                 f.user_id.focus();
                 return false;
             }
 
-            if (f.email.value == "") {
-                alert("�̸��� �Է��ϼ���.");
-                f.email.focus();
-                return false;
-            }
-
             if (f.user_nm.value == "") {
-                alert("�̸��� �Է��ϼ���.");
+                alert("이름을 입력하세요.");
                 f.user_nm.focus();
                 return false;
             }
 
             if (f.user_pw.value == "") {
-                alert("��й�ȣ�� �Է��ϼ���.");
+                alert("비밀번호를 입력하세요.");
                 f.user_pw.focus();
                 return false;
             }
 
             if (f.user_pw2.value == "") {
-                alert("��й�ȣȮ���� �Է��ϼ���.");
+                alert("비밀번호확인을 입력하세요.");
+                f.user_pw2.focus();
+                return false;
+            }
+
+            if (f.user_pw2.value == f.user_pw.value){
+                alert("비밀번호를 다시 확인해주세요.")
                 f.user_pw2.focus();
                 return false;
             }
 
             if (f.age.value == "") {
-                alert("����⵵�� �Է��ϼ���.");
+                alert("출생년도를 입력하세요.");
                 f.age.focus();
                 return false;
             }
         }
     </script>
+
 </head>
 <body>
 <div class="container-xxl position-relative bg-white d-flex p-0">
@@ -90,31 +95,37 @@
                     <form name="f" method="post" action="/user/insertUserInfo" onsubmit="return doRegUserCheck(this);">
                         <div class="d-flex align-items-center justify-content-between mb-3">
                             <a href="/index" class="">
-                                <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>MultiStudio</h3>
+                                <h3 class="text-primary"><i class="fa fa-hashtag"></i>MultiStudio</h3>
                             </a>
                             <h3>Sign Up</h3>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" name="user_nm" placeholder="User Name">
+                            <input type="text" class="form-control" name="user_nm" placeholder="User Name" id="user_nm">
                             <label>Username</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" name="user_id" placeholder="user_id">
+                            <input type="text" class="id_input" name="user_id" placeholder="user_id" id="user_id">
                             <label>User id</label>
+                            <span class="id_input_re_1">사용 가능한 아이디입니다.</span>
+                            <span class="id_input_re_2">아이디가 이미 존재합니다.</span>
+                            <span class="id_input_re_3">특수문자를 빼주세요</span>
                         </div>
                         <div class="form-floating mb-4">
-                            <input type="password" class="form-control" name="user_pw" placeholder="Password">
+                            <input type="password" class="form-control" name="user_pw" placeholder="Password"
+                                   id="password">
                             <label>Password</label>
                         </div>
                         <div class="form-floating mb-4">
-                            <input type="password" class="form-control" name="user_pw2" placeholder="Password Check">
+                            <input type="password" class="form-control" name="user_pw2" placeholder="Password Check"
+                                   id="password2">
                             <label>Password Check</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" name="age" placeholder="2000">
+                            <input type="text" class="form-control" name="age" placeholder="2000" id="age">
                             <label>Birth year</label>
                         </div>
-                        <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Sign Up</button>
+                        <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Sign Up
+                        </button>
                         <p class="text-center mb-0">Already have an Account? <a href="/user/LoginForm">Sign In</a></p>
                     </form>
                 </div>
@@ -137,6 +148,114 @@
 
 <!-- Template Javascript -->
 <script src="/js/main.js"></script>
+
+<script type="text/javascript">
+
+    $('#user_id').on("propertychange change keyup paste input", function(){
+
+
+        var user_id = document.getElementById("user_id");
+        console.log(user_id.value);
+
+        var data = {"user_id": user_id.value};
+
+        console.log(data);
+
+
+        // var regExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;
+
+        $.ajax({
+            type: "post",
+            url: "/user/memberIdChk",
+            data: data,
+            success: function (result) {
+
+                // if (regExp.test(document.getElementById("user_id"))){
+                //     $('.id_input_re_3').css("display", "none");
+                // } else {
+                //     $('.id_input_re_3').css("display", "inline-block");
+                // }
+
+                if (result != 'fail') {
+                    $('.id_input_re_1').css("display", "inline-block");
+                    $('.id_input_re_2').css("display", "none");
+                    idckCheck = true;
+                } else {
+                    $('.id_input_re_2').css("display", "inline-block");
+                    $('.id_input_re_1').css("display", "none");
+                    idckCheck = false;
+                }
+
+            }// success 종료
+        }); // ajax 종료
+
+    });
+
+    $('#user_id').on("propertychange change keyup paste input", function(){
+
+
+        var user_id = document.getElementById("user_id");
+        console.log(user_id.value);
+
+        var data = {"user_id": user_id.value};
+
+        console.log(data);
+
+
+
+        $.ajax({
+            type: "post",
+            url: "/user/memberIdChk",
+            data: data,
+            success: function (result) {
+
+                if (result != 'fail') {
+                    $('.id_input_re_1').css("display", "inline-block");
+                    $('.id_input_re_2').css("display", "none");
+                    idckCheck = true;
+                } else {
+                    $('.id_input_re_2').css("display", "inline-block");
+                    $('.id_input_re_1').css("display", "none");
+                    idckCheck = false;
+                }
+
+
+
+            }// success 종료
+        }); // ajax 종료
+
+    });
+
+
+    //
+    // function fn_validateId(str)
+    // {
+    //     var id = str;
+    //
+    //     //특수문자가 있는지 확인
+    //     var spe = id.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+    //     // 한글이 있는지 확인
+    //     var korean = id.search(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/gi);
+    //
+    //     if ((id.length < 6) || (id.length > 20)) {
+    //         alert("아이디를 6자리 ~ 20자리 이내로 입력해주세요.");
+    //         $("#alertIdValidate").show();
+    //         return false;
+    //     }
+    //     if (id.search(/₩s/) != -1) {
+    //         alert("아이디는 공백없이 입력해주세요.");
+    //         return false;
+    //     }
+    //     if (spe > 0 || korean > 0) {
+    //         alert("아이디는 영문,숫자만 입력해주세요.");
+    //         return false;
+    //     }
+    //
+    //     return true;
+    // }
+
+
+</script>
 </body>
 </html>
 

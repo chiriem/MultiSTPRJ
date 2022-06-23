@@ -209,7 +209,7 @@
                 </div>
                 <div class="form-floating">
                     <textarea class="form-control" name="contents"
-                              style="width: 600px; height: 400px"><%=CmmUtil.nvl(rDTO.getContents()).replaceAll("\r\n", "<br/>") %></textarea>
+                              style="width: 600px; height: 400px"><%=CmmUtil.nvl(rDTO.getContents()) %></textarea>
                 </div>
                 <button type="button" class="btn btn-primary m-2" onclick="doList()">목록</button>
                 <button type="button" class="btn btn-primary m-2" onclick="doEdit()">수정</button>

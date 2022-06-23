@@ -1,6 +1,5 @@
 package kopo.poly.service;
 
-import kopo.poly.dto.SStudioDTO;
 import kopo.poly.dto.UserInfoDTO;
 
 public interface IUserInfoService {
@@ -24,6 +23,8 @@ public interface IUserInfoService {
      * @throws Exception
      */
     UserInfoDTO getUserLoginCheck(UserInfoDTO pDTO, String colNm) throws Exception;
+
+    UserInfoDTO getUserIdCheck(UserInfoDTO pDTO, String colNm) throws Exception;
 
     int updateUserInfo(UserInfoDTO pDTO, String colNm) throws Exception;
 

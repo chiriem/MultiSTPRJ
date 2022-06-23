@@ -124,6 +124,12 @@
             location.href = "/notice/NoticeInfo?nSeq=" + seq;
         }
 
+        function getHtml(){
+            var html = $("#test").val().replace(/(?:\r\n|\r|\n)/g, '<br />');
+            $("#result").html(html);
+            $("#raw").text(html);
+        }
+
     </script>
 </head>
 
@@ -212,10 +218,10 @@
                     </div>
                     <div class="form-floating">
                         <textarea class="form-control" name="contents" style="width: 600px; height: 400px"
-                                  placeholder="Leave comment here"></textarea>
+                                  placeholder="Leave comment here" id="test"></textarea>
                         <label>Comments</label>
                     </div>
-                    <button type="submit" class="btn btn-primary m-2">Submit!</button>
+                    <button type="submit" onclick="getHtml();" class="btn btn-primary m-2">Submit!</button>
                     <button type="reset" class="btn btn-primary m-2">Reset</button>
 
                 </form>
