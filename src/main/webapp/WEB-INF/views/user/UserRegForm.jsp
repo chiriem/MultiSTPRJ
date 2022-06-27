@@ -60,7 +60,7 @@
                 return false;
             }
 
-            if (f.user_pw2.value == f.user_pw.value){
+            if (f.user_pw2.value != f.user_pw.value){
                 alert("비밀번호를 다시 확인해주세요.")
                 f.user_pw2.focus();
                 return false;
@@ -161,20 +161,12 @@
 
         console.log(data);
 
-
-        // var regExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;
-
         $.ajax({
             type: "post",
             url: "/user/memberIdChk",
             data: data,
             success: function (result) {
 
-                // if (regExp.test(document.getElementById("user_id"))){
-                //     $('.id_input_re_3').css("display", "none");
-                // } else {
-                //     $('.id_input_re_3').css("display", "inline-block");
-                // }
 
                 if (result != 'fail') {
                     $('.id_input_re_1').css("display", "inline-block");
