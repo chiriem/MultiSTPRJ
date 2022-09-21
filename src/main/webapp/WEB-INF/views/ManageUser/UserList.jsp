@@ -4,6 +4,8 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="kopo.poly.dto.NoticeDTO" %>
 <%@ page import="kopo.poly.util.CmmUtil" %>
+<%@ page import="kopo.poly.controller.ManageUserController" %>
+<%@ page import="kopo.poly.dto.ManageUserDTO" %>
 <%
     String SS_USER_ID = (String) session.getAttribute("SS_USER_ID");
 
@@ -12,30 +14,18 @@
     }
 
     //id가 "admin" 인 사람만 수정 가능하도록 하기(1: admin 아님 / 2: admin 확인 (수정 가능) / 3: 로그인 안함)
-    int edit = 1;
-
-    //로그인 안했다면....
-    if (SS_USER_ID.equals("")) {
-        edit = 3;
-
-        //본인이 작성한 글이면 2가 되도록 변경
-    } else if (SS_USER_ID.equals("admin")) {
-        edit = 2;
-
-    }
-
-
+    int edit = 2;
 
     System.out.println("SS_USER_ID : " + SS_USER_ID);
 %>
 
 <%
 
-    List<NoticeDTO> rList = (List<NoticeDTO>) request.getAttribute("rList");
+    List<ManageUserDTO> rList = (List<ManageUserDTO>) request.getAttribute("rList");
 
 //게시판 조회 결과 보여주기
     if (rList == null) {
-        rList = new ArrayList<NoticeDTO>();
+        rList = new ArrayList<ManageUserDTO>();
 
     }
 
@@ -76,7 +66,7 @@
         //상세보기 이동
         function doDetail(seq) {
 
-            location.href = "/notice/NoticeInfo?nSeq=" + seq;
+            location.href = "/ManageUser/UserInfo?nSeq=" + seq;
         }
 
         function dowrite() {
@@ -135,7 +125,7 @@
     <div class="content">
         <!-- Navbar Start -->
                 <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
-                    <a href="/index" class="navbar-brand d-flex d-lg-none me-4">
+                    <a href="index" class="navbar-brand d-flex d-lg-none me-4">
                         <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
                     </a>
                     <a href="#" class="sidebar-toggler flex-shrink-0">
@@ -170,38 +160,46 @@
         <div class="container-fluid pt-4 px-4">
             <div class="bg-light text-center rounded p-4">
                 <div class="d-flex align-items-center justify-content-between mb-4">
-                    <h6 class="mb-0">Notice</h6>
-                    <a href="javascript:dowrite();">[글쓰기]</a>
+                    <h6 class="mb-0">User Info</h6>
                 </div>
                 <div class="table-responsive">
                     <div class="divTable minimalistBlack">
                         <div class="divTableHeading">
                             <div class="divTableRow">
-                                <div class="divTableHead">Title</div>
-                                <div class="divTableHead" style="width: 100px">Views</div>
-                                <div class="divTableHead" style="width: 150px">Regist date</div>
+                                <div class="divTableHead" style="width: 120px">User Sequence</div>
+                                <div class="divTableHead">User id</div>
+                                <div class="divTableHead" style="width: 100px">User Name</div>
+                                <div class="divTableHead" style="width: 100px">User Auth</div>
+                                <div class="divTableHead" style="width: 100px">User Age</div>
+                                <div class="divTableHead" style="width: 100px">Delete</div>
                             </div>
                         </div>
 
                         <div class="divTableBody">
                             <%
                                 for (int i = 0; i < rList.size(); i++) {
-                                    NoticeDTO rDTO = rList.get(i);
+                                    ManageUserDTO rDTO = rList.get(i);
 
                                     if (rDTO == null) {
-                                        rDTO = new NoticeDTO();
+                                        rDTO = new ManageUserDTO();
                                     }
 
                             %>
                             <div class="divTableRow">
                                 <div class="divTableCell">
-                                    <a href="javascript:doDetail('<%=CmmUtil.nvl(rDTO.getNotice_seq())%>');">
-                                        <%=CmmUtil.nvl(rDTO.getTitle()) %>
+                                    <a href="javascript:doDetail('<%=CmmUtil.nvl(rDTO.getUser_seq())%>');">
+                                        <%=CmmUtil.nvl(rDTO.getUser_seq()) %>
                                     </a>
                                 </div>
-                                <div class="divTableCell"><%=CmmUtil.nvl(rDTO.getRead_cnt()) %>
+                                <div class="divTableCell"><%=CmmUtil.nvl(rDTO.getUser_id()) %>
                                 </div>
-                                <div class="divTableCell"><%=CmmUtil.nvl(rDTO.getReg_dt()) %>
+                                <div class="divTableCell"><%=CmmUtil.nvl(rDTO.getUser_nm()) %>
+                                </div>
+                                <div class="divTableCell"><%=CmmUtil.nvl(rDTO.getUser_auth()) %>
+                                </div>
+                                <div class="divTableCell"><%=CmmUtil.nvl(rDTO.getAge()) %>
+                                </div>
+                                <div class="divTableCell">delete
                                 </div>
                             </div>
                             <%

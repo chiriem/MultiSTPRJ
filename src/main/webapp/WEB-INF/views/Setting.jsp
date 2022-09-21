@@ -2,6 +2,8 @@
 <%@ page import="kopo.poly.dto.SStudioDTO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="kopo.poly.dto.NoticeDTO" %>
+<%@ page import="kopo.poly.dto.ManageUserDTO" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%
@@ -10,6 +12,7 @@
     String SS_AGE = (String) session.getAttribute("SS_AGE");
 
     List<SStudioDTO> rList = (List<SStudioDTO>) request.getAttribute("rList");
+
 
     // 동영상 조회 결과 보여주기
     if (rList == null) {
@@ -104,6 +107,12 @@
         function doUserDelete(seq) {
 
             location.href = "/deleteUserInfo?nSeq=" + seq;
+        }
+
+        //유저 상세보기 이동
+        function doDetail(seq) {
+
+            location.href = "/ManageUser/UserInfo?nSeq=" + seq;
         }
     </script>
     <link href="/youtube_tool/css/multi_view.css" rel="stylesheet">
@@ -319,13 +328,18 @@
                         </form>
                     </div>
                 </div>
-                <div class="col-sm-12 col-xl-6 text-center">
+                <% if (SS_USER_ID.equals("admin")) { %>
+                <div class="col-sm-12">
                     <div class="bg-light rounded h-100 p-4">
-                        <iframe src="https://titanembeds.com/embed/979011041608474694" height="600" width="90%"
-                                frameborder="0"></iframe>
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <h6 class="mb-0">Only For Admin</h6>
+                            <%--                        <a href="">Show All</a>--%>
+                        </div>
+                        <br>
+                        <a href="/ManageUser/UserList">Go to manage Users</a>
                     </div>
                 </div>
-
+                <% } %>
             </div>
         </div>
         <!-- Form End -->
