@@ -1,28 +1,12 @@
 <%@ page import="kopo.poly.util.CmmUtil" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="kopo.poly.dto.SStudioDTO" %>
-<%
-    String SS_USER_ID = (String) session.getAttribute("SS_USER_ID");
-
-    List<SStudioDTO> rList = (List<SStudioDTO>) request.getAttribute("rList");
-
-    // 동영상 조회 결과 보여주기
-    if (rList == null) {
-        rList = new ArrayList<SStudioDTO>();
-
-    }
-%>
-<%
-    String msg = "";
-    if (SS_USER_ID != null) {
-        msg = SS_USER_ID + "님 환영합니다!";
-    }
-%>
+<%@ page import="kopo.poly.dto.NoticeDTO" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+<%
+    String SS_USER_ID = (String) session.getAttribute("SS_USER_ID");
+%>
 <head>
     <meta charset="utf-8">
     <title>MultiStudio - Multiple Streaming Studio</title>
@@ -49,49 +33,92 @@
 
     <!-- Template Stylesheet -->
     <link href="/css/style.css" rel="stylesheet">
-    <link href="/css/table_with_div.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-    <script src="/js/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+            integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+    <%
+        NoticeDTO rDTO = (NoticeDTO) request.getAttribute("rDTO");
+
+        //공지글 정보를 못불러왔다면, 객체 생성
+        if (rDTO == null) {
+            rDTO = new NoticeDTO();
+
+        }
+
+        String ss_user_id = CmmUtil.nvl((String) session.getAttribute("SS_USER_ID"));
+
+        //id가 "admin" 인 사람만 수정 가능하도록 하기(1: admin 아님 / 2: admin 확인 (수정 가능) / 3: 로그인 안함)
+        int edit = 1;
+
+        //로그인 안했다면....
+        if (ss_user_id.equals("")) {
+            edit = 3;
+
+            //본인이 작성한 글이면 2가 되도록 변경
+        } else if (ss_user_id.equals("admin")) {
+            edit = 2;
+
+        }
+
+
+        System.out.println("ss_user_id : " + ss_user_id);
+
+    %>
+
     <script type="text/javascript">
-        //상세보기 이동
-        function doDetail(seq) {
-            location.href = "/SingleST/SStud?nSeq=" + seq;
+
+        //수정하기
+        function doEdit() {
+            if ("<%=edit%>" == 2) {
+                location.href = "/notice/NoticeEditInfo?nSeq=<%=CmmUtil.nvl(rDTO.getNotice_seq())%>";
+
+            } else if ("<%=edit%>" == 3) {
+                alert("로그인 하시길 바랍니다.");
+
+            } else {
+                alert("관리자만 수정 가능합니다.");
+
+            }
         }
 
-        //생방 상세보기 이동
-        function doLiveDetail(seq) {
-            location.href = "/SingleST/LiveSStud?nSeq=" + seq;
+
+        //삭제하기
+        function doDelete() {
+            if ("<%=edit%>" == 2) {
+                if (confirm("작성한 글을 삭제하시겠습니까?")) {
+                    <%--location.href="/notice/NoticeDelete?nSeq=<%=CmmUtil.nvl(rDTO.getNotice_seq())%>";--%>
+                    //location.href="/notice/NoticeDelete";
+
+                    let f = document.getElementById("f");
+
+
+                    f.action = "/notice/NoticeDelete";
+                    f.submit();
+
+                }
+
+            } else if ("<%=edit%>" == 3) {
+                alert("로그인 하시길 바랍니다.");
+
+            } else {
+                alert("관리자만 삭제 가능합니다.");
+
+            }
         }
 
-        //삭제로 이동
-        function doDelete(seq) {
+        //목록으로 이동
+        function doList() {
+            location.href = "/notice/NoticeList";
 
-            console.log("doDelete")
-            location.href = "/deleteYt?yt_address=" + seq;
-        }
-
-        //생방 삭제로 이동
-        function doLiveDelete(seq) {
-
-            console.log("doLiveDelete")
-            location.href = "/deleteLiveYt?yt_address=" + seq;
         }
 
     </script>
+
 </head>
 
 <body>
-
 <div class="container-xxl position-relative bg-white d-flex p-0">
-    <!-- Spinner Start -->
-    <div id="spinner"
-         class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-    </div>
-    <!-- Spinner End -->
-
 
     <!-- Sidebar Start -->
     <div class="sidebar pe-4 pb-3">
@@ -127,10 +154,8 @@
             <a href="#" class="sidebar-toggler flex-shrink-0">
                 <i class="fa fa-bars"></i>
             </a>
-            &nbsp&nbsp
-            <h6>
-            </h6>
             <div class="navbar-nav align-items-center ms-auto">
+
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                         <i class="fa fa-cog fa-fw"></i>
@@ -153,73 +178,48 @@
         </nav>
         <!-- Navbar End -->
 
-        <!-- YtList Start -->
+        <!-- Info Start -->
+
+
         <div class="container-fluid pt-4 px-4">
-            <div class="row g-4">
-                <div class="col-sm-12 col-xl-12">
-                    <div class="bg-light rounded p-4">
-                        <form name="f" method="post" action="/user/getYtaddress">
-                            <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0">동영상
-                                    &nbsp&nbsp
-                                    <% if (SS_USER_ID != null) { %>
-                                    <a href="/SingleST/SStudioadd" ><i class="fa-solid fa-plus"></i></a>
-                                    <%} %>
-                                </h6>
-                                <button type="submit" class="btn btn-primary m-2">load!</button>
-                            </div>
-
-                            <div class="table-responsive">
-                                <div class="divTable minimalistBlack">
-                                    <div class="divTableHeading">
-                                        <div class="divTableRow">
-                                            <div class="divTableHead" style="width: 200px">thumbnail</div>
-                                            <div class="divTableHead">Title</div>
-                                            <div class="divTableHead" style="width: 100px">Delete</div>
-                                        </div>
-                                    </div>
-
-                                    <div class="divTableBody">
-                                        <%
-                                            for (int i = 0; i < rList.size(); i++) {
-                                                SStudioDTO rDTO = rList.get(i);
-
-                                                if (rDTO == null) {
-                                                    rDTO = new SStudioDTO();
-                                                }
-
-                                        %>
-                                        <div class="divTableRow">
-                                            <div class="divTableCell"><img class="tnail"
-                                            <%--                                                                           src="http://img.youtube.com/vi/<%=CmmUtil.nvl(rDTO.getYt_address()) %>/mqdefault.jpg"--%>
-                                                                           src="<%=CmmUtil.nvl(rDTO.getThumbnailPath())%>"
-                                                                           width="180" height="120">
-                                            </div>
-                                            <div class="divTableCell" id="<%=CmmUtil.nvl(rDTO.getYt_seq())%>">
-                                                <a href="javascript:doDetail('<%=CmmUtil.nvl(rDTO.getYt_seq())%>');">
-                                                    <%=CmmUtil.nvl(rDTO.getTitle())%>
-                                                </a>
-                                            </div>
-                                            <div class="divTableCell" style="width: 100px">
-                                                <a href="javascript:doDelete('<%=CmmUtil.nvl(rDTO.getYt_address())%>');">
-                                                    Delete!
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <%
-                                            }
-                                        %>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </form>
+            <div class="bg-light rounded p-4">
+                <form id="f" method="post">
+                    <input type="hidden" name="nSeq" value="<%=CmmUtil.nvl(rDTO.getNotice_seq())%>"/>
+                </form>
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">제목</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="title" style="width: 430px;"
+                               value="<%=CmmUtil.nvl(rDTO.getTitle())%>" readonly>
                     </div>
                 </div>
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">작성일</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="title" style="width: 430px;"
+                               value="<%=CmmUtil.nvl(rDTO.getReg_dt())%>" readonly>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">조회수</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="title" style="width: 430px;"
+                               value="<%=CmmUtil.nvl(rDTO.getRead_cnt())%>" readonly>
+                    </div>
+                </div>
+                <div class="form-floating">
+                    <textarea class="form-control" name="contents"
+                              style="width: 600px; height: 400px"><%=CmmUtil.nvl(rDTO.getContents()) %></textarea>
+                </div>
+                <button type="button" class="btn btn-primary m-2" onclick="doList()">목록</button>
+                <button type="button" class="btn btn-primary m-2" onclick="doEdit()">수정</button>
+                <button type="button" class="btn btn-primary m-2" onclick="doDelete()">삭제</button>
+                <!-- 프로세스 처리용 iframe / form 태그에서 target을 iframe으로 한다. -->
+                <iframe name="ifrPrc" style="display:none"></iframe>
 
             </div>
         </div>
-        <!-- YtList End -->
+        <!-- Info End -->
 
 
         <!-- Footer Start -->
@@ -227,7 +227,7 @@
             <div class="bg-light rounded-top p-4">
                 <div class="row">
                     <div class="col-12 col-sm-6 text-center text-sm-start">
-                        &copy; <a href="#">MultiST</a>, All Right Reserved.
+                        &copy; <a href="/index">MultiST</a>, All Right Reserved.
                     </div>
                     <div class="col-12 col-sm-6 text-center text-sm-end">
                         <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
@@ -246,7 +246,7 @@
 </div>
 
 <!-- JavaScript Libraries -->
-<script src="/js/jquery-3.6.0.js"></script>
+<script src="/js/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/lib/chart/chart.min.js"></script>
 <script src="/lib/easing/easing.min.js"></script>

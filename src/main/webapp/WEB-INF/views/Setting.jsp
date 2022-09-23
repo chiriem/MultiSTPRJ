@@ -13,6 +13,9 @@
 
     List<SStudioDTO> rList = (List<SStudioDTO>) request.getAttribute("rList");
 
+    if (SS_USER_ID == null) {
+        SS_USER_ID = "";
+    }
 
     // 동영상 조회 결과 보여주기
     if (rList == null) {
@@ -192,7 +195,7 @@
         <!-- Form Start -->
         <div class="container-fluid pt-4 px-4">
             <div class="row g-4">
-                <% if (SS_USER_ID != null) { %>
+                <% if (SS_USER_ID != "") { %>
                 <div class="col-sm-12">
                     <div class="bg-light rounded h-100 p-4">
                         <div class="d-flex align-items-center justify-content-between mb-2">
@@ -339,7 +342,17 @@
                         <a href="/ManageUser/UserList">Go to manage Users</a>
                     </div>
                 </div>
-                <% } %>
+                <% } else if (SS_USER_ID.equals("")) {%>
+                <% }%>
+                <div class="col-sm-12">
+                    <div class="bg-light rounded h-100 p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <h6 class="mb-0">Contact Us</h6>
+                        </div>
+                        <br>
+                        <a href="/chat/intro">Click Here</a>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- Form End -->

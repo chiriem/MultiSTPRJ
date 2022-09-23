@@ -69,17 +69,15 @@
             location.href = "/ManageUser/UserInfo?nSeq=" + seq;
         }
 
-        function dowrite() {
-            if ("<%=edit%>" == 2) {
-                location.href = "/notice/NoticeReg";
+        //삭제로 이동
+        function doDelete(seq) {
 
-            } else if ("<%=edit%>" == 3) {
-                alert("로그인 하시길 바랍니다.");
-
-            } else {
-                alert("관리자만 수정 가능합니다.");
+            if (seq == "17") {
 
             }
+
+            console.log("doDelete")
+            location.href = "/ManageUser/DeleteUser?nSeq=" + seq;
         }
 
     </script>
@@ -105,7 +103,8 @@
             </a>
             <div class="navbar-nav w-100">
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-youtube-play me-2"></i>Main</a>
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                            class="fa fa-youtube-play me-2"></i>Main</a>
                     <div class="dropdown-menu bg-transparent border-0">
                         <a href="/index" class="dropdown-item">Youtube</a>
                         <a href="/index2" class="dropdown-item">Youtube LiveStream</a>
@@ -113,7 +112,8 @@
                 </div>
                 <a href="/MultiStudio/MultiStudio" class="nav-item nav-link"><i class="fa fa-youtube-play me-2"
                                                                                 aria-hidden="false"></i>MultiStudio</a>
-                <a href="/notice/NoticeList" class="nav-item nav-link"><i class="fa fa-book me-2" aria-hidden="false"></i>Notice</a>
+                <a href="/notice/NoticeList" class="nav-item nav-link"><i class="fa fa-book me-2"
+                                                                          aria-hidden="false"></i>Notice</a>
                 <a href="/Search2" class="nav-item nav-link"><i class="fa fa-search me-2" aria-hidden="false"></i>Search</a>
             </div>
         </nav>
@@ -124,35 +124,35 @@
     <!-- Content Start -->
     <div class="content">
         <!-- Navbar Start -->
-                <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
-                    <a href="index" class="navbar-brand d-flex d-lg-none me-4">
-                        <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
-                    </a>
-                    <a href="#" class="sidebar-toggler flex-shrink-0">
-                        <i class="fa fa-bars"></i>
-                    </a>
-                    <div class="navbar-nav align-items-center ms-auto">
+        <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+            <a href="index" class="navbar-brand d-flex d-lg-none me-4">
+                <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
+            </a>
+            <a href="#" class="sidebar-toggler flex-shrink-0">
+                <i class="fa fa-bars"></i>
+            </a>
+            <div class="navbar-nav align-items-center ms-auto">
 
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                                <i class="fa fa-cog fa-fw"></i>
-                                <span class="d-none d-lg-inline-flex">
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fa fa-cog fa-fw"></i>
+                        <span class="d-none d-lg-inline-flex">
                                         Setting
                                     </span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                                <a href="/Setting" class="dropdown-item">Setting</a>
-                                <% if (SS_USER_ID != null) { %>
-                                <a href="/logout" class="dropdown-item">Log out</a>
-                                <a href="/user/UseradjustForm" class="dropdown-item">Adjust up</a>
-                                <%} else {%>
-                                <a href="/user/LoginForm" class="dropdown-item">Sign in</a>
-                                <a href="/user/UserRegForm" class="dropdown-item">Sign up</a>
-                                <%} %>
-                            </div>
-                        </div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                        <a href="/Setting" class="dropdown-item">Setting</a>
+                        <% if (SS_USER_ID != null) { %>
+                        <a href="/logout" class="dropdown-item">Log out</a>
+                        <a href="/user/UseradjustForm" class="dropdown-item">Adjust up</a>
+                        <%} else {%>
+                        <a href="/user/LoginForm" class="dropdown-item">Sign in</a>
+                        <a href="/user/UserRegForm" class="dropdown-item">Sign up</a>
+                        <%} %>
                     </div>
-                </nav>
+                </div>
+            </div>
+        </nav>
         <!-- Navbar End -->
 
 
@@ -199,7 +199,10 @@
                                 </div>
                                 <div class="divTableCell"><%=CmmUtil.nvl(rDTO.getAge()) %>
                                 </div>
-                                <div class="divTableCell">delete
+                                <div class="divTableCell">
+                                    <a href="javascript:doDelete('<%=CmmUtil.nvl(rDTO.getUser_seq())%>');">
+                                    Delete!
+                                </a>
                                 </div>
                             </div>
                             <%

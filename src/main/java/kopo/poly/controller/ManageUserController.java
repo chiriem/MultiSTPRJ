@@ -6,7 +6,6 @@ import kopo.poly.util.CmmUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -83,7 +82,7 @@ public class ManageUserController {
      * 사용자 상세보기
      * */
     @GetMapping(value="ManageUser/UserInfo")
-    public String NoticeInfo(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+    public String UserInfo(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 
         log.info(this.getClass().getName() + ".UserInfo start!");
 
@@ -136,7 +135,7 @@ public class ManageUserController {
     /**
      * 유저 삭제
      * */
-    @PostMapping(value="ManageUser/DeleteUser")
+    @GetMapping(value="ManageUser/DeleteUser")
     public String DeleteUser(HttpSession session, HttpServletRequest request, HttpServletResponse response,
                                ModelMap model) throws Exception {
 
@@ -168,14 +167,14 @@ public class ManageUserController {
             e.printStackTrace();
 
         }finally{
-            log.info(this.getClass().getName() + ".NoticeDelete end!");
+            log.info(this.getClass().getName() + ".DeleteUserInfo end!");
 
             //결과 메시지 전달하기
             model.addAttribute("msg", msg);
 
         }
 
-        return "/ManageUser/DeleteUser";
+        return "redirect:/ManageUser/UserList";
     }
 
 }
