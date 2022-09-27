@@ -1,8 +1,4 @@
-<%@ page import="kopo.poly.service.impl.UserInfoService" %>
-<%@ page import="kopo.poly.persistance.mongodb.impl.UserInfoMapper" %>
-<%@ page import="kopo.poly.controller.UserInfoController" %>
 <%@ page import="kopo.poly.util.CmmUtil" %>
-<%@ page import="kopo.poly.dto.NoticeDTO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="kopo.poly.dto.SStudioDTO" %>
@@ -21,8 +17,6 @@
     String msg = "";
     if (SS_USER_ID != null) {
         msg = SS_USER_ID + "님 환영합니다!";
-    } else {
-       msg = "로그인에 실패하였습니다.";
     }
 %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -56,27 +50,101 @@
     <!-- Template Stylesheet -->
     <link href="/css/style.css" rel="stylesheet">
     <link href="/css/table_with_div.css" rel="stylesheet">
+    <link href="/css/calendar.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
     <script src="/js/jquery-3.6.0.js"></script>
     <script type="text/javascript">
+        $(document).ready(function() {
+            calendarInit();
+        });
+        /*
+            달력 렌더링 할 때 필요한 정보 목록
 
-        //삭제로 이동
-        function doDelete(seq) {
+            현재 월(초기값 : 현재 시간)
+            금월 마지막일 날짜와 요일
+            전월 마지막일 날짜와 요일
+        */
 
-            console.log("doDelete")
-            location.href = "/deleteYt?nSeq=" + seq;
-        }
+        function calendarInit() {
 
-        //생방 상세보기 이동
-        function doLiveDetail(seq) {
-            location.href = "/SingleST/LiveSStud?nSeq=" + seq;
-        }
+            // 날짜 정보 가져오기
+            var date = new Date(); // 현재 날짜(로컬 기준) 가져오기
+            var utc = date.getTime() + (date.getTimezoneOffset() * 60 * 1000); // uct 표준시 도출
+            var kstGap = 9 * 60 * 60 * 1000; // 한국 kst 기준시간 더하기
+            var today = new Date(utc + kstGap); // 한국 시간으로 date 객체 만들기(오늘)
 
-        //생방 삭제로 이동
-        function doLiveDelete(seq) {
+            var thisMonth = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+            // 달력에서 표기하는 날짜 객체
 
-            console.log("doLiveDelete")
-            location.href = "/deleteLiveYt?yt_address=" + seq;
+
+            var currentYear = thisMonth.getFullYear(); // 달력에서 표기하는 연
+            var currentMonth = thisMonth.getMonth(); // 달력에서 표기하는 월
+            var currentDate = thisMonth.getDate(); // 달력에서 표기하는 일
+
+            // kst 기준 현재시간
+            // console.log(thisMonth);
+
+            // 캘린더 렌더링
+            renderCalender(thisMonth);
+
+            function renderCalender(thisMonth) {
+
+                // 렌더링을 위한 데이터 정리
+                currentYear = thisMonth.getFullYear();
+                currentMonth = thisMonth.getMonth();
+                currentDate = thisMonth.getDate();
+
+                // 이전 달의 마지막 날 날짜와 요일 구하기
+                var startDay = new Date(currentYear, currentMonth, 0);
+                var prevDate = startDay.getDate();
+                var prevDay = startDay.getDay();
+
+                // 이번 달의 마지막날 날짜와 요일 구하기
+                var endDay = new Date(currentYear, currentMonth + 1, 0);
+                var nextDate = endDay.getDate();
+                var nextDay = endDay.getDay();
+
+                // console.log(prevDate, prevDay, nextDate, nextDay);
+
+                // 현재 월 표기
+                $('.year-month').text(currentYear + '.' + (currentMonth + 1));
+
+                // 렌더링 html 요소 생성
+                calendar = document.querySelector('.dates')
+                calendar.innerHTML = '';
+
+                // 지난달
+                for (var i = prevDate - prevDay + 1; i <= prevDate; i++) {
+                    calendar.innerHTML = calendar.innerHTML + '<div class="day prev disable">' + i + '</div>'
+                }
+                // 이번달
+                for (var i = 1; i <= nextDate; i++) {
+                    calendar.innerHTML = calendar.innerHTML + '<div class="day current">' + i + '</div>'
+                }
+                // 다음달
+                for (var i = 1; i <= (7 - nextDay == 7 ? 0 : 7 - nextDay); i++) {
+                    calendar.innerHTML = calendar.innerHTML + '<div class="day next disable">' + i + '</div>'
+                }
+
+                // 오늘 날짜 표기
+                if (today.getMonth() == currentMonth) {
+                    todayDate = today.getDate();
+                    var currentMonthDate = document.querySelectorAll('.dates .current');
+                    currentMonthDate[todayDate -1].classList.add('today');
+                }
+            }
+
+            // 이전달로 이동
+            $('.go-prev').on('click', function() {
+                thisMonth = new Date(currentYear, currentMonth - 1, 1);
+                renderCalender(thisMonth);
+            });
+
+            // 다음달로 이동
+            $('.go-next').on('click', function() {
+                thisMonth = new Date(currentYear, currentMonth + 1, 1);
+                renderCalender(thisMonth);
+            });
         }
 
     </script>
@@ -117,6 +185,7 @@
                 <a href="/chat/intro" class="nav-item nav-link"><i class="fa fa-comments me-2" aria-hidden="false"></i>LiveChat</a>
                 <a href="/calendar" class="nav-item nav-link"><i class="fa fa-calendar me-2" aria-hidden="false"></i>Calendar</a>
                 <a href="/Search2" class="nav-item nav-link"><i class="fa fa-search me-2" aria-hidden="false"></i>Search</a>
+                <a href="/cal" class="nav-item nav-link"><i class="fa fa-comments me-2" aria-hidden="false"></i>Calendar</a>
             </div>
         </nav>
     </div>
@@ -133,11 +202,10 @@
             <a href="#" class="sidebar-toggler flex-shrink-0">
                 <i class="fa fa-bars"></i>
             </a>
-
+            &nbsp&nbsp
             <h6>
             </h6>
             <div class="navbar-nav align-items-center ms-auto">
-
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                         <i class="fa fa-cog fa-fw"></i>
@@ -160,76 +228,37 @@
         </nav>
         <!-- Navbar End -->
 
-
-        <!-- YtList(seng) Start -->
+        <!-- YtList Start -->
         <div class="container-fluid pt-4 px-4">
             <div class="row g-4">
                 <div class="col-sm-12 col-xl-12">
                     <div class="bg-light rounded p-4">
-                        <form name="f" method="post" action="/user/getLiveYtaddress">
-                            <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0">라이브
-                                    &nbsp&nbsp
-                                    <% if (SS_USER_ID != null) { %>
-                                    <a href="/SingleST/LiveSStudioadd" ><i class="fa-solid fa-plus"></i></a>
-                                    <%} %>
-                                </h6>
-                                <button type="submit" class="btn btn-primary m-2">load!</button>
+                        <div class="sec_cal">
+                            <div class="cal_nav">
+                                <a href="javascript:;" class="nav-btn go-prev">prev</a>
+                                <div class="year-month"></div>
+                                <a href="javascript:;" class="nav-btn go-next">next</a>
                             </div>
-
-                            <div class="table-responsive">
-                                <div class="divTable minimalistBlack">
-                                    <div class="divTableHeading">
-                                        <div class="divTableRow">
-                                            <div class="divTableHead" style="width: 200px">thumbnail</div>
-                                            <div class="divTableHead">Title</div>
-                                            <div class="divTableHead" style="width: 100px">Delete</div>
-                                        </div>
-                                    </div>
-
-                                    <div class="divTableBody">
-                                        <%
-                                            for (int i = 0; i < rList.size(); i++) {
-                                                SStudioDTO rDTO = rList.get(i);
-
-                                                if (rDTO == null) {
-                                                    rDTO = new SStudioDTO();
-                                                }
-
-                                        %>
-                                        <div class="divTableRow">
-                                            <div class="divTableCell"><img class="tnail"
-                                            <%--                                                                           src="http://img.youtube.com/vi/<%=CmmUtil.nvl(rDTO.getYt_address()) %>/mqdefault.jpg"--%>
-                                                                           src="<%=CmmUtil.nvl(rDTO.getThumbnailPath())%>"
-                                                                           width="180" height="120">
-                                            </div>
-                                            <div class="divTableCell" id="<%=CmmUtil.nvl(rDTO.getYt_seq())%>">
-                                                <a href="javascript:doLiveDetail('<%=CmmUtil.nvl(rDTO.getYt_seq())%>');">
-                                                    <%=CmmUtil.nvl(rDTO.getTitle())%>
-                                                </a>
-                                            </div>
-                                            <div class="divTableCell" style="width: 100px">
-                                                <a href="javascript:doLiveDelete('<%=CmmUtil.nvl(rDTO.getYt_address())%>');">
-                                                    <%--                                                    <button class="btn btn-square btn-primary m-2"><i--%>
-                                                    <%--                                                            class="fa-solid fa-file-circle-minus"></i></button>--%>
-                                                    Delete!
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <%
-                                            }
-                                        %>
-                                    </div>
+                            <div class="cal_wrap">
+                                <div class="days">
+                                    <div class="day">월</div>
+                                    <div class="day">화</div>
+                                    <div class="day">수</div>
+                                    <div class="day">목</div>
+                                    <div class="day">금</div>
+                                    <div class="day">토</div>
+                                    <div class="day">일</div>
                                 </div>
-
+                                <div class="dates"></div>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
 
             </div>
         </div>
-        <!-- YtList(seng) End -->
+        <!-- YtList End -->
+
 
         <!-- Footer Start -->
         <div class="container-fluid pt-4 px-4">

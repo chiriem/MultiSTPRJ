@@ -73,8 +73,11 @@
                 </div>
                 <a href="/MultiStudio/MultiStudio" class="nav-item nav-link"><i class="fa fa-youtube-play me-2"
                                                                                 aria-hidden="false"></i>MultiStudio</a>
-                <a href="/notice/NoticeList" class="nav-item nav-link"><i class="fa fa-book me-2"
-                                                                          aria-hidden="false"></i>Notice</a>
+                <a href="/MultiStudio/MultiStudio" class="nav-item nav-link"><i class="fa fa-twitch me-2"
+                                                                                aria-hidden="false"></i>MultiTwitch</a>
+                <a href="/notice/NoticeList" class="nav-item nav-link"><i class="fa fa-book me-2" aria-hidden="false"></i>Notice</a>
+                <a href="/chat/intro" class="nav-item nav-link"><i class="fa fa-comments me-2" aria-hidden="false"></i>LiveChat</a>
+                <a href="/calendar" class="nav-item nav-link"><i class="fa fa-calendar me-2" aria-hidden="false"></i>Calendar</a>
                 <a href="/Search2" class="nav-item nav-link"><i class="fa fa-search me-2" aria-hidden="false"></i>Search</a>
             </div>
         </nav>
@@ -119,9 +122,12 @@
 
         <!-- Form Start -->
         <div class="container-fluid pt-4 px-4">
-            <div class="row g-4">
-                <div class="col-sm-12 col-xl-6 text-center">
-                    <div class="bg-light rounded h-100 p-4">
+            <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
+                <div class="col-12 ">
+                    <div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            Write down Youtube Address
+                        </div>
                         <form name="f" method="post" action="/SingleStudio/insertYtaddress"
                               onsubmit="return doYTCheck(this);">
                             <div class="form-floating mb-4">

@@ -59,5 +59,19 @@ public class MainController {
 
     }
 
+    @GetMapping(value = "calendar")
+    public String calendar() {
+        return "calendar";
+
+    }
+
+    @GetMapping(value = "fca")
+    public String fca() {
+
+        log.info(this.getClass().getName() + ".fca start");
+
+        return "/fca";
+
+    }
 
 }
