@@ -185,7 +185,6 @@
                 <a href="/chat/intro" class="nav-item nav-link"><i class="fa fa-comments me-2" aria-hidden="false"></i>LiveChat</a>
                 <a href="/calendar" class="nav-item nav-link"><i class="fa fa-calendar me-2" aria-hidden="false"></i>Calendar</a>
                 <a href="/Search2" class="nav-item nav-link"><i class="fa fa-search me-2" aria-hidden="false"></i>Search</a>
-                <a href="/cal" class="nav-item nav-link"><i class="fa fa-comments me-2" aria-hidden="false"></i>Calendar</a>
             </div>
         </nav>
     </div>

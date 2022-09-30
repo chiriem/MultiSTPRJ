@@ -1,37 +1,18 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="kopo.poly.dto.ChatDTO" %>
 <%@ page import="kopo.poly.util.CmmUtil" %>
 <%@ page import="kopo.poly.dto.NoticeDTO" %>
+<%@ page import="kopo.poly.dto.SStudioDTO" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8" %>
+<!DOCTYPE html>
+<html>
 <%
+
     String SS_USER_ID = (String) session.getAttribute("SS_USER_ID");
+    String yt_address = (String) session.getAttribute("yt_address");
 
-    if (SS_USER_ID == null) {
-        SS_USER_ID = "null";
-    }
-
-    //id가 "admin" 인 사람만 수정 가능하도록 하기(1: admin 아님 / 2: admin 확인 (수정 가능) / 3: 로그인 안함)
-    int edit = 1;
-
-    //로그인 안했다면....
-    if (SS_USER_ID.equals("")) {
-        edit = 3;
-
-        //관리자면 2가 되도록 변경
-    } else if (SS_USER_ID.equals("admin")) {
-        edit = 2;
-
-    }
-
-
-
-    System.out.println("SS_USER_ID : " + SS_USER_ID);
 %>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <title>MultiStudio - Multiple Streaming Studio</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
@@ -56,54 +37,53 @@
 
     <!-- Template Stylesheet -->
     <link href="/css/style.css" rel="stylesheet">
-    <link href="/css/table_with_div.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-    <script src="/js/jquery-3.6.0.min.js"></script>
-    <script>
+    <script src="/js/jquery-3.6.0.js"></script>
+    <script type="text/javascript">
+        <%
 
+        System.out.println("yt_address : " + yt_address);
+
+        %>
+
+        var playlist = "<%=yt_address%>";
+        // var playlist = 'CuklIb9d3fI';
+        //https://www.youtube.com/watch?v=유튜브 영상 고유번호
+        //playlist만 원하는 재생목록에 따라 가져오면 됨
+
+        //maxResult는 50 이하
         $(document).ready(function () {
+            $.get(
+                "https://www.googleapis.com/youtube/v3/videos", {
+                    part: 'snippet',
+                    maxResults: 5,
+                    id: playlist,
+                    key: 'AIzaSyAfJQyw0LqcMkaJi0hCw35NUPyjV7Br-4g'
+                },
 
-            // id를 통해 button html태그 객체 가져오기
-            let btnSend = document.getElementById("btnSend");
+                function (data) {
+                    var output;
+                    $.each(data.items, function (i, item) {
+                        console.log(item);
+                        vTitle = item.snippet.title;
+                        vId = item.snippet.channelId;
+                        vDe = item.snippet.description;
+                        vTh = item.snippet.channelTitle;
 
-            btnSend.onclick = function () {
-
-                // id를 통해 form html태그 객체 가져오기
-                const f = document.getElementById("f");
-                f.submit(); // form 태그 정보 전송하기
-            }
-        });
-
-        setInterval(function () {
-            $.ajax({
-                url: "/chat/roomList",
-                type: "get",
-                dataType: "JSON",
-                success: function (json) {
-
-                    let roomHtml = "";
-
-                    for (const room of json) {
-                        roomHtml += ("<span>" + room + "</span> ");
-                    }
-
-                    $("#rooms").html(roomHtml);
+                        $("#youtube_title").append(vTitle);
+                        $("#youtube_chname").append(vTh);
+                        $("#youtube_desc").append(vDe);
+                    })
                 }
-            });
+            );
 
-        }, 5000)
+        });
     </script>
+
 </head>
+
 <body>
 <div class="container-xxl position-relative bg-white d-flex p-0">
-    <!-- Spinner Start -->
-    <div id="spinner"
-         class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-    </div>
-    <!-- Spinner End -->
 
 
     <!-- Sidebar Start -->
@@ -114,7 +94,8 @@
             </a>
             <div class="navbar-nav w-100">
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-youtube-play me-2"></i>Main</a>
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                            class="fa fa-youtube-play me-2"></i>Main</a>
                     <div class="dropdown-menu bg-transparent border-0">
                         <a href="/index" class="dropdown-item">Youtube</a>
                         <a href="/index2" class="dropdown-item">Youtube LiveStream</a>
@@ -122,11 +103,8 @@
                 </div>
                 <a href="/MultiStudio/MultiStudio" class="nav-item nav-link"><i class="fa fa-youtube-play me-2"
                                                                                 aria-hidden="false"></i>MultiStudio</a>
-                <a href="/MultiStudio/TwitchMultiStudio" class="nav-item nav-link"><i class="fa fa-twitch me-2"
-                                                                                aria-hidden="false"></i>MultiTwitch</a>
-                <a href="/notice/NoticeList" class="nav-item nav-link"><i class="fa fa-book me-2" aria-hidden="false"></i>Notice</a>
-                <a href="/chat/intro" class="nav-item nav-link"><i class="fa fa-comments me-2" aria-hidden="false"></i>LiveChat</a>
-                <a href="/calendar" class="nav-item nav-link"><i class="fa fa-calendar me-2" aria-hidden="false"></i>Calendar</a>
+                <a href="/notice/NoticeList" class="nav-item nav-link"><i class="fa fa-book me-2"
+                                                                          aria-hidden="false"></i>Notice</a>
                 <a href="/Search2" class="nav-item nav-link"><i class="fa fa-search me-2" aria-hidden="false"></i>Search</a>
             </div>
         </nav>
@@ -150,8 +128,8 @@
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                         <i class="fa fa-cog fa-fw"></i>
                         <span class="d-none d-lg-inline-flex">
-                                        Setting
-                                    </span>
+                                Setting
+                            </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                         <a href="/Setting" class="dropdown-item">Setting</a>
@@ -169,44 +147,47 @@
         <!-- Navbar End -->
 
 
-        <!-- Form Start -->
+        <!-- Blank Start -->
         <div class="container-fluid pt-4 px-4">
-            <div class="row g-4" style="min-height: 50vh;">
-                <div class="col-12">
-                    <div class="bg-light rounded p-4 ">
-                        <div class="d-flex align-items-center justify-content-between mb-4">
-                            <!-- text -->
+            <div class="row bg-light rounded p-4">
+                <iframe width="100%" height="480" src="https://www.youtube.com/embed/<%=yt_address%>"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="container-fluid pt-4 px-4">
+            <div class="row g-4">
+                <div class="col-sm-12 col-xl-12">
+                    <div class="row bg-light rounded p-4">
+                        <div>
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <h6 class="mb-0">Youtube Title</h6>
+                                <%--                        <a href="">Show All</a>--%>
+                            </div>
+                            <form id="youtube_title"></form>
+                            <hr>
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <h6 class="mb-0">Channel Name</h6>
+                                <%--                        <a href="">Show All</a>--%>
+                            </div>
+                            <form id="youtube_chname"></form>
+                            <hr>
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <h6 class="mb-0">Youtube Description</h6>
+                                <%--                        <a href="">Show All</a>--%>
+                            </div>
+                            <details>
+                                <summary>Detail Description</summary>
+                                <p></p>
+                                <form id="youtube_desc"></form>
+                            </details>
                         </div>
-                        <div><b>ChatRoom LIst</b></div>
-                        <hr/>
-                        <div id="rooms"></div>
-                        <br/>
-                        <br/>
-                        <form method="post" id="f" action="/chat/room">
-                            <div><b>채팅 입장</b></div>
-                            <hr/>
-                            <div class="form-floating mb-4">
-                                <input type="text" class="form-control" name="roomname" placeholder="RoomName">
-                                <label>RoomName</label>
-                            </div>
-                            <% if (SS_USER_ID == "null") { %>
-                            <div class="form-floating mb-4">
-                                <input type="text" class="form-control" name="nickname" placeholder="User Id">
-                                <label>User Id</label>
-                            </div>
-                            <%} else {%>
-                            <div class="form-floating mb-4">
-                                <input type="text" class="form-control" name="nickname" placeholder="User Id" value="<%=SS_USER_ID%>" readonly>
-                                <label>User Id</label>
-                            </div>
-                            <%} %>
-                            <button class="btn btn-primary py-3 w-100 mb-4" id="btnSend">Enter ChatRoom!</button>
-                        </form>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Form End -->
+        <!-- Blank End -->
 
 
         <!-- Footer Start -->
@@ -214,7 +195,7 @@
             <div class="bg-light rounded-top p-4">
                 <div class="row">
                     <div class="col-12 col-sm-6 text-center text-sm-start">
-                        &copy; <a href="#">MultiST</a>, All Right Reserved.
+                        &copy; <a href="#">Your Site Name</a>, All Right Reserved.
                     </div>
                     <div class="col-12 col-sm-6 text-center text-sm-end">
                         <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
@@ -233,7 +214,6 @@
 </div>
 
 <!-- JavaScript Libraries -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/lib/chart/chart.min.js"></script>
 <script src="/lib/easing/easing.min.js"></script>
@@ -245,6 +225,6 @@
 
 <!-- Template Javascript -->
 <script src="/js/main.js"></script>
-
 </body>
+
 </html>

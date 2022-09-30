@@ -1,4 +1,5 @@
 var hostdomain = 'https://emapp.cc/';
+var twitchhostdomain = 'https://multitwitch.tv/';
 var videos = {};//Yvideo class
 var vCount = 0;
 
@@ -151,6 +152,7 @@ function setFoucsEvent(){
         videos[this.id.replace('time_','')].focused = false;
     });
 }
+
 function getLink(){
     var linkUrl = hostdomain + 'watch/';
     var vs = new Array();
@@ -164,6 +166,19 @@ function getLink(){
     result.val(linkUrl + JSON.stringify(vs));
 }
 
+function getTwitchLink(){
+    var twitchlinkUrl = "handongsuk/handongsuk";
+    var vs = new Array();
+
+    for(var v in videos){
+        videos[v].player.pauseVideo();
+        vs.push({'v':videos[v].videoId,'t':videos[v].ReferenceTime});
+    }
+    //console.log(linkUrl + JSON.stringify(vs));
+    var result = $('#result_link');
+    result.val(twitchlinkUrl);
+}
+
 function copytoclip(){
     $('#result_link').select();
     document.execCommand("copy");
@@ -172,5 +187,13 @@ function copytoclip(){
 }
 function newWindow(){
     window.open($('#result_link').val(), '_blank');
+}
+
+function newTwitchWindow(){
+    var link = $('#result_link');
+
+    let option = "location=0,toolbar=no,scrollbars=no,resizable=yes,status=no,menubar=no";
+
+    window.open("http://multitwitch.tv/handongsuk/handongsuk", '_blank');
 }
 

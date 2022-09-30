@@ -1,6 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8" %>
+<%
+    String SS_USER_ID = (String) session.getAttribute("SS_USER_ID");
+%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
 <head>
     <meta charset="utf-8">
     <title>MultiStudio - Multiple Streaming Studio</title>
@@ -16,6 +20,7 @@
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/7bdf505d8f.js" crossorigin="anonymous"></script>
 
     <!-- Libraries Stylesheet -->
     <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
@@ -26,6 +31,13 @@
 
     <!-- Template Stylesheet -->
     <link href="/css/style.css" rel="stylesheet">
+    <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+    <script type="text/javascript">
+        function closetab() {
+            window.close();
+        }
+    </script>
+    <link href="/youtube_tool/css/multi_view.css" rel="stylesheet">
 </head>
 
 <body>
@@ -40,39 +52,28 @@
     <!-- Spinner End -->
 
 
-    <!-- Sign In Start -->
-    <div class="container-fluid">
-        <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
-            <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
-                <div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
-                    <form name="f" method="post" action="/user/getUserLoginCheck"
-                          onsubmit="return doLoginUserCheck(this);">
-                        <div class="d-flex align-items-center justify-content-between mb-3">
-                            <a href="/index" class="">
-                                <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>MultiStudio</h3>
-                            </a>
-                            <h3>Sign In</h3>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" name="user_id" placeholder="User Id">
-                            <label>User id</label>
-                        </div>
-                        <div class="form-floating mb-4">
-                            <input type="password" class="form-control" name="password" placeholder="Password">
-                            <label>Password</label>
-                        </div>
-                        <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Sign In</button>
-                        <p class="text-center mb-0">Don't have an Account? <a href="/user/UserRegForm">Sign Up</a></p>
-                    </form>
-                </div>
-            </div>
+
+
+        <!-- Form Start -->
+        <div class="container-fluid pt-4 px-4">
+
+
+
+            <button type="submit" class="btn btn-primary py-3 w-100 mb-4" onclick="closetab()">Close Tab</button>
+
+
+            <!-- Form End -->
+
+
+
         </div>
+        <!-- Content End -->
+
     </div>
-    <!-- Sign In End -->
 </div>
 
 <!-- JavaScript Libraries -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="/js/jquery-3.6.0.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/lib/chart/chart.min.js"></script>
 <script src="/lib/easing/easing.min.js"></script>

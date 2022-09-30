@@ -27,6 +27,15 @@ public class MainController {
 
     }
 
+    @GetMapping(value = "MultiStudio/TwitchMultiStudio")
+    public String TwitchMultiStudio() {
+
+        log.info(this.getClass().getName() + "twitch multi start");
+
+        return "/MultiStudio/TwitchMultiStudio";
+
+    }
+
     @GetMapping(value = "index")
     public String Index(HttpSession session, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception{
 
@@ -50,6 +59,12 @@ public class MainController {
     @GetMapping(value = "Search2")
     public String Search() {
         return "Search2";
+
+    }
+
+    @GetMapping(value = "SingleST/closetab")
+    public String closetab() {
+        return "SingleST/closetab";
 
     }
 

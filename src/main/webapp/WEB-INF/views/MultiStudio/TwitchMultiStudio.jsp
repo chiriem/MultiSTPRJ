@@ -1,7 +1,9 @@
 <%@ page import="kopo.poly.util.CmmUtil" %>
+<%@ page import="kopo.poly.dto.SStudioDTO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="kopo.poly.dto.SStudioDTO" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8" %>
 <%
     String SS_USER_ID = (String) session.getAttribute("SS_USER_ID");
 
@@ -13,14 +15,6 @@
 
     }
 %>
-<%
-    String msg = "";
-    if (SS_USER_ID != null) {
-        msg = SS_USER_ID + "님 환영합니다!";
-    }
-%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -51,44 +45,54 @@
     <link href="/css/style.css" rel="stylesheet">
     <link href="/css/table_with_div.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-    <script src="/js/jquery-3.6.0.js"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="/jsglue.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/youtube_tool/js/multi_view.js"></script>
+    <link href="/youtube_tool/css/multi_view.css" rel="stylesheet">
     <script type="text/javascript">
-        //상세보기 이동
-        function doDetail(seq) {
-            location.href = "/SingleST/SStud?nSeq=" + seq;
+        function doCopy(link){
+
+            var ytlink = "youtube.com/watch?v=" + link;
+
+            var result = $('#yt_result_link');
+            result.val(ytlink);
         }
 
-        //생방 상세보기 이동
-        function doLiveDetail(seq) {
-            location.href = "/SingleST/LiveSStud?nSeq=" + seq;
+        function copytoclip() {
+            $('#yt_result_link').select();
+            document.execCommand("copy");
+            add_toast('Success Info', 'Copied to clipboard.<br>Paste it where you need it with (Ctrl+v).');
+            //add_toast('Warning Info', data.error);
         }
 
-        //삭제로 이동
-        function doDelete(seq) {
-
-            console.log("doDelete")
-            location.href = "/deleteYt?yt_address=" + seq;
+        function ontwitchlink() {
+            $('#yt_result_link').select();
         }
 
-        //생방 삭제로 이동
-        function doLiveDelete(seq) {
+        function getSTLink(){
+            var linkUrl = hostdomain + 'watch/';
+            var vs = new Array();
 
-            console.log("doLiveDelete")
-            location.href = "/deleteLiveYt?yt_address=" + seq;
+            for(var v in videos){
+                videos[v].player.pauseVideo();
+                vs.push({'v':videos[v].videoId,'t':videos[v].ReferenceTime});
+            }
+            //console.log(linkUrl + JSON.stringify(vs));
+            var result = $('#result_link');
+            result.val(linkUrl + JSON.stringify(vs));
         }
 
-        function newytWindow(){
-
-            let option = "width = 1000, height = 500, location=0,toolbar=no,scrollbars=no,resizable=no,status=no,menubar=no";
-
-            window.open('SingleST/SStudioadd', '_blank', option);
+        function yt_copytoclip(){
+            $('#yt_result_link').select();
+            document.execCommand("copy");
+            add_toast('Success Info', 'Copied to clipboard.<br>Paste it where you need it with (Ctrl+v).');
+            //add_toast('Warning Info', data.error);
         }
-
     </script>
 </head>
 
 <body>
-
 <div class="container-xxl position-relative bg-white d-flex p-0">
     <!-- Spinner Start -->
     <div id="spinner"
@@ -116,7 +120,7 @@
                 </div>
                 <a href="/MultiStudio/MultiStudio" class="nav-item nav-link"><i class="fa fa-youtube-play me-2"
                                                                                 aria-hidden="false"></i>MultiStudio</a>
-                <a href="/MultiStudio/TwitchMultiStudio" class="nav-item nav-link"><i class="fa fa-twitch me-2"
+                <a href="/MultiStudio/MultiStudio" class="nav-item nav-link"><i class="fa fa-twitch me-2"
                                                                                 aria-hidden="false"></i>MultiTwitch</a>
                 <a href="/notice/NoticeList" class="nav-item nav-link"><i class="fa fa-book me-2" aria-hidden="false"></i>Notice</a>
                 <a href="/chat/intro" class="nav-item nav-link"><i class="fa fa-comments me-2" aria-hidden="false"></i>LiveChat</a>
@@ -138,10 +142,8 @@
             <a href="#" class="sidebar-toggler flex-shrink-0">
                 <i class="fa fa-bars"></i>
             </a>
-            &nbsp&nbsp
-            <h6>
-            </h6>
             <div class="navbar-nav align-items-center ms-auto">
+
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                         <i class="fa fa-cog fa-fw"></i>
@@ -164,21 +166,67 @@
         </nav>
         <!-- Navbar End -->
 
-        <!-- YtList Start -->
+        <!-- MultiST Start -->
         <div class="container-fluid pt-4 px-4">
             <div class="row g-4">
+                <div class="col-sm-12 col-xl-12" id="box">
+                    <div class="bg-light rounded h-100 p-4">
+                        <div class="ct1">
+                            <div class="input-group mb-3">
+                                <input id="youtube_url" type="text" class="form-control"
+                                       placeholder="예: https://www.twitch.tv/videos/1602614225" aria-label=""
+                                       aria-describedby="button-addon2">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary notranslate" type="button" id="btn_add_video"
+                                            onclick="addVideo()">
+                                        비디오 추가
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="" id="addVideos"></div>
+                        </div>
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                var tag = document.createElement('script');
+                                tag.src = "https://www.youtube.com/iframe_api";
+                                var firstScriptTag = document.getElementsByTagName('script')[0];
+                                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+                            });
+                        </script>
+                    </div>
+                </div>
                 <div class="col-sm-12 col-xl-12">
-                    <div class="bg-light rounded p-4">
-                        <form name="f" method="post" action="/user/getYtaddress">
+                    <div class="bg-light rounded h-100 p-4">
+                        <div class="ct3">
+                            <div></div>
+                            <button class="btn btn-primary notranslate" type="button" id="btn_link" onclick="getTwitchLink()">
+                                <i class="fab fa-windows"></i> 멀티 뷰 생성
+                            </button>
+                            <div class="result_multiview_link">
+                                <div class="input-group mb-3">
+                                    <input type="text" id="result_link" class="form-control" onclick="this.select();"
+                                           readonly>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary notranslate" type="button" id="copy"
+                                                data-toggle="tooltip" data-placement="top" title="Copy to clipboard"
+                                                onclick="copytoclip()"><i class="fas fa-copy"></i></button>
+                                        <button class="btn btn-primary notranslate" type="button" id="view"
+                                                data-toggle="tooltip" data-placement="top" title="Open New Window"
+                                                onclick="newTwitchWindow()"><i class="fas fa-eye"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="result_multiview_window" id="result_view_btn"></div>
+                        </div>
+                    </div>
+                </div>
+                <% if (SS_USER_ID != null) { %>
+                <div class="col-sm-12 col-xl-12">
+                    <div class="bg-light rounded h-100 p-4">
+                        <form name="f" method="post" action="/user/getMultiviewYtaddress">
                             <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0">동영상
-                                    &nbsp&nbsp
-                                    <% if (SS_USER_ID != null) { %>
-                                    <button class="btn btn-primary notranslate" type="button" id="view"
-                                            data-toggle="tooltip" data-placement="top" title="Open New Window"
-                                            onclick="newytWindow()"><i class="fa-solid fa-plus"></i></button>
-                                    <%} %>
-                                </h6>
+                                <h6 class="mb-0">영상 목록</h6>
                                 <button type="submit" class="btn btn-primary m-2">load!</button>
                             </div>
 
@@ -188,7 +236,7 @@
                                         <div class="divTableRow">
                                             <div class="divTableHead" style="width: 200px">thumbnail</div>
                                             <div class="divTableHead">Title</div>
-                                            <div class="divTableHead" style="width: 100px">Delete</div>
+                                            <div class="divTableHead" style="width: 100px">Copy</div>
                                         </div>
                                     </div>
 
@@ -209,31 +257,40 @@
                                                                            width="180" height="120">
                                             </div>
                                             <div class="divTableCell" id="<%=CmmUtil.nvl(rDTO.getYt_seq())%>">
-                                                <a href="javascript:doDetail('<%=CmmUtil.nvl(rDTO.getYt_seq())%>');">
-                                                    <%=CmmUtil.nvl(rDTO.getTitle())%>
-                                                </a>
+                                                <%=CmmUtil.nvl(rDTO.getTitle())%>
                                             </div>
                                             <div class="divTableCell" style="width: 100px">
-                                                <a href="javascript:doDelete('<%=CmmUtil.nvl(rDTO.getYt_address())%>');">
-                                                    Delete!
-                                                </a>
+                                                <button class="btn btn-primary notranslate" type="button" onclick="doCopy('<%=CmmUtil.nvl(rDTO.getYt_address())%>')">
+                                                    GetLink!
+                                                </button>
                                             </div>
+
                                         </div>
                                         <%
                                             }
                                         %>
                                     </div>
                                 </div>
-
+                            </div>
+                            <br>
+                            <div class="result_multiview_link">
+                                <div class="input-group mb-3">
+                                    <input type="text" id="tw_result_link" class="form-control" onclick="this.select();"
+                                           readonly>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary notranslate" type="button" id="ytcopy"
+                                                data-toggle="tooltip" data-placement="top" title="Copy to clipboard"
+                                                onclick="copytoclip()"><i class="fas fa-copy"></i></button>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>
                 </div>
-
+                <% } %>
             </div>
         </div>
-        <!-- YtList End -->
-
+        <!-- MultiST End -->
 
         <!-- Footer Start -->
         <div class="container-fluid pt-4 px-4">

@@ -60,11 +60,12 @@
         }
 
         function copytoclip() {
-            $('#yt_result_link').select();
+            $('#result_link').select();
             document.execCommand("copy");
             add_toast('Success Info', 'Copied to clipboard.<br>Paste it where you need it with (Ctrl+v).');
             //add_toast('Warning Info', data.error);
         }
+
 
         function getSTLink(){
             var linkUrl = hostdomain + 'watch/';
@@ -276,7 +277,7 @@
                                     <div class="input-group-append">
                                         <button class="btn btn-primary notranslate" type="button" id="ytcopy"
                                                 data-toggle="tooltip" data-placement="top" title="Copy to clipboard"
-                                                onclick="copytoclip()"><i class="fas fa-copy"></i></button>
+                                                onclick="yt_copytoclip()"><i class="fas fa-copy"></i></button>
                                     </div>
                                 </div>
                             </div>

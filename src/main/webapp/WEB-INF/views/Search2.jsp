@@ -1,4 +1,7 @@
 <%@ page import="kopo.poly.persistance.mongodb.impl.UserInfoMapper" %>
+<%@ page import="kopo.poly.dto.NoticeDTO" %>
+<%@ page import="kopo.poly.util.CmmUtil" %>
+<%@ page import="kopo.poly.dto.SStudioDTO" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -32,10 +35,21 @@
 
     <!-- Template Stylesheet -->
     <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/table_with_div.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
     <script src="/js/jquery-3.6.0.js"></script>
     <script>
 
+
+        function doCopy(link){
+
+            var ytlink = "youtube.com/watch?v=" + link;
+
+            console.log(ytlink);
+
+            var result = $('#yt_result_link');
+            result.val(ytlink);
+        }
 
         function fnGetList(sGetToken) {
 
@@ -95,7 +109,16 @@
 
                         //console.log(this.snippet.channelId);
 
-                        $("#get_view").append('<div><img class="tnail" src="http://img.youtube.com/vi/' + this.id.videoId + '/mqdefault.jpg" width="180" height="120"> <a href="https://youtu.be/' + this.id.videoId + '">' + '<span>' + this.snippet.title + '</span></a></div>');
+                        $("#get_view").append(
+                            '<div class="divTableRow">' +
+                                '<div class="divTableCell"><img class="tnail" src="http://img.youtube.com/vi/' + this.id.videoId + '/mqdefault.jpg" width="160" height="90"></div>' +
+                                '<div class="divTableCell"><a href="https://youtu.be/' + this.id.videoId + '">' + '<span>' + this.snippet.title + '</span></a></div>' +
+                                '<div class="divTableCell">' +
+                                    // '<input type="text" id="result_link" class="form-control" onclick="this.select();" value="' + this.id.videoId + '" readonly>' +
+                                    '<button class="btn btn-primary notranslate" type="button" onclick="doCopy(\''+this.id.videoId+'\')">GetLink!</button>' +
+                                '</div>' +
+                            '</div>'
+                            );
 
                     }).promise().done(function () {
 
@@ -127,6 +150,19 @@
 
             });
 
+        }
+        function yt_copytoclip(){
+            $('#yt_result_link').select();
+            document.execCommand("copy");
+            add_toast('Success Info', 'Copied to clipboard.<br>Paste it where you need it with (Ctrl+v).');
+            //add_toast('Warning Info', data.error);
+        }
+
+        function newytWindow(){
+
+            let option = "width = 1000, height = 600, location=0,toolbar=no,scrollbars=no,resizable=no,status=no,menubar=no";
+
+            window.open('SingleST/SStudioadd', '_blank', option);
         }
 
     </script>
@@ -219,16 +255,51 @@
 
         <!-- Form Start -->
         <div class="container-fluid pt-4 px-4">
-            <div class="row_Search bg-light rounded align-items-center justify-content-center mx-0">
+            <div class="row_Search bg-light rounded align-items-center justify-content-center g-4">
                 <div class="col-md-11">
-                    <form name="form1" method="post" onsubmit="return false;">
-                        <form class="form-control border-0" id="search_box_t"></form>
-                    </form>
-                    <div>
-                        <form class="borderless" id="get_view"></form>
+                    <div class="table-responsive">
+                        <div class="divTable minimalistBlack">
+                            <div class="divTableHeading">
+                                <div class="divTableRow">
+                                    <div class="divTableHead" style="width: 170px">Thumbnail</div>
+                                    <div class="divTableHead">Title</div>
+                                    <div class="divTableHead" style="width: 150px">Youtube/live</div>
+                                </div>
+                            </div>
+                            <div class="divTableBody" id="get_view">
+<%--                                <form class="borderless" id="get_view"></form>--%>
+                            </div>
+                        </div>
+
                     </div>
                     <div id="nav_view"></div>
                 </div>
+                <br>
+                <% if (SS_USER_ID != null) { %>
+                <div class="col-sm-12 col-xl-12">
+                    <div class="bg-light rounded h-100 p-4">
+                        <form name="f" method="post" action="/user/getMultiviewYtaddress">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h6 class="mb-0">Add to BookMark</h6>
+                            </div>
+                            <div class="result_multiview_link">
+                                <div class="input-group mb-3">
+                                    <input type="text" id="yt_result_link" name="ytaddress" class="form-control" onclick="this.select();"
+                                           readonly>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary notranslate" type="button" id="ytcopy"
+                                                data-toggle="tooltip" data-placement="top" title="Copy to clipboard"
+                                                onclick="yt_copytoclip()"><i class="fas fa-copy"></i></button>
+                                        <button class="btn btn-primary notranslate" type="button" id="view"
+                                                data-toggle="tooltip" data-placement="top" title="Open New Window"
+                                                onclick="newytWindow()"><i class="fa-solid fa-plus"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <% } %>
             </div>
         </div>
         <!-- Form End -->

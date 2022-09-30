@@ -79,6 +79,15 @@
             location.href = "/deleteLiveYt?yt_address=" + seq;
         }
 
+        function newytWindow(){
+
+            let option = "width = 1000, height = 500, location=0,toolbar=no,scrollbars=no,resizable=no,status=no,menubar=no";
+
+            window.open('SingleST/LiveSStudioadd', '_blank', option);
+        }
+
+
+
     </script>
 </head>
 
@@ -171,7 +180,9 @@
                                 <h6 class="mb-0">라이브
                                     &nbsp&nbsp
                                     <% if (SS_USER_ID != null) { %>
-                                    <a href="/SingleST/LiveSStudioadd" ><i class="fa-solid fa-plus"></i></a>
+                                    <button class="btn btn-primary notranslate" type="button" id="view"
+                                            data-toggle="tooltip" data-placement="top" title="Open New Window"
+                                            onclick="newytWindow()"><i class="fa-solid fa-plus"></i></button>
                                     <%} %>
                                 </h6>
                                 <button type="submit" class="btn btn-primary m-2">load!</button>

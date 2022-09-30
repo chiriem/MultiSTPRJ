@@ -33,17 +33,6 @@
     <link href="/css/style.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
     <script type="text/javascript">
-        function doYTCheck(f) {
-            if (f.yt_address.value == "") {
-                alert("주소를 입력하세요.");
-                f.yt_address.focus();
-                return false;
-            }
-        }
-
-        function closetab() {
-            window.close();
-        }
     </script>
     <link href="/youtube_tool/css/multi_view.css" rel="stylesheet">
 </head>
@@ -61,73 +50,78 @@
 
 
     <!-- Sidebar Start -->
-<%--    <div class="sidebar pe-4 pb-3">--%>
-<%--        <nav class="navbar bg-light navbar-light">--%>
-<%--            <a href="/index" class="navbar-brand mx-4 mb-3">--%>
-<%--                <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>MultiStudio</h3>--%>
-<%--            </a>--%>
-<%--            <div class="navbar-nav w-100">--%>
-<%--                <div class="nav-item dropdown">--%>
-<%--                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i--%>
-<%--                            class="fa fa-youtube-play me-2"></i>Main</a>--%>
-<%--                    <div class="dropdown-menu bg-transparent border-0">--%>
-<%--                        <a href="/index" class="dropdown-item">Youtube</a>--%>
-<%--                        <a href="/index2" class="dropdown-item">Youtube LiveStream</a>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--                <a href="/MultiStudio/MultiStudio" class="nav-item nav-link"><i class="fa fa-youtube-play me-2"--%>
-<%--                                                                                aria-hidden="false"></i>MultiStudio</a>--%>
-<%--                <a href="/notice/NoticeList" class="nav-item nav-link"><i class="fa fa-book me-2"--%>
-<%--                                                                          aria-hidden="false"></i>Notice</a>--%>
-<%--                <a href="/Search2" class="nav-item nav-link"><i class="fa fa-search me-2" aria-hidden="false"></i>Search</a>--%>
-<%--            </div>--%>
-<%--        </nav>--%>
-<%--    </div>--%>
+    <div class="sidebar pe-4 pb-3">
+        <nav class="navbar bg-light navbar-light">
+            <a href="/index" class="navbar-brand mx-4 mb-3">
+                <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>MultiStudio</h3>
+            </a>
+            <div class="navbar-nav w-100">
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                            class="fa fa-youtube-play me-2"></i>Main</a>
+                    <div class="dropdown-menu bg-transparent border-0">
+                        <a href="/index" class="dropdown-item">Youtube</a>
+                        <a href="/index2" class="dropdown-item">Youtube LiveStream</a>
+                    </div>
+                </div>
+                <a href="/MultiStudio/MultiStudio" class="nav-item nav-link"><i class="fa fa-youtube-play me-2"
+                                                                                aria-hidden="false"></i>MultiStudio</a>
+                <a href="/MultiStudio/MultiStudio" class="nav-item nav-link"><i class="fa fa-twitch me-2"
+                                                                                aria-hidden="false"></i>MultiTwitch</a>
+                <a href="/notice/NoticeList" class="nav-item nav-link"><i class="fa fa-book me-2" aria-hidden="false"></i>Notice</a>
+                <a href="/chat/intro" class="nav-item nav-link"><i class="fa fa-comments me-2" aria-hidden="false"></i>LiveChat</a>
+                <a href="/calendar" class="nav-item nav-link"><i class="fa fa-calendar me-2" aria-hidden="false"></i>Calendar</a>
+                <a href="/Search2" class="nav-item nav-link"><i class="fa fa-search me-2" aria-hidden="false"></i>Search</a>
+            </div>
+        </nav>
+    </div>
     <!-- Sidebar End -->
 
 
     <!-- Content Start -->
-<%--    <div class="content">--%>
-<%--        <!-- Navbar Start -->--%>
-<%--        <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">--%>
-<%--            <a href="/index" class="navbar-brand d-flex d-lg-none me-4">--%>
-<%--                <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>--%>
-<%--            </a>--%>
-<%--            <a href="#" class="sidebar-toggler flex-shrink-0">--%>
-<%--                <i class="fa fa-bars"></i>--%>
-<%--            </a>--%>
-<%--            <div class="navbar-nav align-items-center ms-auto">--%>
+    <div class="content">
+        <!-- Navbar Start -->
+        <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+            <a href="/index" class="navbar-brand d-flex d-lg-none me-4">
+                <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
+            </a>
+            <a href="#" class="sidebar-toggler flex-shrink-0">
+                <i class="fa fa-bars"></i>
+            </a>
+            <div class="navbar-nav align-items-center ms-auto">
 
-<%--                <div class="nav-item dropdown">--%>
-<%--                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">--%>
-<%--                        <i class="fa fa-cog fa-fw"></i>--%>
-<%--                        <span class="d-none d-lg-inline-flex">--%>
-<%--                                Setting--%>
-<%--                            </span>--%>
-<%--                    </a>--%>
-<%--                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">--%>
-<%--                        <a href="/Setting" class="dropdown-item">Setting</a>--%>
-<%--                        <% if (SS_USER_ID != null) { %>--%>
-<%--                        <a href="/logout" class="dropdown-item">Log out</a>--%>
-<%--                        <a href="/user/UseradjustForm" class="dropdown-item">Adjust up</a>--%>
-<%--                        <%} else {%>--%>
-<%--                        <a href="/user/LoginForm" class="dropdown-item">Sign in</a>--%>
-<%--                        <a href="/user/UserRegForm" class="dropdown-item">Sign up</a>--%>
-<%--                        <%} %>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-<%--        </nav>--%>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fa fa-cog fa-fw"></i>
+                        <span class="d-none d-lg-inline-flex">
+                                Setting
+                            </span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                        <a href="/Setting" class="dropdown-item">Setting</a>
+                        <% if (SS_USER_ID != null) { %>
+                        <a href="/logout" class="dropdown-item">Log out</a>
+                        <a href="/user/UseradjustForm" class="dropdown-item">Adjust up</a>
+                        <%} else {%>
+                        <a href="/user/LoginForm" class="dropdown-item">Sign in</a>
+                        <a href="/user/UserRegForm" class="dropdown-item">Sign up</a>
+                        <%} %>
+                    </div>
+                </div>
+            </div>
+        </nav>
         <!-- Navbar End -->
 
 
         <!-- Form Start -->
         <div class="container-fluid pt-4 px-4">
-            <div class="row g-4">
-                <div class="col-sm-12 col-xl-6 text-center">
-                    <div class="bg-light rounded h-100 p-4">
-                        <form name="f" method="post" action="/SingleStudio/insertLiveYtaddress"
-                              onsubmit="return doYTCheck(this);">
+            <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
+                <div class="col-12 ">
+                    <div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            Write down Youtube Address
+                        </div>
+                        <form name="f" method="post" action="/SingleStudio/insertYtaddress">
                             <div class="form-floating mb-4">
                                 <input type="text" class="form-control" name="user_id" placeholder="User Id" value="<%=SS_USER_ID%>" readonly>
                                 <label>User Id</label>
