@@ -354,7 +354,7 @@
                             <h6 class="mb-0">Contact Us</h6>
                         </div>
                         <br>
-                        <a href="/chat/intro">Click Here</a>
+                        <a href="/Contact/ContactList">Click Here</a>
                     </div>
                 </div>
             </div>

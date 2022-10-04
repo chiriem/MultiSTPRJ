@@ -73,7 +73,7 @@ public class NoticeService implements INoticeService {
             res = 0;
         }
 
-        https://id.twitch.tv/oauth2/token?client_id=dvz38tsu6jppaoguvjdg3fkrq71bpf&client_secret=yhyiv6epe7rhj3rontwv2iqqkkpozr&grant_type=client_credentials
+//        https://id.twitch.tv/oauth2/token?client_id=dvz38tsu6jppaoguvjdg3fkrq71bpf&client_secret=yhyiv6epe7rhj3rontwv2iqqkkpozr&grant_type=client_credentials
 
         log.info(this.getClass().getName() + ".insertNoticeInfo End!");
 
