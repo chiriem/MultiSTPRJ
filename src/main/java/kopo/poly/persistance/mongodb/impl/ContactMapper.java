@@ -99,6 +99,85 @@ public class ContactMapper extends AbstractMongoDBComon implements IContactMappe
     }
 
     @Override
+    public List<ContactDTO> getContactListforadmin(String colNm) throws Exception {
+
+        log.info(this.getClass().getName() + ".getContactListforadmin Start!");
+
+        // 조회 결과를 전달하기 위한 객체 생성하기
+        List<ContactDTO> rList = new LinkedList<>();
+
+        // 컬렉션이 없다면 생성하기
+        if(!mongodb.collectionExists(colNm)) {
+
+            // 컬렉션 생성
+            super.createCollection(colNm);
+            // 인덱스 생성
+            mongodb.getCollection(colNm).createIndex(Indexes.ascending("Contact_seq"));
+
+        }
+
+        // MongoDB 컬렉션 지정하기
+        MongoCollection<Document> col = mongodb.getCollection(colNm);
+
+        // 찾아야 할 쿼리값 생성
+        Document query = new Document();
+
+        // 조회 결과 중 출력할 컬럼들(SQL의 SELECT절과 FROM절 가운데 컬럼들과 유사함)
+        Document projection = new Document();
+        projection.append("contact_seq", "$contact_seq");
+        projection.append("title", "$title");
+        projection.append("read_cnt", "$read_cnt");
+        projection.append("user_id", "$user_id");
+        projection.append("reg_id", "$reg_id");
+        projection.append("reg_dt", "$reg_dt");
+
+        // MongoDB는 무조건 ObjectID가 자동생성되며, ObjectID는 사용하지 않을 때, 조회할 필요가 없음.
+        projection.append("_id", 0);
+
+        // MongoDB의 find 명령어를 통해 조회할 경우 사용함
+        // 조회하는 데이터의 양이 적은 경우, find를 사용하고, 데이터양이 많은 경우 무조건 Aggregate 사용한다.
+        FindIterable<Document> rs = col.find(new Document()).projection(projection);
+
+        for (Document doc : rs) {
+
+            if (doc == null) {
+
+                doc = new Document();
+
+            }
+
+            // 조회 테스트
+            String contact_seq = CmmUtil.nvl(doc.getString("contact_seq"));
+            String title = CmmUtil.nvl(doc.getString("title"));
+            String user_id = CmmUtil.nvl(doc.getString("user_id"));
+            String reg_id = CmmUtil.nvl(doc.getString("reg_id"));
+            String reg_dt = CmmUtil.nvl(doc.getString("reg_dt"));
+
+            log.info("contact_seq : " + contact_seq);
+            log.info("title : " + title);
+            log.info("user_id : " + user_id);
+            log.info("reg_id : " + reg_id);
+            log.info("reg_dt : " + reg_dt);
+
+            ContactDTO rDTO = new ContactDTO();
+
+            rDTO.setContact_seq(contact_seq);
+            rDTO.setTitle(title);
+            rDTO.setUser_id(user_id);
+            rDTO.setReg_id(reg_id);
+            rDTO.setReg_dt(reg_dt);
+
+            // 레코드 결과를 List에 저장하기
+            rList.add(rDTO);
+
+        }
+
+        log.info(this.getClass().getName() + ".getContactList End!");
+
+        return rList;
+    }
+
+    @Override
     public int insertContactInfo(ContactDTO pDTO, String colNm) throws Exception {
 
         log.info(this.getClass().getName() + ".insertContactInfo Start!");

@@ -69,6 +69,8 @@ public class ContactController {
         //조회된 리스트 결과값 넣어주기
         model.addAttribute("rList", rList);
 
+        log.info("rList 값 보기 :" + rList);
+
         log.info("user_id : " + user_id);
 
         pDTO.setUser_id(user_id);
@@ -81,6 +83,48 @@ public class ContactController {
 
         //함수 처리가 끝나고 보여줄 링크
         return "/Contact/ContactList";
+    }
+
+    @GetMapping(value="Contact/ContactListforadmin")
+    public String ContactListforadmin(HttpSession session, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+
+        //로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
+        log.info(this.getClass().getName() + ".ContactListforadmin start!");
+
+
+
+        ContactDTO pDTO = new ContactDTO();
+
+        //공지사항 리스트 가져오기
+        List<ContactDTO> rList = ContactService.getContactListforadmin(colNm);
+
+
+        if (rList==null){
+            rList = new ArrayList<ContactDTO>();
+
+        }
+
+//        ContactDTO pDTO = null;
+//
+//        pDTO = new ContactDTO();
+
+        //조회된 리스트 결과값 넣어주기
+        model.addAttribute("rList", rList);
+
+
+        String user_id = CmmUtil.nvl((String)session.getAttribute("SS_USER_ID")); //아이디
+
+        log.info("user_id : " + user_id);
+
+
+        //변수 초기화(메모리 효율화 시키기 위해 사용함)
+        rList = null;
+
+        //로그 찍기(추후 찍은 로그를 통해 이 함수 호출이 끝났는지 파악하기 용이하다.)
+        log.info(this.getClass().getName() + ".ContactList end!");
+
+        //함수 처리가 끝나고 보여줄 링크
+        return "/Contact/ContactListforadmin";
     }
 
     /**

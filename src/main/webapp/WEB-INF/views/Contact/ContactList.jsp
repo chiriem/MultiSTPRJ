@@ -25,8 +25,6 @@
 
     }
 
-
-
     System.out.println("SS_USER_ID : " + SS_USER_ID);
 %>
 

@@ -4,8 +4,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="kopo.poly.dto.NoticeDTO" %>
 <%@ page import="kopo.poly.util.CmmUtil" %>
-<%@ page import="kopo.poly.controller.ManageUserController" %>
-<%@ page import="kopo.poly.dto.ManageUserDTO" %>
+<%@ page import="kopo.poly.dto.ContactDTO" %>
 <%
     String SS_USER_ID = (String) session.getAttribute("SS_USER_ID");
 
@@ -14,18 +13,28 @@
     }
 
     //id가 "admin" 인 사람만 수정 가능하도록 하기(1: admin 아님 / 2: admin 확인 (수정 가능) / 3: 로그인 안함)
-    int edit = 2;
+    int edit = 1;
+
+    //로그인 안했다면....
+    if (SS_USER_ID.equals("")) {
+        edit = 3;
+
+        //본인이 작성한 글이면 2가 되도록 변경
+    } else if (SS_USER_ID.equals("admin")) {
+        edit = 2;
+
+    }
 
     System.out.println("SS_USER_ID : " + SS_USER_ID);
 %>
 
 <%
 
-    List<ManageUserDTO> rList = (List<ManageUserDTO>) request.getAttribute("rList");
+    List<ContactDTO> rList = (List<ContactDTO>) request.getAttribute("rList");
 
 //게시판 조회 결과 보여주기
     if (rList == null) {
-        rList = new ArrayList<ManageUserDTO>();
+        rList = new ArrayList<ContactDTO>();
 
     }
 
@@ -66,18 +75,20 @@
         //상세보기 이동
         function doDetail(seq) {
 
-            location.href = "/ManageUser/UserInfo?nSeq=" + seq;
+            location.href = "/Contact/ContactInfo?nSeq=" + seq;
         }
 
-        //삭제로 이동
-        function doDelete(seq) {
+        function dowrite() {
+            if ("<%=edit%>" == 2 || "<%=edit%>" == 1) {
+                location.href = "/Contact/ContactReg";
 
-            if (seq == "17") {
+            } else if ("<%=edit%>" == 3) {
+                alert("로그인 하시길 바랍니다.");
+
+            } else {
+                alert("오류가 발생하였습니다. 잠시 후 다시 시도해주세요");
 
             }
-
-            console.log("doDelete")
-            location.href = "/ManageUser/DeleteUser?nSeq=" + seq;
         }
 
     </script>
@@ -103,8 +114,7 @@
             </a>
             <div class="navbar-nav w-100">
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
-                            class="fa fa-youtube-play me-2"></i>Main</a>
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-youtube-play me-2"></i>Main</a>
                     <div class="dropdown-menu bg-transparent border-0">
                         <a href="/index" class="dropdown-item">Youtube</a>
                         <a href="/index2" class="dropdown-item">Youtube LiveStream</a>
@@ -114,8 +124,7 @@
                                                                                 aria-hidden="false"></i>MultiStudio</a>
                 <a href="/MultiStudio/MultiStudio" class="nav-item nav-link"><i class="fa fa-twitch me-2"
                                                                                 aria-hidden="false"></i>MultiTwitch</a>
-                <a href="/notice/NoticeList" class="nav-item nav-link"><i class="fa fa-book me-2"
-                                                                          aria-hidden="false"></i>Notice</a>
+                <a href="/notice/NoticeList" class="nav-item nav-link"><i class="fa fa-book me-2" aria-hidden="false"></i>Notice</a>
                 <a href="/chat/intro" class="nav-item nav-link"><i class="fa fa-comments me-2" aria-hidden="false"></i>LiveChat</a>
                 <a href="/calendar" class="nav-item nav-link"><i class="fa fa-calendar me-2" aria-hidden="false"></i>Calendar</a>
                 <a href="/Search2" class="nav-item nav-link"><i class="fa fa-search me-2" aria-hidden="false"></i>Search</a>
@@ -128,35 +137,35 @@
     <!-- Content Start -->
     <div class="content">
         <!-- Navbar Start -->
-        <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
-            <a href="index" class="navbar-brand d-flex d-lg-none me-4">
-                <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
-            </a>
-            <a href="#" class="sidebar-toggler flex-shrink-0">
-                <i class="fa fa-bars"></i>
-            </a>
-            <div class="navbar-nav align-items-center ms-auto">
+                <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+                    <a href="/index" class="navbar-brand d-flex d-lg-none me-4">
+                        <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
+                    </a>
+                    <a href="#" class="sidebar-toggler flex-shrink-0">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                    <div class="navbar-nav align-items-center ms-auto">
 
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                        <i class="fa fa-cog fa-fw"></i>
-                        <span class="d-none d-lg-inline-flex">
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                                <i class="fa fa-cog fa-fw"></i>
+                                <span class="d-none d-lg-inline-flex">
                                         Setting
                                     </span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                        <a href="/Setting" class="dropdown-item">Setting</a>
-                        <% if (SS_USER_ID != null) { %>
-                        <a href="/logout" class="dropdown-item">Log out</a>
-                        <a href="/user/UseradjustForm" class="dropdown-item">Adjust up</a>
-                        <%} else {%>
-                        <a href="/user/LoginForm" class="dropdown-item">Sign in</a>
-                        <a href="/user/UserRegForm" class="dropdown-item">Sign up</a>
-                        <%} %>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                                <a href="/Setting" class="dropdown-item">Setting</a>
+                                <% if (SS_USER_ID != null) { %>
+                                <a href="/logout" class="dropdown-item">Log out</a>
+                                <a href="/user/UseradjustForm" class="dropdown-item">Adjust up</a>
+                                <%} else {%>
+                                <a href="/user/LoginForm" class="dropdown-item">Sign in</a>
+                                <a href="/user/UserRegForm" class="dropdown-item">Sign up</a>
+                                <%} %>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </nav>
+                </nav>
         <!-- Navbar End -->
 
 
@@ -164,46 +173,37 @@
         <div class="container-fluid pt-4 px-4">
             <div class="bg-light text-center rounded p-4">
                 <div class="d-flex align-items-center justify-content-between mb-4">
-                    <h6 class="mb-0">User Info</h6>
+                    <h6 class="mb-0">Contact</h6>
                 </div>
                 <div class="table-responsive">
                     <div class="divTable minimalistBlack">
                         <div class="divTableHeading">
                             <div class="divTableRow">
-                                <div class="divTableHead" style="width: 120px">User Sequence</div>
-                                <div class="divTableHead">User id</div>
-                                <div class="divTableHead" style="width: 100px">User Name</div>
-                                <div class="divTableHead" style="width: 100px">User Auth</div>
-                                <div class="divTableHead" style="width: 100px">User Age</div>
-                                <div class="divTableHead" style="width: 100px">Delete</div>
+                                <div class="divTableHead">Title</div>
+                                <div class="divTableHead" style="width: 150px">User Id</div>
+                                <div class="divTableHead" style="width: 150px">Regist date</div>
                             </div>
                         </div>
 
                         <div class="divTableBody">
                             <%
                                 for (int i = 0; i < rList.size(); i++) {
-                                    ManageUserDTO rDTO = rList.get(i);
+                                    ContactDTO rDTO = rList.get(i);
 
                                     if (rDTO == null) {
-                                        rDTO = new ManageUserDTO();
+                                        rDTO = new ContactDTO();
                                     }
 
                             %>
                             <div class="divTableRow">
-                                <div class="divTableCell"><%=CmmUtil.nvl(rDTO.getUser_seq()) %>
+                                <div class="divTableCell">
+                                    <a href="javascript:doDetail('<%=CmmUtil.nvl(rDTO.getContact_seq())%>');">
+                                        <%=CmmUtil.nvl(rDTO.getTitle()) %>
+                                    </a>
                                 </div>
                                 <div class="divTableCell"><%=CmmUtil.nvl(rDTO.getUser_id()) %>
                                 </div>
-                                <div class="divTableCell"><%=CmmUtil.nvl(rDTO.getUser_nm()) %>
-                                </div>
-                                <div class="divTableCell"><%=CmmUtil.nvl(rDTO.getUser_auth()) %>
-                                </div>
-                                <div class="divTableCell"><%=CmmUtil.nvl(rDTO.getAge()) %>
-                                </div>
-                                <div class="divTableCell">
-                                    <a href="javascript:doDelete('<%=CmmUtil.nvl(rDTO.getUser_seq())%>');">
-                                        Delete!
-                                    </a>
+                                <div class="divTableCell"><%=CmmUtil.nvl(rDTO.getReg_dt()) %>
                                 </div>
                             </div>
                             <%

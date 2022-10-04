@@ -14,6 +14,8 @@ public interface IContactMapper {
      */
     List<ContactDTO> getContactList(ContactDTO pDTO, String colNm) throws Exception;
 
+    List<ContactDTO> getContactListforadmin(String colNm) throws Exception;
+
     /**
      *
      * @param pDTO 저장될 정보

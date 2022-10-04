@@ -12,6 +12,8 @@ public interface IContactService {
 	 */
 	List<ContactDTO> getContactList(ContactDTO pDTO, String colNm) throws Exception;
 
+	List<ContactDTO> getContactListforadmin(String colNm) throws Exception;
+
 	/**
 	 * 공지사항 저장하기
 	 */

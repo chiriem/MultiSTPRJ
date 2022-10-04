@@ -85,7 +85,7 @@
 
         //삭제하기
         function doDelete() {
-            if ("<%=edit%>" == 2) {
+            if ("<%=edit%>" == 2 || "<%=edit%>" == 1) {
                 if (confirm("작성한 글을 삭제하시겠습니까?")) {
                     <%--location.href="/Contact/ContactDelete?nSeq=<%=CmmUtil.nvl(rDTO.getContact_seq())%>";--%>
                     //location.href="/Contact/ContactDelete";
@@ -100,9 +100,6 @@
 
             } else if ("<%=edit%>" == 3) {
                 alert("로그인 하시길 바랍니다.");
-
-            } else {
-                alert("관리자만 삭제 가능합니다.");
 
             }
         }
@@ -214,8 +211,11 @@
                               style="width: 600px; height: 400px"><%=CmmUtil.nvl(rDTO.getContents()) %></textarea>
                 </div>
                 <button type="button" class="btn btn-primary m-2" onclick="doList()">목록</button>
-                <button type="button" class="btn btn-primary m-2" onclick="doEdit()">수정</button>
+                <% if (SS_USER_ID.equals("admin")) { %>
+                <button type="button" class="btn btn-primary m-2" onclick="doEdit()">답신</button>
+                <% } else {%>
                 <button type="button" class="btn btn-primary m-2" onclick="doDelete()">삭제</button>
+                <% }%>
                 <!-- 프로세스 처리용 iframe / form 태그에서 target을 iframe으로 한다. -->
                 <iframe name="ifrPrc" style="display:none"></iframe>
 

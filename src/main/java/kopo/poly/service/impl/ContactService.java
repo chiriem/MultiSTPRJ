@@ -43,6 +43,22 @@ public class ContactService implements IContactService {
     }
 
     @Override
+    public List<ContactDTO> getContactListforadmin(String colNm) throws Exception {
+
+        log.info(this.getClass().getName() + ".getContactListforadmin Start!");
+
+        // 조회 결과를 전달하기 위한 객체 생성하기
+        List<ContactDTO> rList = new LinkedList<>();
+
+        // 조회 결과 담기
+        rList = ContactMapper.getContactListforadmin(colNm);
+
+        log.info(this.getClass().getName() + ".getContactListforadmin End!");
+
+        return rList;
+    }
+
+    @Override
     public int insertContactInfo(ContactDTO pDTO, String colNm) throws Exception {
 
         log.info(this.getClass().getName() + ".insertContactInfo Start!");

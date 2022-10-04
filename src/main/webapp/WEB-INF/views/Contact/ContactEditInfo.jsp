@@ -1,177 +1,3 @@
-<%--<%@ page language="java" contentType="text/html; charset=UTF-8"--%>
-<%--         pageEncoding="UTF-8" %>--%>
-<%--<%@ page import="kopo.poly.util.CmmUtil" %>--%>
-<%--<%@ page import="kopo.poly.dto.ContactDTO" %>--%>
-<%--<%--%>
-<%--    String SS_USER_ID = (String) session.getAttribute("SS_USER_ID");--%>
-<%--%>--%>
-<%--<%--%>
-<%--    ContactDTO rDTO = (ContactDTO) request.getAttribute("rDTO");--%>
-
-<%--//공지글 정보를 못불러왔다면, 객체 생성--%>
-<%--    if (rDTO == null) {--%>
-<%--        rDTO = new ContactDTO();--%>
-
-<%--    }--%>
-
-<%--    int access = 1; //(관리자 : 2 / 다른 사용자: 1)--%>
-
-<%--    if (CmmUtil.nvl((String) session.getAttribute("SS_USER_ID")).equals("admin")) {--%>
-<%--        access = 2;--%>
-<%--    }--%>
-<%--%>--%>
-<%--<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">--%>
-
-<%--<html>--%>
-
-<%--<head>--%>
-<%--    <meta charset="utf-8">--%>
-<%--    <title>DASHMIN - Bootstrap Admin Template</title>--%>
-<%--    <meta content="width=device-width, initial-scale=1.0" name="viewport">--%>
-<%--    <meta content="" name="keywords">--%>
-<%--    <meta content="" name="description">--%>
-
-<%--    <!-- Google Web Fonts -->--%>
-<%--    <link rel="preconnect" href="https://fonts.googleapis.com">--%>
-<%--    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>--%>
-<%--    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">--%>
-
-<%--    <!-- Icon Font Stylesheet -->--%>
-<%--    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">--%>
-<%--    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">--%>
-
-<%--    <!-- Libraries Stylesheet -->--%>
-<%--    <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">--%>
-<%--    <link href="/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet"/>--%>
-
-<%--    <!-- Customized Bootstrap Stylesheet -->--%>
-<%--    <link href="/css/bootstrap.min.css" rel="stylesheet">--%>
-
-<%--    <!-- Template Stylesheet -->--%>
-<%--    <link href="/css/style.css" rel="stylesheet">--%>
-
-<%--    <script type="text/javascript">--%>
-
-<%--        //작성자 여부체크--%>
-<%--        function doOnload() {--%>
-
-<%--            if ("<%=access%>" == "1") {--%>
-<%--                alert("관리자만 수정할 수 있습니다.");--%>
-<%--                location.href = "/Contact/ContactList";--%>
-
-<%--            }--%>
-<%--        }--%>
-
-<%--        //전송시 유효성 체크--%>
-<%--        function doSubmit(f) {--%>
-<%--            if (f.title.value == "") {--%>
-<%--                alert("제목을 입력하시기 바랍니다.");--%>
-<%--                f.title.focus();--%>
-<%--                return false;--%>
-<%--            }--%>
-
-<%--            if (calBytes(f.title.value) > 200) {--%>
-<%--                alert("최대 200Bytes까지 입력 가능합니다.");--%>
-<%--                f.title.focus();--%>
-<%--                return false;--%>
-<%--            }--%>
-
-
-<%--            if (f.contents.value == "") {--%>
-<%--                alert("내용을 입력하시기 바랍니다.");--%>
-<%--                f.contents.focus();--%>
-<%--                return false;--%>
-<%--            }--%>
-
-<%--            if (calBytes(f.contents.value) > 4000) {--%>
-<%--                alert("최대 4000Bytes까지 입력 가능합니다.");--%>
-<%--                f.contents.focus();--%>
-<%--                return false;--%>
-<%--            }--%>
-
-
-<%--        }--%>
-
-<%--        //글자 길이 바이트 단위로 체크하기(바이트값 전달)--%>
-<%--        function calBytes(str) {--%>
-
-<%--            var tcount = 0;--%>
-<%--            var tmpStr = new String(str);--%>
-<%--            var strCnt = tmpStr.length;--%>
-
-<%--            var onechar;--%>
-<%--            for (i = 0; i < strCnt; i++) {--%>
-<%--                onechar = tmpStr.charAt(i);--%>
-
-<%--                if (escape(onechar).length > 4) {--%>
-<%--                    tcount += 2;--%>
-<%--                } else {--%>
-<%--                    tcount += 1;--%>
-<%--                }--%>
-<%--            }--%>
-
-<%--            return tcount;--%>
-<%--        }--%>
-
-<%--    </script>--%>
-<%--</head>--%>
-
-<%--<body>--%>
-<%--<div class="container-xxl position-relative bg-white d-flex p-0">--%>
-<%--    <!-- Spinner Start -->--%>
-<%--    <div id="spinner"--%>
-<%--         class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">--%>
-<%--        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">--%>
-<%--            <span class="sr-only">Loading...</span>--%>
-<%--        </div>--%>
-<%--    </div>--%>
-<%--    <!-- Spinner End -->--%>
-
-
-<%--    <!-- Edit Start -->--%>
-<%--    <div class="container-fluid">--%>
-<%--        <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">--%>
-<%--            <div class="col-12 col-sm-8">--%>
-<%--                <div class="bg-light rounded p-4 ">--%>
-<%--                    <form name="f" method="post" action="/Contact/ContactUpdate" onsubmit="return doSubmit(this);">--%>
-<%--                        <h6>Title</h6>--%>
-<%--                        <input type="hidden" name="nSeq" value="<%=CmmUtil.nvl(request.getParameter("nSeq")) %>"/>--%>
-<%--                        <div class="form-floating mb-3">--%>
-<%--                            <input type="text" class="form-control" name="title" maxlength="100"--%>
-<%--                                   value="<%=CmmUtil.nvl(rDTO.getTitle()) %>">--%>
-<%--                        </div>--%>
-<%--                        <h6>Content</h6>--%>
-<%--                        <div class="form-floating mb-4">--%>
-<%--                            <textarea name="contents" class="form-control" style="height: 300px">--%>
-<%--                            </textarea>--%>
-<%--                        </div>--%>
-<%--                        <button type="submit" class="btn btn-primary">수정</button>--%>
-<%--                        <button type="reset" class="btn btn-primary">다시 작성</button>--%>
-<%--                    </form>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </div>--%>
-<%--    <!-- Edit End -->--%>
-<%--</div>--%>
-
-<%--<!-- JavaScript Libraries -->--%>
-<%--<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>--%>
-<%--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>--%>
-<%--<script src="/lib/chart/chart.min.js"></script>--%>
-<%--<script src="/lib/easing/easing.min.js"></script>--%>
-<%--<script src="/lib/waypoints/waypoints.min.js"></script>--%>
-<%--<script src="/lib/owlcarousel/owl.carousel.min.js"></script>--%>
-<%--<script src="/lib/tempusdominus/js/moment.min.js"></script>--%>
-<%--<script src="/lib/tempusdominus/js/moment-timezone.min.js"></script>--%>
-<%--<script src="/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>--%>
-
-<%--<!-- Template Javascript -->--%>
-<%--<script src="/js/main.js"></script>--%>
-<%--</body>--%>
-
-<%--</html>--%>
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ page import="kopo.poly.util.CmmUtil" %>
@@ -363,14 +189,18 @@
                     <div class="form-floating mb-3">
                         <div class="col-sm-10">
                             <input type="text" class="form-control" name="title" style="width: 430px;"
-                                   value="<%=CmmUtil.nvl(rDTO.getTitle())%>">
+                                   value="[답신완료] <%=CmmUtil.nvl(rDTO.getTitle())%>">
                         </div>
                     </div>
                     <h6>Content</h6>
                     <textarea class="form-control" name="contents"
-                              style="width: 600px; height: 400px"><%=CmmUtil.nvl(rDTO.getContents())%></textarea>
+                              style="width: 600px; height: 400px"><%=CmmUtil.nvl(rDTO.getContents())%>
 
-                    <button type="submit" class="btn btn-primary">수정</button>
+=========================================================
+
+안녕하세요 관리자 입니다. 해당 문의는 검토 결과</textarea>
+
+                    <button type="submit" class="btn btn-primary">답신 완료</button>
                     <button type="reset" class="btn btn-primary">다시 작성</button>
                     <!-- 프로세스 처리용 iframe / form 태그에서 target을 iframe으로 한다. -->
                     <iframe name="ifrPrc" style="display:none"></iframe>

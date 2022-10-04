@@ -348,6 +348,18 @@
                 </div>
                 <% } else if (SS_USER_ID.equals("")) {%>
                 <% }%>
+
+                <% if (SS_USER_ID.equals("admin")) { %>
+                <div class="col-sm-12">
+                    <div class="bg-light rounded h-100 p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <h6 class="mb-0">Contact Users</h6>
+                        </div>
+                        <br>
+                        <a href="/Contact/ContactListforadmin">Click Here</a>
+                    </div>
+                </div>
+                <% } else {%>
                 <div class="col-sm-12">
                     <div class="bg-light rounded h-100 p-4">
                         <div class="d-flex align-items-center justify-content-between mb-2">
@@ -357,6 +369,7 @@
                         <a href="/Contact/ContactList">Click Here</a>
                     </div>
                 </div>
+                <% }%>
             </div>
         </div>
         <!-- Form End -->

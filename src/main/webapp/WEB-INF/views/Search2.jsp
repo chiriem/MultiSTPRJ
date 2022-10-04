@@ -38,7 +38,46 @@
     <link href="/css/table_with_div.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
     <script src="/js/jquery-3.6.0.js"></script>
+    <script src="/js/annyang.js"></script>
+    <script src="/js/speechkitt.js"></script>
     <script>
+
+        /* ##### 음성 인식 Annyang.js start ##### */
+        if (annyang) {
+            // Add our commands to annyang
+            annyang.addCommands({});
+
+            //음성인식 값 받아오기위한 객체 생성
+            let recognition = annyang.getSpeechRecognizer();
+            //최종 음성인식 결과값 저장 변수
+            let final_transcript = "";
+            //말하는 동안에 인식되는 값 가져오기(허용)
+            recognition.interimResults = false;
+            //음성 인식결과 가져오기
+            recognition.onresult = function (event) {
+                final_transcript = "";
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    if (event.results[i].isFinal) {
+                        final_transcript += event.results[i][0].transcript;
+                    }
+                }
+                console.log("final :" + final_transcript);
+
+                let send_msg = final_transcript;
+                $("#search_box").val(send_msg)
+                send(send_msg);
+            };
+
+            // Tell KITT to use annyang
+            SpeechKITT.annyang();
+
+            // Define a stylesheet for KITT to use
+            SpeechKITT.setStylesheet('/css/flat.css');
+
+            // Render KITT's interface
+            SpeechKITT.vroom();
+        }
+        /* ##### 음성 인식 Annyang.js end ##### */
 
 
         function doCopy(link){
