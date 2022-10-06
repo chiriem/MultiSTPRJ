@@ -167,7 +167,7 @@
                     <h6 class="mb-0">User Info</h6>
                 </div>
                 <div class="table-responsive">
-                    <div class="divTable minimalistBlack">
+                    <div class="divTable comicGreen">
                         <div class="divTableHeading">
                             <div class="divTableRow">
                                 <div class="divTableHead" style="width: 120px">User Sequence</div>

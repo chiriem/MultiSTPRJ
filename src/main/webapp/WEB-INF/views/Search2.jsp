@@ -310,7 +310,7 @@
             <div class="row_Search bg-light rounded align-items-center justify-content-center g-4">
                 <div class="col-sm-12">
                     <div class="table-responsive">
-                        <div class="divTable minimalistBlack">
+                        <div class="divTable paleBlueRows">
                             <div class="divTableHeading">
                                 <div class="divTableRow">
                                     <div class="divTableHead" style="width: 170px">Thumbnail</div>
