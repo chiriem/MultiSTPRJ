@@ -26,6 +26,7 @@
     <!-- Libraries Stylesheet -->
     <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/page/mic.css">
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -42,42 +43,53 @@
     <script src="/js/speechkitt.js"></script>
     <script>
 
-        /* ##### 음성 인식 Annyang.js start ##### */
-        if (annyang) {
-            // Add our commands to annyang
-            annyang.addCommands({});
+        // //annyang 라이브러리 실행
+        // annyang.start({
+        //     autoRestart : true,
+        //     continuous : true
+        // })
+        // //음성인식 값 받아오기위한 객체 생성
+        // var recognition = annyang.getSpeechRecognizer();
+        // // //최종 음성인식 결과값 저장 변수
+        // // var final_transcript = "";
+        // //말하는 동안에 인식되는 값 가져오기(허용)
+        // recognition.interimResults = true;
+        // // //음성인식 가능한 브라어주인지 확인
+        // // if ('SpeechRecognition' in window) {
+        // //     alert("음성인식 가능함");
+        // // }
+        //
+        // //음성 인식결과 가져오기
+        // recognition.onresult = function(event) {
+        //     var interim_transcript = "";
+        //     final_transcript = "";
+        //     for (var i = event.resultIndex; i < event.results.length; ++i) {
+        //         if (event.results[i].isFinal) {
+        //             final_transcript += event.results[i][0].transcript;
+        //         }
+        //     }
+        //     //$("#view_ing").html("말하는 중 : " + interim_transcript);
+        //     $("#mySpeak").html(final_transcript);
+        //     $("#search_box").val(final_transcript);
+        //     $("#totalMySpeak").after(final_transcript + "<br/>");
+        //
+        // };
 
-            //음성인식 값 받아오기위한 객체 생성
-            let recognition = annyang.getSpeechRecognizer();
-            //최종 음성인식 결과값 저장 변수
-            let final_transcript = "";
-            //말하는 동안에 인식되는 값 가져오기(허용)
-            recognition.interimResults = false;
-            //음성 인식결과 가져오기
-            recognition.onresult = function (event) {
-                final_transcript = "";
-                for (let i = event.resultIndex; i < event.results.length; ++i) {
-                    if (event.results[i].isFinal) {
-                        final_transcript += event.results[i][0].transcript;
-                    }
-                }
-                console.log("final :" + final_transcript);
-
-                let send_msg = final_transcript;
-                $("#search_box").val(send_msg)
-                send(send_msg);
-            };
-
-            // Tell KITT to use annyang
-            SpeechKITT.annyang();
-
-            // Define a stylesheet for KITT to use
-            SpeechKITT.setStylesheet('/css/flat.css');
-
-            // Render KITT's interface
-            SpeechKITT.vroom();
-        }
-        /* ##### 음성 인식 Annyang.js end ##### */
+        // if (annyang) {
+        //     // Add our commands to annyang
+        //     annyang.addCommands({
+        //         'hello': function() { alert('Hello world!'); }
+        //     });
+        //
+        //     // Tell KITT to use annyang
+        //     SpeechKITT.annyang();
+        //
+        //     // Define a stylesheet for KITT to use
+        //     SpeechKITT.setStylesheet('//cdnjs.cloudflare.com/ajax/libs/SpeechKITT/1.0.0/themes/flat.css');
+        //
+        //     // Render KITT's interface
+        //     SpeechKITT.vroom();
+        // }
 
 
         function doCopy(link){
@@ -238,8 +250,8 @@
                 </div>
                 <a href="/MultiStudio/MultiStudio" class="nav-item nav-link"><i class="fa fa-youtube-play me-2"
                                                                                 aria-hidden="false"></i>MultiStudio</a>
-                <a href="/MultiStudio/MultiStudio" class="nav-item nav-link"><i class="fa fa-twitch me-2"
-                                                                                aria-hidden="false"></i>MultiTwitch</a>
+<%--                <a href="/MultiStudio/MultiStudio" class="nav-item nav-link"><i class="fa fa-twitch me-2"--%>
+<%--                                                                                aria-hidden="false"></i>MultiTwitch</a>--%>
                 <a href="/notice/NoticeList" class="nav-item nav-link"><i class="fa fa-book me-2" aria-hidden="false"></i>Notice</a>
                 <a href="/chat/intro" class="nav-item nav-link"><i class="fa fa-comments me-2" aria-hidden="false"></i>LiveChat</a>
                 <a href="/calendar" class="nav-item nav-link"><i class="fa fa-calendar me-2" aria-hidden="false"></i>Calendar</a>
@@ -263,8 +275,9 @@
             <form class="d-none d-md-flex ms-4">
                 <form name="form1" method="post" onsubmit="return false;">
                     <input class="form-control border-0" type="search" placeholder="Search" id="search_box"
-                           target="search_box_t">
+                           target="search_box_t" width="400px">
                     <button type="button" class="btn btn-primary m-2" onclick="fnGetList();">Go!</button>
+                    <div id="micButtonBox"></div>
                 </form>
             </form>
             <div class="navbar-nav align-items-center ms-auto">
@@ -295,7 +308,7 @@
         <!-- Form Start -->
         <div class="container-fluid pt-4 px-4">
             <div class="row_Search bg-light rounded align-items-center justify-content-center g-4">
-                <div class="col-md-11">
+                <div class="col-sm-12">
                     <div class="table-responsive">
                         <div class="divTable minimalistBlack">
                             <div class="divTableHeading">
@@ -315,7 +328,7 @@
                 </div>
                 <br>
                 <% if (SS_USER_ID != null) { %>
-                <div class="col-sm-12 col-xl-12">
+                <div class="col-sm-12">
                     <div class="bg-light rounded h-100 p-4">
                         <form name="f" method="post" action="/user/getMultiviewYtaddress">
                             <div class="d-flex align-items-center justify-content-between mb-4">
@@ -339,6 +352,7 @@
                     </div>
                 </div>
                 <% } %>
+
             </div>
         </div>
         <!-- Form End -->
@@ -377,6 +391,46 @@
 <script src="/lib/tempusdominus/js/moment.min.js"></script>
 <script src="/lib/tempusdominus/js/moment-timezone.min.js"></script>
 <script src="/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+<script>
+    /* ##### 음성 인식 Annyang.js start ##### */
+    if (annyang) {
+        // Add our commands to annyang
+        annyang.addCommands({});
+
+        //음성인식 값 받아오기위한 객체 생성
+        let recognition = annyang.getSpeechRecognizer();
+        //최종 음성인식 결과값 저장 변수
+        let final_transcript = "";
+        //말하는 동안에 인식되는 값 가져오기(허용)
+        recognition.interimResults = false;
+        //음성 인식결과 가져오기
+        recognition.onresult = function (event) {
+            final_transcript = "";
+            for (let i = event.resultIndex; i < event.results.length; ++i) {
+                if (event.results[i].isFinal) {
+                    final_transcript += event.results[i][0].transcript;
+                }
+            }
+            console.log("final :" + final_transcript);
+
+            // 사용자 음성 html append
+
+            let resHTML = "";
+            $("#search_box").val(final_transcript);
+
+        };
+
+        // Tell KITT to use annyang
+        SpeechKITT.annyang();
+
+        // Define a stylesheet for KITT to use
+        SpeechKITT.setStylesheet('/css/flat.css');
+
+        // Render KITT's interface
+        SpeechKITT.vroom();
+    }
+    /* ##### 음성 인식 Annyang.js end ##### */
+</script>
 
 <!-- Template Javascript -->
 <script src="/js/main.js"></script>
